@@ -33,7 +33,7 @@ export default function InstitutoCarousel() {
 
   return (
     <section id="social" className="sobre-instituto" aria-label="Projetos Sociais">
-      <div className="sobre-instituto__inner">
+      {/* Painel esquerdo — ocupa 50% do viewport */}
       <div className="sobre-instituto__left">
         <div className="sobre-instituto__decor" aria-hidden="true" />
         <div className="sobre-instituto__content">
@@ -45,28 +45,27 @@ export default function InstitutoCarousel() {
             Saiba mais
           </a>
         </div>
-        <button className="sobre-instituto__arrow sobre-instituto__arrow--prev" onClick={prev} aria-label="Instituto anterior">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
       </div>
-      <button
-        className="sobre-instituto__arrow sobre-instituto__arrow--next"
-        onClick={next}
-        aria-label="Próximo instituto"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
+
+      {/* Foto — preenche o restante do viewport */}
       <div
         className="sobre-instituto__img"
         style={{ backgroundImage: `url(${item.img})` }}
         role="img"
         aria-label={item.title.replace('\n', ' ')}
       />
-      </div>{/* fim .sobre-instituto__inner */}
+
+      {/* Setas nas bordas da seção */}
+      <button className="sobre-instituto__arrow sobre-instituto__arrow--prev" onClick={prev} aria-label="Instituto anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+      <button className="sobre-instituto__arrow sobre-instituto__arrow--next" onClick={next} aria-label="Próximo instituto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
     </section>
   )
 }
