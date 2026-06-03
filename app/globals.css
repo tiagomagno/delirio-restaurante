@@ -900,7 +900,7 @@ body {
 /* ─── SOBRE NÓS — rancho 3 cards ────────────── */
 .sobre-rancho-section {
   background: var(--green);
-  padding: 40px 0 0;
+  padding: 64px 0 64px;
 }
 
 .sobre-rancho-section__inner {
