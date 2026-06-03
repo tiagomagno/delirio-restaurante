@@ -48,10 +48,12 @@ export default function SobreHeroCarousel() {
           </h1>
           <p className="sobre-hero__text">{slide.text}</p>
         </div>
-        <div className="sobre-hero__right">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={slide.img} alt={slide.imgAlt} />
-        </div>
+        <div
+          className="sobre-hero__right"
+          style={{ backgroundImage: `url(${slide.img})` }}
+          role="img"
+          aria-label={slide.imgAlt}
+        />
       </div>
 
       <button className="sobre-hero__arrow sobre-hero__arrow--next" onClick={next} aria-label="Próximo slide">

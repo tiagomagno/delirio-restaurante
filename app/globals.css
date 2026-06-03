@@ -671,15 +671,9 @@ body {
 
 .sobre-hero__right {
   flex: 1;
-  position: relative;
-  overflow: hidden;
-}
-
-.sobre-hero__right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .sobre-hero__arrow {
