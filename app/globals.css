@@ -728,26 +728,25 @@ body {
 
 .sobre-sust__inner {
   display: flex;
-  align-items: stretch;
-  /* sem max-width: imagem parte da borda esquerda */
+  align-items: center;
+  gap: 80px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 60px 80px;
 }
 
-/* Thumbnail vertical do vídeo — borda esquerda até o centro */
+/* Thumbnail vertical do vídeo — proporção natural */
 .sobre-sust__media {
-  flex: 0 0 44%;
+  flex: 0 0 auto;
   position: relative;
-  overflow: hidden;
-  min-height: 560px;
+  width: 320px;
 }
 
 .sobre-sust__media img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
   display: block;
-  position: absolute;
-  inset: 0;
+  border-radius: 4px;
 }
 
 .sobre-sust__btn {
