@@ -739,14 +739,14 @@ body {
 .sobre-sust__media {
   flex: 0 0 auto;
   position: relative;
-  width: 320px;
+  width: 380px;
 }
 
 .sobre-sust__media img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .sobre-sust__btn {
