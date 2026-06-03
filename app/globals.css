@@ -627,32 +627,39 @@ body {
 /* ─── SOBRE NÓS — hero carrossel ───────────────── */
 .sobre-hero {
   position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 600px;
-  margin-top: 90px;
-  background: var(--green);
+  min-height: 680px;
   overflow: hidden;
+  /* sem margin-top: header fixo fica sobre o hero verde */
 }
 
-.sobre-hero__slide {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 600px;
+/* Background image cobre a seção toda */
+.sobre-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
-.sobre-hero__left {
-  flex: 0 0 48%;
-  padding: 120px 80px 80px 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 20px;
+/* Painel verde esquerdo com borda direita curva */
+.sobre-hero__panel {
   position: relative;
   z-index: 1;
-  /* borda direita curva criando o efeito circular */
+  width: 50%;
+  min-height: 680px;
+  background: var(--green);
   border-radius: 0 50% 50% 0 / 0 50% 50% 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sobre-hero__panel-inner {
+  padding: 90px 80px 80px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
 .sobre-hero__title {
@@ -666,14 +673,7 @@ body {
   color: rgba(255,255,255,0.92);
   font-size: 0.95rem;
   line-height: 1.75;
-  max-width: 380px;
-}
-
-.sobre-hero__right {
-  flex: 1;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  max-width: 400px;
 }
 
 .sobre-hero__arrow {
@@ -700,19 +700,20 @@ body {
 
 .sobre-hero__dots {
   position: absolute;
-  bottom: 24px;
-  left: 50%;
+  bottom: 28px;
+  left: 25%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  z-index: 2;
 }
 
 .sobre-hero__dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: none;
-  background: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.45);
   cursor: pointer;
   padding: 0;
   transition: background 0.2s;
@@ -727,11 +728,15 @@ body {
 
 .sobre-sust__inner {
   display: flex;
-  min-height: 480px;
+  align-items: stretch;
+  max-width: 1320px;
+  margin: 0 auto;
+  min-height: 540px;
 }
 
+/* Thumbnail vertical do vídeo */
 .sobre-sust__media {
-  flex: 0 0 45%;
+  flex: 0 0 42%;
   position: relative;
   overflow: hidden;
 }
@@ -740,6 +745,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .sobre-play-btn {
@@ -790,6 +796,16 @@ body {
   background: var(--orange);
   position: relative;
   overflow: hidden;
+}
+
+/* wrapper 1320px centralizado dentro do banner full-width */
+.sobre-instituto__inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-height: 500px;
 }
 
 .sobre-instituto__left {
@@ -884,18 +900,22 @@ body {
 /* ─── SOBRE NÓS — rancho 3 cards ────────────── */
 .sobre-rancho-section {
   background: var(--green);
-  padding: 0;
+  padding: 40px 0 0;
 }
 
 .sobre-rancho-section__inner {
+  max-width: 1320px;
+  margin: 0 auto;
   display: flex;
-  align-items: stretch;
-  min-height: 480px;
+  align-items: flex-start;
+  gap: 0;
+  padding: 0 40px;
 }
 
 .sobre-rancho-section__videos {
   display: flex;
   flex: 1;
+  gap: 16px;
 }
 
 .sobre-rancho-info {
@@ -925,13 +945,15 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--white);
 }
 
 .sobre-rancho-card__thumb {
   position: relative;
-  flex: 1;
+  aspect-ratio: 3/4;
   overflow: hidden;
-  min-height: 280px;
 }
 
 .sobre-rancho-card__thumb img {
@@ -945,10 +967,9 @@ body {
   font-size: 0.88rem;
   color: var(--text-dark);
   line-height: 1.6;
-  padding: 20px 24px;
-  background: var(--white);
-  border-radius: 0 0 4px 4px;
+  padding: 20px 20px 24px;
   text-align: center;
+  background: var(--white);
 }
 
 /* rancho-info moved to new block above */
@@ -987,6 +1008,22 @@ body {
   line-height: 1.75;
   margin-bottom: 32px;
 }
+
+.sobre-livro__btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: var(--green);
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.sobre-livro__btn:hover { opacity: 0.85; }
+
 .sobre-livro .sobre-cta__btn {
   text-decoration: none;
 }

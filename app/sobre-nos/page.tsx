@@ -19,12 +19,13 @@ export default function SobreNos() {
       {/* ── 2. Sustentabilidade ── */}
       <section id="sustentabilidade" className="sobre-sust" aria-label="Sustentabilidade">
         <div className="sobre-sust__inner">
-          <div
-            className="sobre-sust__media"
-            style={{ backgroundImage: `url(${BASE}/05/back-video-sustentabilidade.jpg)` }}
-            role="img"
-            aria-label="Nosso jeitinho sustentável"
-          >
+          <div className="sobre-sust__media">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${BASE}/05/back-video-sustentabilidade.jpg`}
+              alt="Vídeo sustentabilidade Delírio Tropical"
+              loading="lazy"
+            />
             <div className="sobre-play-btn" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
                 <path d="M8 5v14l11-7z" />
@@ -131,7 +132,7 @@ export default function SobreNos() {
               Maravilhosa. Essa jornada esta registrada em nosso livro especial de 40 anos, uma coleção receitas e
               sabores que contam histórias.
             </p>
-            <a href="https://delirio.com.br" target="_blank" rel="noopener" className="sobre-cta__btn">
+            <a href="https://delirio.com.br" target="_blank" rel="noopener" className="sobre-livro__btn">
               Acesse e leve o Delírio para sua casa
             </a>
           </div>

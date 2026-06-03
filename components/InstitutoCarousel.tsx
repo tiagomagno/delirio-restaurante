@@ -33,6 +33,7 @@ export default function InstitutoCarousel() {
 
   return (
     <section id="social" className="sobre-instituto" aria-label="Projetos Sociais">
+      <div className="sobre-instituto__inner">
       <div className="sobre-instituto__left">
         <div className="sobre-instituto__decor" aria-hidden="true" />
         <div className="sobre-instituto__content">
@@ -65,6 +66,7 @@ export default function InstitutoCarousel() {
         role="img"
         aria-label={item.title.replace('\n', ' ')}
       />
+      </div>{/* fim .sobre-instituto__inner */}
     </section>
   )
 }
