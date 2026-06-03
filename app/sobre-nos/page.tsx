@@ -55,7 +55,7 @@ export default function SobreNos() {
               href="https://www.instagram.com/deliriotropical"
               target="_blank"
               rel="noopener"
-              className="sobre-cta__btn"
+              className="sobre-sust__btn"
             >
               Acompanhe em nossas redes
             </a>
