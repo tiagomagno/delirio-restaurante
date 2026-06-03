@@ -4,25 +4,22 @@ import { useState } from 'react'
 
 const SLIDES = [
   {
-    label: 'Nossa História',
     title: 'Nossa\nHistória',
-    text: 'Em 1983 nasce uma história de amor em pleno centro do Rio de Janeiro. A primeira loja da Rua da Assembleia surpreende com uma comida leve, saudável e em harmonia com o clima tropical. Desde então, o Delírio Tropical tornou-se querido dos cariocas e ícone para os visitantes da cidade maravilhosa. O "Delírio" não parou de crescer e inovar, sendo sempre fiel aos seus valores, crenças e princípios.',
-    img: 'https://delirio.com.br/wp-content/uploads/2023/06/Assembleia-Baixa-5x5-591-px.jpg',
+    text: 'Em 1983 nasce uma história de amor em pleno centro do Rio de Janeiro. A primeira loja da Rua da Assembleia surpreende com uma comida leve, saudável e em harmonia com o clima tropical.Desde então, o Delírio Tropical tornou-se querido dos cariocas e ícone para os visitantes da cidade maravilhosa. O "Delírio" não parou de crescer e inovar, sendo sempre fiel aos seus valores, crenças e princípios.',
+    img: '/imgs/delirio-back-nossahistoria.jpg',
     imgAlt: 'Fachada Delírio Tropical — Rua da Assembleia',
   },
   {
-    label: 'Um Estilo de Vida',
-    title: 'Os seres\nbrasileiros\nnos inspiram',
-    text: 'Somos urbanos, praianos, trabalhadores conectados com a natureza. Sempre procuramos estar à frente, não temos medo de mudanças. Servimos para todos uma comida feita com amor.',
-    img: 'https://delirio.com.br/wp-content/uploads/2023/05/Livro-Balcao-02-CROP-1024x830.jpg',
-    imgAlt: 'Delírio Tropical — estilo de vida',
+    title: 'Nossos\nValores',
+    text: 'Somos verdadeiros em tudo que fazemos. Acreditamos no potencial das gerações futuras.O resto é fruto de muito amor, trabalho e dedicação. Graças a uma equipe feliz e uma seleção rigorosa dos melhores ingredientes. Servimos aos nossos clientes uma comida fresca e saudável. Com a informalidade e rapidez que nosso mundo exige, alimentamos as pessoas com sorrisos e muita saúde.',
+    img: '/imgs/delirio-back-valores.jpg',
+    imgAlt: 'Equipe Delírio Tropical — Nossos Valores',
   },
   {
-    label: 'Nossos Valores',
-    title: 'Verdade,\namor e\ntradição',
-    text: 'Somos verdadeiros em tudo que fazemos. Acreditamos no potencial das gerações futuras. O resto é fruto de muito amor, trabalho e dedicação. Graças a uma equipe feliz e ingredientes selecionados.',
-    img: 'https://delirio.com.br/wp-content/uploads/2023/05/delirio-assembleia-1985.webp',
-    imgAlt: 'Equipe Delírio Tropical em 1985',
+    title: 'Um Estilo\nde Vida',
+    text: 'Os seres brasileiros e suas vidas nos inspiram. Somos urbanos, praianos, trabalhadores conectados com a natureza. Sempre procuramos estar à frente, não temos medo de mudanças. Servimos para todos uma comida feita com amor.',
+    img: '/imgs/delirio-back-estilovida.jpg',
+    imgAlt: 'Delírio Tropical — Um Estilo de Vida',
   },
 ]
 
@@ -44,7 +41,6 @@ export default function SobreHeroCarousel() {
 
       <div className="sobre-hero__slide">
         <div className="sobre-hero__left">
-          <p className="sobre-hero__label">{slide.label}</p>
           <h1 className="sobre-hero__title">
             {slide.title.split('\n').map((line, i) => (
               <span key={i}>{line}<br /></span>
@@ -53,10 +49,8 @@ export default function SobreHeroCarousel() {
           <p className="sobre-hero__text">{slide.text}</p>
         </div>
         <div className="sobre-hero__right">
-          <div className="sobre-hero__circle">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={slide.img} alt={slide.imgAlt} />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={slide.img} alt={slide.imgAlt} />
         </div>
       </div>
 

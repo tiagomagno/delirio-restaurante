@@ -643,19 +643,16 @@ body {
 }
 
 .sobre-hero__left {
-  flex: 1;
-  padding: 80px 80px 80px 120px;
+  flex: 0 0 48%;
+  padding: 120px 80px 80px 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 20px;
-}
-
-.sobre-hero__label {
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
+  position: relative;
+  z-index: 1;
+  /* borda direita curva criando o efeito circular */
+  border-radius: 0 50% 50% 0 / 0 50% 50% 0;
 }
 
 .sobre-hero__title {
@@ -666,32 +663,23 @@ body {
 }
 
 .sobre-hero__text {
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.92);
   font-size: 0.95rem;
   line-height: 1.75;
-  max-width: 400px;
+  max-width: 380px;
 }
 
 .sobre-hero__right {
-  flex: 0 0 520px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 80px 40px 0;
-}
-
-.sobre-hero__circle {
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
+  flex: 1;
+  position: relative;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
-.sobre-hero__circle img {
+.sobre-hero__right img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .sobre-hero__arrow {
@@ -2251,9 +2239,8 @@ body {
 
   /* sobre nós — novas seções */
   .sobre-hero__slide { flex-direction: column; }
-  .sobre-hero__left { padding: 100px 24px 32px; }
-  .sobre-hero__right { flex: none; padding: 0 24px 60px; }
-  .sobre-hero__circle { width: 260px; height: 260px; }
+  .sobre-hero__left { flex: none; padding: 100px 24px 40px; border-radius: 0 0 50% 50% / 0 0 60px 60px; }
+  .sobre-hero__right { flex: 0 0 300px; }
   .sobre-hero__title { font-size: 2.6rem; }
   .sobre-hero__arrow--prev { left: 8px; }
   .sobre-hero__arrow--next { right: 8px; }
