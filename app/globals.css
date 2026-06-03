@@ -624,6 +624,305 @@ body {
 .sobre-rancho .sobre-historia__label { color: rgba(255,255,255,0.7); }
 .sobre-rancho .sobre-historia__title { color: var(--white); }
 
+/* ─── SOBRE NÓS — hero carrossel ───────────────── */
+.sobre-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 600px;
+  margin-top: 90px;
+  background: var(--green);
+  overflow: hidden;
+}
+
+.sobre-hero__slide {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 600px;
+}
+
+.sobre-hero__left {
+  flex: 1;
+  padding: 80px 80px 80px 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sobre-hero__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
+.sobre-hero__title {
+  font-size: 3.8rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.sobre-hero__text {
+  color: rgba(255,255,255,0.88);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  max-width: 400px;
+}
+
+.sobre-hero__right {
+  flex: 0 0 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 80px 40px 0;
+}
+
+.sobre-hero__circle {
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sobre-hero__circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sobre-hero__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--white);
+  transition: background 0.2s;
+}
+
+.sobre-hero__arrow:hover { background: rgba(255,255,255,0.3); }
+.sobre-hero__arrow--prev { left: 20px; }
+.sobre-hero__arrow--next { right: 20px; }
+
+.sobre-hero__dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.sobre-hero__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.sobre-hero__dot--active { background: var(--white); }
+
+/* ─── SOBRE NÓS — sustentabilidade 2-col ────── */
+.sobre-sust {
+  background: var(--white);
+}
+
+.sobre-sust__inner {
+  display: flex;
+  min-height: 480px;
+}
+
+.sobre-sust__media {
+  flex: 0 0 45%;
+  position: relative;
+  overflow: hidden;
+}
+
+.sobre-sust__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sobre-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sobre-play-btn:hover { background: rgba(0,0,0,0.75); }
+
+.sobre-sust__content {
+  flex: 1;
+  padding: 64px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.sobre-sust__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.25;
+}
+
+.sobre-sust__intro {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 460px;
+}
+
+/* ─── SOBRE NÓS — instituto banner ──────────── */
+.sobre-instituto {
+  display: flex;
+  min-height: 480px;
+  background: var(--orange);
+  position: relative;
+  overflow: hidden;
+}
+
+.sobre-instituto__text {
+  flex: 0 0 50%;
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.sobre-instituto__title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.15;
+}
+
+.sobre-instituto__desc {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 400px;
+}
+
+.sobre-instituto__btn {
+  display: inline-block;
+  padding: 12px 32px;
+  border: 2px solid var(--white);
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: fit-content;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sobre-instituto__btn:hover {
+  background: var(--white);
+  color: var(--orange);
+}
+
+.sobre-instituto__img {
+  flex: 1;
+  overflow: hidden;
+}
+
+.sobre-instituto__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── SOBRE NÓS — rancho 3 cards ────────────── */
+.sobre-rancho-section {
+  padding: 64px 48px;
+  background: var(--white);
+}
+
+.sobre-rancho-section__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sobre-rancho-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sobre-rancho-card__thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.sobre-rancho-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sobre-rancho-card__text {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.sobre-rancho-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sobre-rancho-info__title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.15;
+}
+
+.sobre-rancho-info__desc {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.7;
+}
+
 /* ─── SOBRE NÓS — livro ─────────────────────── */
 .sobre-livro {
   padding: 80px 48px;
@@ -1949,4 +2248,22 @@ body {
 
   /* fale conosco */
   .fale-form { padding: 48px 24px; }
+
+  /* sobre nós — novas seções */
+  .sobre-hero__slide { flex-direction: column; }
+  .sobre-hero__left { padding: 100px 24px 32px; }
+  .sobre-hero__right { flex: none; padding: 0 24px 60px; }
+  .sobre-hero__circle { width: 260px; height: 260px; }
+  .sobre-hero__title { font-size: 2.6rem; }
+  .sobre-hero__arrow--prev { left: 8px; }
+  .sobre-hero__arrow--next { right: 8px; }
+  .sobre-sust__inner { flex-direction: column; }
+  .sobre-sust__media { min-height: 260px; }
+  .sobre-sust { padding: 0; }
+  .sobre-sust__content { padding: 40px 24px; }
+  .sobre-instituto { flex-direction: column; }
+  .sobre-instituto__text { padding: 60px 24px; }
+  .sobre-instituto__img { min-height: 260px; }
+  .sobre-rancho-section__grid { grid-template-columns: 1fr; }
+  .sobre-rancho-section { padding: 40px 24px; }
 }
