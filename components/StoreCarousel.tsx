@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { stores } from '@/data/stores'
+import type { StoreData } from '@/lib/data/stores'
 
 type Filter = 'todas' | 'rio' | 'niteroi'
 
@@ -25,13 +25,13 @@ const IconMenu = () => (
   </svg>
 )
 
-export default function StoreCarousel() {
+export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
   const [filter, setFilter] = useState<Filter>('todas')
   const [page, setPage] = useState(0)
 
   const filtered = useMemo(
-    () => (filter === 'todas' ? stores : stores.filter(s => s.city === filter)),
-    [filter],
+    () => (filter === 'todas' ? stores : stores.filter(s => s.region === filter)),
+    [filter, stores],
   )
 
   const pages = Math.ceil(filtered.length / VISIBLE)
@@ -76,8 +76,9 @@ export default function StoreCarousel() {
                 <p className="store-card__name">{store.name}</p>
                 <p className="store-card__address">
                   {store.address.map((line, i) => (
-                    <span key={i}>{line}{i < store.address.length - 1 && <br />}</span>
+                    <span key={i}>{line}<br /></span>
                   ))}
+                  {store.bairroCity}
                 </p>
                 <div className="store-card__actions">
                   <a

@@ -1,31 +1,31 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import CardapioModal from './CardapioModal'
+import CardapioModal, { StoreItem } from './CardapioModal'
 
-const SLIDES = [
-  'https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_7.jpg',
-  'https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_6.jpg',
-  'https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_4.jpg',
-  'https://delirio.com.br/wp-content/uploads/2023/05/Delirio_slide2.jpg',
-]
+interface Props {
+  slides: string[]
+  ctaLabel: string
+  modalStores: StoreItem[]
+}
 
-export default function HeroSlider() {
+export default function HeroSlider({ slides, ctaLabel, modalStores }: Props) {
   const [current, setCurrent] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
 
   useEffect(() => {
+    if (slides.length < 2) return
     const timer = setInterval(() => {
-      setCurrent(prev => (prev + 1) % SLIDES.length)
+      setCurrent(prev => (prev + 1) % slides.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [slides.length])
 
   return (
     <>
       <section className="hero" aria-label="Banner principal">
         <div className="hero__slides">
-          {SLIDES.map((src, i) => (
+          {slides.map((src, i) => (
             <div
               key={src}
               className={`hero__slide${i === current ? ' active' : ''}`}
@@ -40,12 +40,12 @@ export default function HeroSlider() {
             onClick={() => setModalOpen(true)}
             aria-haspopup="dialog"
           >
-            veja o cardápio do dia
+            {ctaLabel}
           </button>
         </div>
       </section>
 
-      {modalOpen && <CardapioModal onClose={() => setModalOpen(false)} />}
+      {modalOpen && <CardapioModal onClose={() => setModalOpen(false)} stores={modalStores} />}
     </>
   )
 }
