@@ -19,4 +19,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app ./
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+# Se o start falhar, mantém o container vivo por 1h imprimindo o erro,
+# pra dar tempo de ler o log em Runtime Logs antes do container cair.
+# TODO: remover esse fallback de debug depois de identificar a causa do crash.
+CMD ["sh", "-c", "npm run start || (echo '--- START FALHOU, veja o erro acima. Container ficara vivo por 1h para debug. ---'; sleep 3600)"]
