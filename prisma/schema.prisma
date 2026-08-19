@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Store {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  address     Json
+  bairroCity  String
+  region      String
+  image       String   @db.Text
+  photos      Json?
+  mapsUrl     String   @db.Text
+  deliveryUrl String?  @db.Text
+  menuUrl     String?  @db.Text
+  hours       Json
+  phones      Json
+  whatsapp    String?
+  email       String
+  highlight   Boolean  @default(false)
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HeroSlide {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model PageContent {
+  id        String   @id @default(cuid())
+  page      String
+  key       String
+  label     String
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@unique([page, key])
+}
+
+model EventRequest {
+  id          String   @id @default(cuid())
+  lojaEmail   String
+  lojaNome    String
+  nome        String
+  pessoas     Int
+  data        DateTime?
+  telefone    String?
+  celular     String?
+  email       String?
+  descricao   String?  @db.Text
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  lojaEmail String
+  lojaNome  String
+  nome      String
+  email     String
+  celular   String
+  mensagem  String   @db.Text
+  createdAt DateTime @default(now())
+}
