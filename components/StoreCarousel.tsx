@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import type { StoreData } from '@/lib/data/stores'
+import Reveal from './Reveal'
 
 type Filter = 'todas' | 'rio' | 'niteroi'
 
@@ -63,8 +64,9 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
 
       <div className="lojas__carousel-wrap">
         <div className="lojas__carousel">
-          {visible.map(store => (
-            <div key={store.id} className="store-card">
+          {visible.map((store, i) => (
+            <Reveal key={store.id} delay={Math.min(i, 4) * 70} className="store-card-reveal">
+            <div className="store-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="store-card__img"
@@ -114,6 +116,7 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
                 </div>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>

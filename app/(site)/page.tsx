@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import HeroSlider from '@/components/HeroSlider'
 import StoreCarousel from '@/components/StoreCarousel'
 import Multiline from '@/components/Multiline'
+import Reveal from '@/components/Reveal'
 import Link from 'next/link'
 import { getStores } from '@/lib/data/stores'
 import { getPageContent } from '@/lib/data/content'
@@ -51,6 +52,7 @@ export default async function Home() {
         </h2>
         <div className="escolha__cards">
 
+          <Reveal className="escolha__card-reveal">
           <div className="escolha__card">
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -77,7 +79,9 @@ export default async function Home() {
               </a>
             </div>
           </div>
+          </Reveal>
 
+          <Reveal className="escolha__card-reveal" delay={120}>
           <div className="escolha__card">
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -101,6 +105,7 @@ export default async function Home() {
               </Link>
             </div>
           </div>
+          </Reveal>
 
         </div>
       </section>

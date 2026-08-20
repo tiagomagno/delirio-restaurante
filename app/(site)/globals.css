@@ -103,10 +103,19 @@ body {
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transition: opacity 1s ease;
+  transform: scale(1);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero__slide.active { opacity: 1; }
+.hero__slide.active {
+  opacity: 1;
+  animation: heroKenBurns 6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heroKenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
 
 .hero__slide:nth-child(1) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_7.jpg'); }
 .hero__slide:nth-child(2) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_6.jpg'); }
@@ -135,10 +144,16 @@ body {
   white-space: nowrap;
   border: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
 }
 
-.hero__btn:hover { background: #009a72; }
+.hero__btn:hover {
+  background: #009a72;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,174,129,0.35);
+}
+
+.hero__btn:active { transform: translateY(0); }
 
 /* ─── LOJAS ───────────────────────────────── */
 .lojas {
@@ -199,18 +214,30 @@ body {
   gap: 20px;
 }
 
-.store-card {
+.store-card-reveal {
   flex: 0 0 calc(20% - 16px);
   min-width: 220px;
+}
+
+.store-card {
   background: var(--white);
   text-align: left;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.store-card:hover { transform: translateY(-6px); }
 
 .store-card__img {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
   display: block;
+  border-radius: 8px;
+  transition: box-shadow 0.35s;
+}
+
+.store-card:hover .store-card__img {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.16);
 }
 
 .store-card__body {
@@ -256,7 +283,15 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
 }
+
+.store-action:hover .store-action__icon {
+  transform: scale(1.1);
+  background: #009a72;
+}
+
+.store-action:active .store-action__icon { transform: scale(0.96); }
 
 .store-action__icon svg {
   width: 20px;
@@ -309,10 +344,11 @@ body {
   font-size: 1.8rem;
   padding: 4px 10px;
   line-height: 1;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.carousel-arrow:hover { color: var(--green); }
+.carousel-arrow:hover { color: var(--green); transform: scale(1.15); }
+.carousel-arrow:active { transform: scale(0.95); }
 
 /* ─── ESCOLHA ──────────────────────────────── */
 .escolha {
@@ -335,11 +371,18 @@ body {
   margin: 0 auto;
 }
 
+.escolha__card-reveal { flex: 1; }
+
 .escolha__card {
-  flex: 1;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
+}
+
+.escolha__card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 36px rgba(0,0,0,0.16);
 }
 
 .escolha__card-img {
@@ -354,7 +397,10 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.escolha__card:hover .escolha__card-img img { transform: scale(1.08); }
 
 .escolha__card-overlay {
   position: absolute;
@@ -400,10 +446,11 @@ body {
   text-transform: uppercase;
   padding: 11px 26px;
   border-radius: 50px;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.escolha__card-btn:hover { background: #009a72; }
+.escolha__card-btn:hover { background: #009a72; transform: translateY(-2px); }
+.escolha__card-btn:active { transform: translateY(0); }
 
 /* ─── HISTORIA ─────────────────────────────── */
 .historia {
@@ -2382,4 +2429,42 @@ body {
   .sobre-livro { padding: 60px 24px; }
   .sobre-livro__inner { flex-direction: column; gap: 32px; }
   .sobre-livro__img { flex: none; width: 100%; }
+}
+
+/* ─── MOTION / REVEAL ──────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero__slide.active { animation: none; }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .store-card:hover,
+  .escolha__card:hover,
+  .hero__btn:hover,
+  .escolha__card-btn:hover,
+  .carousel-arrow:hover,
+  .store-action:hover .store-action__icon {
+    transform: none;
+  }
 }
