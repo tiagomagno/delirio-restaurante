@@ -18,5 +18,5 @@ FROM node:20-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app ./
-EXPOSE 3000
+EXPOSE 3011
 CMD ["npm", "run", "start"]
