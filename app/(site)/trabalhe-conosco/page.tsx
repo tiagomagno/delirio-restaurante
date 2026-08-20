@@ -91,7 +91,7 @@ export default async function TrabalheConosco() {
         <div className="trabalhe-layout__img">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://delirio.com.br/wp-content/uploads/2023/07/back-trabalhe-conosco.jpg"
+            src="/wp-content/uploads/2023/07/back-trabalhe-conosco.jpg"
             alt="Cozinha Delírio Tropical"
             loading="lazy"
           />

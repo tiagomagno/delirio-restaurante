@@ -19,7 +19,7 @@ export default function Header() {
         <Link href="/" className="header__logo" aria-label="Delírio Tropical">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://delirio.com.br/wp-content/uploads/2023/05/logo-delirio.webp"
+            src="/wp-content/uploads/2023/05/logo-delirio.webp"
             alt="Logo Delírio Tropical"
           />
         </Link>

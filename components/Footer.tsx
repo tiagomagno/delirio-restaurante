@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="footer__logo">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://delirio.com.br/wp-content/uploads/2023/05/logo-delirio.webp"
+            src="/wp-content/uploads/2023/05/logo-delirio.webp"
             alt="Logo Delírio Tropical"
           />
         </div>

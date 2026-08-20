@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       images: [
         {
-          url: 'https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_7.jpg',
+          url: '/wp-content/uploads/2023/09/banner_delirio_7.jpg',
           width: 1200,
           height: 630,
           alt: title,
@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
       site: '@deliriotropical',
     },
     icons: {
-      icon: 'https://delirio.com.br/wp-content/uploads/2023/05/logo-delirio.webp',
+      icon: '/wp-content/uploads/2023/05/logo-delirio.webp',
     },
   }
 }

@@ -55,7 +55,7 @@ export default async function Home() {
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://delirio.com.br/wp-content/uploads/2023/05/Pico-de-Gallo-1-1-scaled.jpg"
+                src="/wp-content/uploads/2023/05/Pico-de-Gallo-1-1-scaled.jpg"
                 alt="Encomendas Delírio Tropical"
                 loading="lazy"
               />
@@ -82,7 +82,7 @@ export default async function Home() {
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://delirio.com.br/wp-content/uploads/2023/07/Quiche-de-tomate-com-manjericao-02-PEDRO.jpg"
+                src="/wp-content/uploads/2023/07/Quiche-de-tomate-com-manjericao-02-PEDRO.jpg"
                 alt="Eventos Corporativos e Familiares"
                 loading="lazy"
               />
@@ -120,7 +120,7 @@ export default async function Home() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="historia__photo"
-            src="https://delirio.com.br/wp-content/uploads/2023/05/delirio-assembleia-1985.webp"
+            src="/wp-content/uploads/2023/05/delirio-assembleia-1985.webp"
             alt="Equipe Delírio Tropical em 1985"
             loading="lazy"
           />

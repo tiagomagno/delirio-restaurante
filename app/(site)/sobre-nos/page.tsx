@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const BASE = 'https://delirio.com.br/wp-content/uploads/2023'
+const BASE = '/wp-content/uploads/2023'
 
 export default async function SobreNos() {
   const c = await getPageContent('sobre-nos')

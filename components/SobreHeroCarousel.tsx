@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-const BASE = 'https://delirio.com.br/wp-content/uploads/2023/05'
+const BASE = '/wp-content/uploads/2023/05'
 
 const SLIDES = [
   {

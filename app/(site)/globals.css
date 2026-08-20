@@ -108,10 +108,10 @@ body {
 
 .hero__slide.active { opacity: 1; }
 
-.hero__slide:nth-child(1) { background-image: url('https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_7.jpg'); }
-.hero__slide:nth-child(2) { background-image: url('https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_6.jpg'); }
-.hero__slide:nth-child(3) { background-image: url('https://delirio.com.br/wp-content/uploads/2023/09/banner_delirio_4.jpg'); }
-.hero__slide:nth-child(4) { background-image: url('https://delirio.com.br/wp-content/uploads/2023/05/Delirio_slide2.jpg'); }
+.hero__slide:nth-child(1) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_7.jpg'); }
+.hero__slide:nth-child(2) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_6.jpg'); }
+.hero__slide:nth-child(3) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_4.jpg'); }
+.hero__slide:nth-child(4) { background-image: url('/wp-content/uploads/2023/05/Delirio_slide2.jpg'); }
 
 .hero__btn-wrap {
   position: absolute;
@@ -412,7 +412,7 @@ body {
   overflow: hidden;
   position: relative;
   background-color: var(--orange);
-  background-image: url('https://delirio.com.br/wp-content/uploads/2023/05/delirio-back-quemsomos.webp');
+  background-image: url('/wp-content/uploads/2023/05/delirio-back-quemsomos.webp');
   background-position: left center;
   background-repeat: no-repeat;
   background-size: 46%;
