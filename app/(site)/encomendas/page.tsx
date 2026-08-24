@@ -1,12 +1,16 @@
 import type { Metadata } from 'next'
 import Multiline from '@/components/Multiline'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPageContent('encomendas')
-  return { title: content['meta.title'] ?? 'Encomendas' }
+  const title = content['meta.title'] ?? 'Encomendas'
+  const description = content['meta.description'] ??
+    'Encomende os pratos favoritos do Delírio Tropical para receber em casa ou retirar na loja mais próxima. Delivery, pedidos online e cardápio para eventos.'
+  return buildPageMetadata({ content, path: '/encomendas', title, description })
 }
 
 export default async function Encomendas() {

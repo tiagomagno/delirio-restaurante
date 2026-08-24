@@ -164,3 +164,23 @@ export function IconEyeOff({ size = 16 }: IconProps) {
     </svg>
   )
 }
+
+export function IconBriefcase({ size = 20 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <rect x="3" y="7.5" width="18" height="12" rx="2" />
+      <path d="M8.5 7.5V5.8A1.3 1.3 0 0 1 9.8 4.5h4.4a1.3 1.3 0 0 1 1.3 1.3V7.5" />
+      <path d="M3 13h18" />
+      <path d="M10.5 13v1.6h3V13" />
+    </svg>
+  )
+}
+
+export function IconSearch({ size = 20 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="M20 20l-4.8-4.8" />
+    </svg>
+  )
+}

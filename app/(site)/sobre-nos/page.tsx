@@ -3,16 +3,16 @@ import SobreHeroCarousel from '@/components/SobreHeroCarousel'
 import InstitutoCarousel from '@/components/InstitutoCarousel'
 import Multiline from '@/components/Multiline'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPageContent('sobre-nos')
-  return {
-    title: content['meta.title'] ?? 'Sobre Nós',
-    description: content['meta.description'] ??
-      'Conheça a história do Delírio Tropical, nascido em 1983 no centro do Rio de Janeiro.',
-  }
+  const title = content['meta.title'] ?? 'Sobre Nós'
+  const description = content['meta.description'] ??
+    'Conheça a história do Delírio Tropical, nascido em 1983 no centro do Rio de Janeiro.'
+  return buildPageMetadata({ content, path: '/sobre-nos', title, description })
 }
 
 const BASE = '/wp-content/uploads/2023'

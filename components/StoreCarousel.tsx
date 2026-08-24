@@ -71,7 +71,7 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
               <img
                 className="store-card__img"
                 src={store.image}
-                alt={`Loja ${store.name}`}
+                alt={store.imageAlt || `Loja ${store.name}`}
                 loading="lazy"
               />
               <div className="store-card__body">

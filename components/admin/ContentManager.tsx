@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { IconCheck } from './icons'
+import { checkSeoField, DESCRIPTION_LIMIT, TITLE_LIMIT } from '@/lib/seo/fieldCheck'
 
 export interface ContentItem {
   id: string
@@ -40,9 +41,22 @@ const GROUP_LABELS: Record<Group, string> = {
 const GROUP_ORDER: Group[] = ['texto', 'botao', 'seo']
 
 function groupOf(item: ContentItem): Group {
-  if (item.page === 'global' || item.key.startsWith('meta.')) return 'seo'
+  if (item.page === 'global' || item.key.startsWith('meta.') || item.key.startsWith('og.')) return 'seo'
   if (item.key.endsWith('.cta')) return 'botao'
   return 'texto'
+}
+
+const CHAR_LIMITS: Record<string, number> = {
+  'meta.title': TITLE_LIMIT,
+  'og.title': TITLE_LIMIT,
+  'meta.description': DESCRIPTION_LIMIT,
+  'og.description': DESCRIPTION_LIMIT,
+}
+
+const SEO_HELP: Record<string, string> = {
+  'meta.canonical': 'Deixe em branco para usar a URL padrão da página. Só preencha para apontar para outra URL.',
+  'meta.robots': 'Ex: "index,follow" (padrão), "noindex,follow" ou "noindex,nofollow" para tirar a página de busca.',
+  'og.image': 'Caminho ou URL da imagem usada ao compartilhar esta página (WhatsApp, Facebook, etc). Deixe em branco para usar a imagem padrão do site.',
 }
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error'
@@ -72,6 +86,14 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
 
   const [values, setValues] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map(i => [i.id, i.value])),
+  )
+
+  // valor atual (ainda não salvo) de cada campo da página ativa, por key —
+  // usado pra resolver fallback ao vivo (ex: og.title vazio mostrando o
+  // meta.title que está sendo digitado no momento)
+  const activeValuesByKey = useMemo(
+    () => Object.fromEntries(activeItems.map(i => [i.key, values[i.id] ?? ''])),
+    [activeItems, values],
   )
   const [saved, setSaved] = useState<Record<string, string>>(() =>
     Object.fromEntries(items.map(i => [i.id, i.value])),
@@ -146,16 +168,33 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
           {GROUP_ORDER.filter(g => groupedActiveItems[g].length > 0).map(group => (
             <div key={group} className="admin-content-column">
               <h2 className="admin-content-column__title">{GROUP_LABELS[group]}</h2>
-              {groupedActiveItems[group].map(item => (
-                <div key={item.id} className="admin-content-field">
-                  <label>{item.label}</label>
-                  <textarea
-                    value={values[item.id]}
-                    onChange={e => setValue(item.id, e.target.value)}
-                    rows={values[item.id].length > 120 ? 4 : 2}
-                  />
-                </div>
-              ))}
+              {groupedActiveItems[group].map(item => {
+                const limit = CHAR_LIMITS[item.key]
+                const help = SEO_HELP[item.key]
+                const length = values[item.id]?.length ?? 0
+                const check = group === 'seo' ? checkSeoField(item.key, values[item.id] ?? '', activeValuesByKey) : null
+                return (
+                  <div key={item.id} className="admin-content-field">
+                    <label>
+                      {item.label}
+                      {limit && (
+                        <span style={{ opacity: 0.6, fontWeight: 400 }}> · {length}/{limit} caracteres</span>
+                      )}
+                    </label>
+                    {check && (
+                      <span className={`admin-field-check admin-field-check--${check.status}`}>
+                        {check.status === 'ok' ? '✓' : check.status === 'warn' ? '⚠' : '–'} {check.message}
+                      </span>
+                    )}
+                    {help && <p className="admin-field-help">{help}</p>}
+                    <textarea
+                      value={values[item.id]}
+                      onChange={e => setValue(item.id, e.target.value)}
+                      rows={values[item.id].length > 120 ? 4 : 2}
+                    />
+                  </div>
+                )
+              })}
             </div>
           ))}
         </div>
