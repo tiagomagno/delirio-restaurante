@@ -8,7 +8,18 @@ export default async function AdminBanner() {
     <div>
       <h1>Banner principal</h1>
       <p className="admin-lede">Imagens exibidas no carrossel do topo da home.</p>
-      <BannerManager slides={slides} />
+      <BannerManager
+        slides={slides.map(s => ({
+          id: s.id,
+          imageUrl: s.imageUrl,
+          alt: s.alt,
+          order: s.order,
+          active: s.active,
+          isSpecial: s.isSpecial,
+          buttonLabel: s.buttonLabel ?? '',
+          buttonUrl: s.buttonUrl ?? '',
+        }))}
+      />
     </div>
   )
 }
