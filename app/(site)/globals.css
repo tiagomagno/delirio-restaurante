@@ -11,6 +11,18 @@
 
 html { scroll-behavior: smooth; }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 body {
   font-family: var(--font);
   color: var(--text-dark);
@@ -100,8 +112,10 @@ body {
 .hero__slide {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   opacity: 0;
   transform: scale(1);
   transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -117,14 +131,9 @@ body {
   to { transform: scale(1.08); }
 }
 
-.hero__slide:nth-child(1) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_7.jpg'); }
-.hero__slide:nth-child(2) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_6.jpg'); }
-.hero__slide:nth-child(3) { background-image: url('/wp-content/uploads/2023/09/banner_delirio_4.jpg'); }
-.hero__slide:nth-child(4) { background-image: url('/wp-content/uploads/2023/05/Delirio_slide2.jpg'); }
-
 .hero__btn-wrap {
   position: absolute;
-  bottom: 25%;
+  bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -206,11 +215,13 @@ body {
   position: relative;
   overflow: hidden;
   max-width: 1344px;
-  margin: 0 auto;
+  margin: -24px auto 0;
+  padding-top: 24px;
 }
 
 .lojas__carousel {
   display: flex;
+  justify-content: center;
   gap: 20px;
 }
 
@@ -571,10 +582,9 @@ body {
 .sobre-parceiros {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 32px 48px;
-  margin-bottom: 48px;
+  gap: 24px 36px;
 }
 .sobre-parceiros img {
   height: 64px;
@@ -968,15 +978,15 @@ body {
   max-width: 1320px;
   margin: 0 auto;
   display: flex;
-  align-items: flex-start;
-  gap: 0;
+  align-items: center;
+  gap: 56px;
   padding: 0 80px;
 }
 
 .sobre-rancho-section__videos {
   display: flex;
   flex: 1;
-  gap: 16px;
+  gap: 20px;
 }
 
 .sobre-rancho-info {
@@ -1013,7 +1023,7 @@ body {
 
 .sobre-rancho-card__thumb {
   position: relative;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/3;
   overflow: hidden;
 }
 
@@ -1417,6 +1427,13 @@ body {
 
 /* ─── LOJAS ─────────────────────────────────── */
 .lojas-page { background: var(--white); }
+
+/* Espaço só pra o header fixo não sobrepor o conteúdo — sem título/subtítulo,
+   igual ao site antigo que o cliente já usava. */
+.lojas-page__spacer {
+  height: 90px;
+  background: var(--green);
+}
 
 /* Tabs de região */
 .lojas-tabs {
@@ -2308,11 +2325,11 @@ body {
 
 /* ─── RESPONSIVE ───────────────────────────── */
 @media (max-width: 1280px) {
-  .store-card { flex: 0 0 calc(25% - 15px); }
+  .store-card-reveal { flex: 0 0 calc(25% - 15px); min-width: 0; }
 }
 
 @media (max-width: 1024px) {
-  .store-card { flex: 0 0 calc(33.333% - 14px); }
+  .store-card-reveal { flex: 0 0 calc(33.333% - 14px); min-width: 0; }
   .nav__list { gap: 36px; }
 }
 
@@ -2333,7 +2350,17 @@ body {
   .hero { height: 70vh; }
   .lojas { padding: 50px 20px 40px; }
   .lojas__title { font-size: 2rem; }
-  .store-card { flex: 0 0 calc(80% - 10px); }
+  .store-card-reveal {
+    flex: 0 0 78%;
+    min-width: 0;
+  }
+  .store-card-reveal.reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .lojas__carousel:has(.store-card-reveal + .store-card-reveal) {
+    justify-content: flex-start;
+  }
   .escolha { padding: 50px 20px; }
   .escolha__title { font-size: 1.7rem; }
   .escolha__cards { flex-direction: column; max-width: 400px; }
