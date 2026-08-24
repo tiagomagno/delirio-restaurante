@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `Store` ADD COLUMN `imageAlt` VARCHAR(191) NOT NULL DEFAULT '';
+
+-- AlterTable
+ALTER TABLE `HeroSlide` ADD COLUMN `alt` VARCHAR(191) NOT NULL DEFAULT '';
