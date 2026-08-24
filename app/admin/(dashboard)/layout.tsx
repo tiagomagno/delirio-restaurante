@@ -33,10 +33,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
 
         <nav className="admin-sidebar__nav">
-          <div>
-            <div className="admin-sidebar__group-label">Geral</div>
-            <SidebarNav />
-          </div>
+          <SidebarNav />
         </nav>
 
         <div className="admin-sidebar__footer">

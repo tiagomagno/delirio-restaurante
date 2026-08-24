@@ -3,9 +3,9 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 
 const EDITABLE_FIELDS = [
-  'slug', 'name', 'address', 'bairroCity', 'region', 'image', 'photos',
+  'slug', 'name', 'address', 'bairroCity', 'region', 'image', 'imageAlt', 'photos',
   'mapsUrl', 'deliveryUrl', 'menuUrl', 'hours', 'phones', 'whatsapp',
-  'email', 'highlight', 'order', 'active',
+  'email', 'extraRecipients', 'highlight', 'order', 'active',
 ] as const
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
