@@ -2,7 +2,10 @@ import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 import { PUBLIC_PAGES, SITE_URL } from '@/lib/seo/pages'
 
-export const dynamic = 'force-dynamic'
+// Sitemap não precisa refletir uma edição do admin na hora — ficar até 1h
+// desatualizado é inofensivo aqui (diferente das páginas de conteúdo, onde
+// force-dynamic é necessário). Evita bater no banco a cada crawl do Google.
+export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const contents = await prisma.pageContent.findMany({
