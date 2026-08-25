@@ -133,7 +133,7 @@ body {
 
 .hero__btn-wrap {
   position: absolute;
-  bottom: 8%;
+  bottom: clamp(40px, 8vh, 72px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -2378,7 +2378,7 @@ body {
   }
   .nav.open { display: block; }
   .nav__list { flex-direction: column; gap: 20px; }
-  .hero { height: 70vh; }
+  .hero { height: 100vh; height: 100dvh; }
   .lojas-page__spacer { height: 90px; }
   .lojas-tabs { top: 90px; }
   .lojas { padding: 50px 20px 40px; }
