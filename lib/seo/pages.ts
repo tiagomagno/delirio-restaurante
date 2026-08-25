@@ -5,7 +5,15 @@ export interface PublicPage {
   fallbackTitle: string
 }
 
-export const SITE_URL = 'https://delirio.com.br'
+const PRODUCTION_SITE_URL = 'https://delirio.com.br'
+
+export const SITE_URL = (process.env.SITE_URL?.trim() || PRODUCTION_SITE_URL).replace(/\/$/, '')
+
+// Indexação só é liberada quando SITE_ENV=production é setado explicitamente no
+// ambiente (Coolify, etc). Sem essa variável, o robots.txt e o meta robots
+// bloqueiam tudo — evita que uma cópia de staging seja indexada por engano.
+export const IS_PRODUCTION = process.env.SITE_ENV === 'production'
+
 export const SITE_NAME = 'Delírio Tropical'
 export const DEFAULT_OG_IMAGE = '/wp-content/uploads/2023/09/banner_delirio_7.jpg'
 export const SITE_LOGO = '/wp-content/uploads/2023/05/logo-delirio.webp'

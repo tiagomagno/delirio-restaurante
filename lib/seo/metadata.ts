@@ -1,7 +1,12 @@
 import type { Metadata } from 'next'
-import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from './pages'
+import { DEFAULT_OG_IMAGE, IS_PRODUCTION, SITE_NAME, SITE_URL } from './pages'
 
 function parseRobots(value: string | undefined): Metadata['robots'] {
+  // Fora de produção (sem SITE_ENV=production), força noindex em toda página
+  // independente do que o admin configurou — o controle por página é sobre
+  // SEO de conteúdo, não sobre esconder um ambiente de staging do Google.
+  if (!IS_PRODUCTION) return { index: false, follow: false }
+
   const directive = (value ?? 'index,follow').trim().toLowerCase()
   return {
     index: !directive.includes('noindex'),
@@ -23,7 +28,10 @@ export function buildPageMetadata({ content, path, title, description }: BuildPa
   const ogImage = content['og.image']?.trim() || DEFAULT_OG_IMAGE
 
   return {
-    title,
+    // A Home já inclui a marca no próprio título ("Delírio Tropical — ...").
+    // Sem `absolute`, o template do layout raiz ("%s | Delírio Tropical")
+    // duplicaria a marca no <title> final.
+    title: path === '/' ? { absolute: title } : title,
     description,
     alternates: { canonical },
     robots: parseRobots(content['meta.robots']),
