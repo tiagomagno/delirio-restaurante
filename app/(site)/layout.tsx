@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       images: [
         {
-          url: '/wp-content/uploads/2023/09/banner_delirio_7.jpg',
+          url: '/wp-content/uploads/2023/09/banner_delirio_7.webp',
           width: 1200,
           height: 630,
           alt: title,

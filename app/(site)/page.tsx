@@ -62,7 +62,7 @@ export default async function Home() {
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/wp-content/uploads/2023/05/Pico-de-Gallo-1-1-scaled.jpg"
+                src="/wp-content/uploads/2023/05/Pico-de-Gallo-1-1-scaled.webp"
                 alt="Encomendas Delírio Tropical"
                 loading="lazy"
               />
@@ -91,7 +91,7 @@ export default async function Home() {
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/wp-content/uploads/2023/07/Quiche-de-tomate-com-manjericao-02-PEDRO.jpg"
+                src="/wp-content/uploads/2023/07/Quiche-de-tomate-com-manjericao-02-PEDRO.webp"
                 alt="Eventos Corporativos e Familiares"
                 loading="lazy"
               />

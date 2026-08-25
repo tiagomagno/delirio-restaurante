@@ -39,7 +39,7 @@ export default async function Encomendas() {
             <div className="enc-card__img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/wp-content/uploads/2023/05/Pico-de-Gallo-1-1-scaled.jpg"
+                src="/wp-content/uploads/2023/05/Pico-de-Gallo-1-1-scaled.webp"
                 alt="Encomendas Delírio Tropical"
               />
               <div className="enc-card__overlay">
@@ -66,7 +66,7 @@ export default async function Encomendas() {
             <div className="enc-card__img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/wp-content/uploads/2023/07/Quiche-de-tomate-com-manjericao-02-PEDRO.jpg"
+                src="/wp-content/uploads/2023/07/Quiche-de-tomate-com-manjericao-02-PEDRO.webp"
                 alt="Eventos Corporativos e Familiares"
               />
               <div className="enc-card__overlay">

@@ -15,7 +15,7 @@ export const SITE_URL = (process.env.SITE_URL?.trim() || PRODUCTION_SITE_URL).re
 export const IS_PRODUCTION = process.env.SITE_ENV === 'production'
 
 export const SITE_NAME = 'Delírio Tropical'
-export const DEFAULT_OG_IMAGE = '/wp-content/uploads/2023/09/banner_delirio_7.jpg'
+export const DEFAULT_OG_IMAGE = '/wp-content/uploads/2023/09/banner_delirio_7.webp'
 export const SITE_LOGO = '/wp-content/uploads/2023/05/logo-delirio.webp'
 
 export const PUBLIC_PAGES: PublicPage[] = [
