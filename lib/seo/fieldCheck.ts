@@ -8,7 +8,36 @@ export interface FieldCheckResult {
   message: string
 }
 
-const VALID_ROBOTS = ['index,follow', 'noindex,follow', 'index,nofollow', 'noindex,nofollow']
+export const VALID_ROBOTS = ['index,follow', 'noindex,follow', 'index,nofollow', 'noindex,nofollow']
+
+/**
+ * Validação estrutural pro salvamento (API), separada dos hints de
+ * `checkSeoField` porque ali "warn" também é usado pra avisos válidos (ex:
+ * noindex intencional) — aqui só barra valor de fato inválido.
+ */
+export function validateSeoValueForSave(key: string, rawValue: string): string | null {
+  const value = rawValue.trim()
+  if (!value) return null
+
+  if (key === 'meta.robots') {
+    if (!VALID_ROBOTS.includes(value.toLowerCase())) {
+      return 'Valor de robots não reconhecido — use index,follow / noindex,follow / index,nofollow / noindex,nofollow'
+    }
+    return null
+  }
+
+  if (key === 'meta.canonical') {
+    try {
+      const url = new URL(value)
+      if (url.protocol !== 'https:' && url.protocol !== 'http:') throw new Error('protocol')
+    } catch {
+      return 'URL canônica inválida — precisa ser uma URL completa começando com https://'
+    }
+    return null
+  }
+
+  return null
+}
 
 /**
  * Validação ao vivo de um campo de SEO, pro editor ver na hora se o que
