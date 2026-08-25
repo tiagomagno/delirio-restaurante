@@ -51,7 +51,7 @@ export default async function Home() {
       </section>
 
       {/* ── Escolha ── */}
-      <section className="escolha" aria-label="Nossas opções">
+      <section id="escolha" className="escolha" aria-label="Nossas opções">
         <h2 className="escolha__title">
           {content['escolha.title'] ?? 'Escolha a opção que melhor lhe atende'}
         </h2>

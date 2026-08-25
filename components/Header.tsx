@@ -36,7 +36,7 @@ export default function Header() {
         <nav className={`nav${menuOpen ? ' open' : ''}`} aria-label="Navegação principal">
           <ul className="nav__list">
             <li><Link href="/sobre-nos" className="nav__link">Sobre Nós</Link></li>
-            <li><a href="https://cardapioencomendas.delirio.com.br/" target="_blank" rel="noopener" className="nav__link">Encomendas</a></li>
+            <li><Link href="/#escolha" className="nav__link">Encomendas</Link></li>
             <li><Link href="/lojas" className="nav__link">Lojas</Link></li>
           </ul>
         </nav>

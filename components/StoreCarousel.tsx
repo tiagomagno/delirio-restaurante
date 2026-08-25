@@ -76,11 +76,8 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
               />
               <div className="store-card__body">
                 <p className="store-card__name">{store.name}</p>
-                <p className="store-card__address">
-                  {store.address.map((line, i) => (
-                    <span key={i}>{line}<br /></span>
-                  ))}
-                  {store.bairroCity}
+                <p className="store-card__address" title={[...store.address, store.bairroCity].join(', ')}>
+                  {[...store.address, store.bairroCity].join(', ')}
                 </p>
                 <div className="store-card__actions">
                   <a
