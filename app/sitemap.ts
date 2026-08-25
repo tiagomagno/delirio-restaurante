@@ -2,10 +2,11 @@ import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 import { PUBLIC_PAGES, SITE_URL } from '@/lib/seo/pages'
 
-// Sitemap não precisa refletir uma edição do admin na hora — ficar até 1h
-// desatualizado é inofensivo aqui (diferente das páginas de conteúdo, onde
-// force-dynamic é necessário). Evita bater no banco a cada crawl do Google.
-export const revalidate = 3600
+// force-dynamic é obrigatório aqui (não só revalidate): sem ele o Next tenta
+// pre-renderizar este route em build time, e o banco não é alcançável na
+// etapa de build do Docker (só em runtime) — isso já quebrou o build antes,
+// ver commit b6f967f.
+export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const contents = await prisma.pageContent.findMany({
