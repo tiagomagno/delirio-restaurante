@@ -50,7 +50,7 @@ export default async function SobreNos() {
           <div className="sobre-sust__media">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${BASE}/05/back-video-sustentabilidade.jpg`}
+              src={`${BASE}/05/back-video-sustentabilidade.webp`}
               alt="Vídeo sustentabilidade Delírio Tropical"
               loading="lazy"
             />
@@ -70,13 +70,13 @@ export default async function SobreNos() {
             </p>
             <div className="sobre-parceiros">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${BASE}/07/logo-rancho-francisco.jpg`} alt="Rancho São Francisco" loading="lazy" />
+              <img src={`${BASE}/07/logo-rancho-francisco.webp`} alt="Rancho São Francisco" loading="lazy" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${BASE}/07/logo-eureciclo.jpg`} alt="Eureciclo" loading="lazy" />
+              <img src={`${BASE}/07/logo-eureciclo.webp`} alt="Eureciclo" loading="lazy" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${BASE}/07/logo-eva-energia.jpg`} alt="EVA Energia" loading="lazy" />
+              <img src={`${BASE}/07/logo-eva-energia.webp`} alt="EVA Energia" loading="lazy" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${BASE}/07/logo-teiares.jpg`} alt="Teiares" loading="lazy" />
+              <img src={`${BASE}/07/logo-teiares.webp`} alt="Teiares" loading="lazy" />
             </div>
             <a
               href="https://www.instagram.com/deliriotropical"
@@ -100,7 +100,7 @@ export default async function SobreNos() {
             <div className="sobre-rancho-card">
               <div className="sobre-rancho-card__thumb">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${BASE}/05/video1.jpg`} alt="Plantação no rancho" loading="lazy" />
+                <img src={`${BASE}/05/video1.webp`} alt="Plantação no rancho" loading="lazy" />
                 <div className="sobre-play-btn" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M8 5v14l11-7z" /></svg>
                 </div>
@@ -113,7 +113,7 @@ export default async function SobreNos() {
             <div className="sobre-rancho-card">
               <div className="sobre-rancho-card__thumb">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${BASE}/05/video2.jpg`} alt="Compostagem no rancho" loading="lazy" />
+                <img src={`${BASE}/05/video2.webp`} alt="Compostagem no rancho" loading="lazy" />
                 <div className="sobre-play-btn" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M8 5v14l11-7z" /></svg>
                 </div>
@@ -126,7 +126,7 @@ export default async function SobreNos() {
             <div className="sobre-rancho-card">
               <div className="sobre-rancho-card__thumb">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${BASE}/05/video3.jpg`} alt="Alimentos do rancho" loading="lazy" />
+                <img src={`${BASE}/05/video3.webp`} alt="Alimentos do rancho" loading="lazy" />
                 <div className="sobre-play-btn" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M8 5v14l11-7z" /></svg>
                 </div>
@@ -154,7 +154,7 @@ export default async function SobreNos() {
         <div className="sobre-livro__inner">
           <div className="sobre-livro__img">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${BASE}/05/Livro-Balcao-02-CROP-1024x830.jpg`} alt="Livro Delírio Tropical 40 anos" loading="lazy" />
+            <img src={`${BASE}/05/Livro-Balcao-02-CROP-1024x830.webp`} alt="Livro Delírio Tropical 40 anos" loading="lazy" />
           </div>
           <div className="sobre-livro__text">
             <h2 className="sobre-historia__title">

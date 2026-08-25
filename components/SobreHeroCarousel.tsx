@@ -7,9 +7,9 @@ const BASE = '/wp-content/uploads/2023/05'
 // Sem campo de CMS pra imagem de fundo de cada slide — só título e texto vêm
 // do Admin (via PageContent), a imagem continua fixa por posição do slide.
 const IMAGES = [
-  `${BASE}/delirio-back-nossahistoria.jpg`,
-  `${BASE}/delirio-back-valores.jpg`,
-  `${BASE}/delirio-back-estilovida.jpg`,
+  `${BASE}/delirio-back-nossahistoria.webp`,
+  `${BASE}/delirio-back-valores.webp`,
+  `${BASE}/delirio-back-estilovida.webp`,
 ]
 
 export interface SobreHeroSlideData {

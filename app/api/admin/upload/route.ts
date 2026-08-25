@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
+import sharp from 'sharp'
 import { getSession } from '@/lib/session'
 
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
 const MAX_SIZE = 8 * 1024 * 1024 // 8MB
 const ALLOWED_FOLDERS = new Set(['hero', 'lojas'])
+const WEBP_QUALITY = 70
 
 export async function POST(request: NextRequest) {
   const session = await getSession()
@@ -29,13 +31,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Arquivo maior que 8MB' }, { status: 400 })
   }
 
-  const ext = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif' }[file.type]
-  const fileName = `${randomUUID()}${ext}`
   const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder)
   await mkdir(uploadDir, { recursive: true })
 
-  const buffer = Buffer.from(await file.arrayBuffer())
-  await writeFile(path.join(uploadDir, fileName), buffer)
+  const originalBuffer = Buffer.from(await file.arrayBuffer())
+
+  // GIFs animados perderiam a animação na conversão (sharp mantém só o 1º frame), então são salvos como estão.
+  if (file.type === 'image/gif') {
+    const fileName = `${randomUUID()}.gif`
+    await writeFile(path.join(uploadDir, fileName), originalBuffer)
+    return NextResponse.json({ url: `/uploads/${folder}/${fileName}` })
+  }
+
+  const webpBuffer = await sharp(originalBuffer).webp({ quality: WEBP_QUALITY }).toBuffer()
+  const fileName = `${randomUUID()}.webp`
+  await writeFile(path.join(uploadDir, fileName), webpBuffer)
 
   return NextResponse.json({ url: `/uploads/${folder}/${fileName}` })
 }
