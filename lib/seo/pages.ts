@@ -17,6 +17,7 @@ export const IS_PRODUCTION = process.env.SITE_ENV === 'production'
 export const SITE_NAME = 'Delírio Tropical'
 export const DEFAULT_OG_IMAGE = '/wp-content/uploads/2023/09/banner_delirio_7.webp'
 export const SITE_LOGO = '/wp-content/uploads/2023/05/logo-delirio.webp'
+export const SITE_FAVICON = '/wp-content/uploads/2024/08/cropped-icon-delirio-tropical-1-192x192.jpg'
 
 export const PUBLIC_PAGES: PublicPage[] = [
   { slug: 'home', path: '/', label: 'Home', fallbackTitle: 'Delírio Tropical — Restaurante Saudável desde 1983' },

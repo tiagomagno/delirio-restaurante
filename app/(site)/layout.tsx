@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import StructuredData from '@/components/StructuredData'
 import { getPageContent } from '@/lib/data/content'
 import { buildOrganizationSchema, buildWebsiteSchema } from '@/lib/seo/structuredData'
-import { SITE_LOGO } from '@/lib/seo/pages'
+import { SITE_FAVICON } from '@/lib/seo/pages'
 
 export async function generateMetadata(): Promise<Metadata> {
   const c = await getPageContent('global')
@@ -38,7 +38,9 @@ export async function generateMetadata(): Promise<Metadata> {
       site: '@deliriotropical',
     },
     icons: {
-      icon: SITE_LOGO,
+      icon: SITE_FAVICON,
+      shortcut: SITE_FAVICON,
+      apple: '/wp-content/uploads/2024/08/cropped-icon-delirio-tropical-1-180x180.jpg',
     },
   }
 }
@@ -53,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,400;0,700;1,400&display=swap"
           rel="stylesheet"
         />
+        <link rel="stylesheet" href="https://use.typekit.net/wef2css.css" />
       </head>
       <body>
         <StructuredData data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
