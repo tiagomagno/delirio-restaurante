@@ -22,6 +22,7 @@ model Store {
   bairroCity  String
   region      String
   image       String   @db.Text
+  imageAlt    String   @default("")
   photos      Json?
   mapsUrl     String   @db.Text
   deliveryUrl String?  @db.Text
@@ -30,6 +31,7 @@ model Store {
   phones      Json
   whatsapp    String?
   email       String
+  extraRecipients Json?
   highlight   Boolean  @default(false)
   order       Int      @default(0)
   active      Boolean  @default(true)
@@ -38,11 +40,15 @@ model Store {
 }
 
 model HeroSlide {
-  id        String   @id @default(cuid())
-  imageUrl  String
-  order     Int      @default(0)
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  imageUrl   String
+  alt        String   @default("")
+  order      Int      @default(0)
+  active     Boolean  @default(true)
+  isSpecial  Boolean  @default(false)
+  buttonLabel String? @db.Text
+  buttonUrl  String?  @db.Text
+  createdAt  DateTime @default(now())
 }
 
 model PageContent {
@@ -79,4 +85,18 @@ model ContactMessage {
   celular   String
   mensagem  String   @db.Text
   createdAt DateTime @default(now())
+}
+
+model JobApplication {
+  id           String   @id @default(cuid())
+  lojaEmail    String
+  lojaNome     String
+  nome         String
+  email        String
+  telefone     String
+  vaga         String
+  mensagem     String?  @db.Text
+  curriculoUrl String   @db.Text
+  curriculoNome String
+  createdAt    DateTime @default(now())
 }

@@ -43,7 +43,7 @@ export default function Header() {
 
         <div className="header__whatsapp">
           <a
-            href="https://wa.me/552140427171"
+            href="https://atendimento.delirio.app.br/"
             target="_blank"
             rel="noopener"
             aria-label="WhatsApp Delírio Tropical"

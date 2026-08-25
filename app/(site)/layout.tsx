@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import StructuredData from '@/components/StructuredData'
 import { getPageContent } from '@/lib/data/content'
+import { buildOrganizationSchema, buildWebsiteSchema } from '@/lib/seo/structuredData'
+import { SITE_LOGO } from '@/lib/seo/pages'
 
 export async function generateMetadata(): Promise<Metadata> {
   const c = await getPageContent('global')
@@ -35,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       site: '@deliriotropical',
     },
     icons: {
-      icon: '/wp-content/uploads/2023/05/logo-delirio.webp',
+      icon: SITE_LOGO,
     },
   }
 }
@@ -52,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <StructuredData data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
         <Header />
         {children}
         <Footer />

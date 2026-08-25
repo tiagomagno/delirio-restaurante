@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getStoreWithRecipients } from '@/lib/email/notify'
+import { sendEmail } from '@/lib/email/send'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { lojaEmail, lojaNome, nome, email, celular, mensagem } = body
+  const { storeId, nome, email, celular, mensagem } = body
 
-  if (typeof lojaEmail !== 'string' || !lojaEmail || typeof lojaNome !== 'string' || !lojaNome) {
+  if (typeof storeId !== 'string' || !storeId) {
     return NextResponse.json({ error: 'Selecione uma loja' }, { status: 400 })
   }
   if (typeof nome !== 'string' || !nome.trim()) {
@@ -18,15 +20,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Mensagem é obrigatória' }, { status: 400 })
   }
 
+  const found = await getStoreWithRecipients(storeId)
+  if (!found) {
+    return NextResponse.json({ error: 'Loja inválida' }, { status: 400 })
+  }
+  const { store, recipients } = found
+
   await prisma.contactMessage.create({
     data: {
-      lojaEmail,
-      lojaNome,
+      lojaEmail: store.email,
+      lojaNome: store.name,
       nome: nome.trim(),
       email: email.trim(),
       celular: celular || '',
       mensagem: mensagem.trim(),
     },
+  })
+
+  await sendEmail({
+    to: recipients,
+    subject: `Fale Conosco — ${store.name}`,
+    text: [
+      `Nova mensagem recebida pelo Fale Conosco para a loja ${store.name}.`,
+      '',
+      `Nome: ${nome.trim()}`,
+      `E-mail: ${email.trim()}`,
+      celular ? `Celular: ${celular}` : null,
+      '',
+      'Mensagem:',
+      mensagem.trim(),
+    ].filter(Boolean).join('\n'),
   })
 
   return NextResponse.json({ ok: true }, { status: 201 })

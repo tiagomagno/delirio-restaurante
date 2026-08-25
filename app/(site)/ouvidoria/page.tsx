@@ -1,16 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPageContent('ouvidoria')
-  return {
-    title: content['meta.title'] ?? 'Ouvidoria',
-    description: content['meta.description'] ??
-      'Canal anônimo de ouvidoria do Delírio Tropical. Compartilhe sua opinião de forma confidencial. Sua voz é importante para a melhoria contínua dos nossos serviços.',
-  }
+  const title = content['meta.title'] ?? 'Ouvidoria'
+  const description = content['meta.description'] ??
+    'Canal anônimo de ouvidoria do Delírio Tropical. Compartilhe sua opinião de forma confidencial. Sua voz é importante para a melhoria contínua dos nossos serviços.'
+  return buildPageMetadata({ content, path: '/ouvidoria', title, description })
 }
 
 export default async function Ouvidoria() {

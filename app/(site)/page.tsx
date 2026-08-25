@@ -6,6 +6,7 @@ import Reveal from '@/components/Reveal'
 import Link from 'next/link'
 import { getStores } from '@/lib/data/stores'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
@@ -15,11 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = content['meta.title'] ?? 'Delírio Tropical — Restaurante Saudável desde 1983'
   const description = content['meta.description'] ??
     'Culinária natural, fresca e saborosa no Rio de Janeiro e Niterói. Encomendas online, delivery e eventos corporativos personalizados.'
-  return {
-    title,
-    description,
-    openGraph: { title, description, url: 'https://delirio.com.br' },
-  }
+  return buildPageMetadata({ content, path: '/', title, description })
 }
 
 export default async function Home() {
@@ -35,7 +32,13 @@ export default async function Home() {
     <main>
       {/* ── Hero ── */}
       <HeroSlider
-        slides={slides.map(s => s.imageUrl)}
+        slides={slides.map(s => ({
+          src: s.imageUrl,
+          alt: s.alt || content['meta.title'] || 'Delírio Tropical',
+          isSpecial: s.isSpecial,
+          buttonLabel: s.buttonLabel ?? '',
+          buttonUrl: s.buttonUrl ?? '',
+        }))}
         ctaLabel={content['hero.cta'] ?? 'veja o cardápio do dia'}
         modalStores={modalStores}
       />

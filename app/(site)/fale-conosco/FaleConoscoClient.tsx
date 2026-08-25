@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 interface Props {
-  stores: { name: string; email: string }[]
+  stores: { id: string; name: string }[]
 }
 
 export default function FaleConoscoClient({ stores }: Props) {
@@ -15,9 +15,8 @@ export default function FaleConoscoClient({ stores }: Props) {
     setError('')
     const form = e.currentTarget
     const data = new FormData(form)
-    const lojaEmail = String(data.get('loja') || '')
-    const loja = stores.find(s => s.email === lojaEmail)
-    if (!loja) {
+    const storeId = String(data.get('loja') || '')
+    if (!storeId) {
       setError('Selecione uma loja')
       return
     }
@@ -28,8 +27,7 @@ export default function FaleConoscoClient({ stores }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          lojaEmail: loja.email,
-          lojaNome: loja.name,
+          storeId,
           nome: data.get('nome'),
           email: data.get('email'),
           celular: data.get('celular'),
@@ -63,7 +61,7 @@ export default function FaleConoscoClient({ stores }: Props) {
         <select name="loja" required>
           <option value="">Selecione uma loja</option>
           {stores.map(l => (
-            <option key={l.email} value={l.email}>{l.name}</option>
+            <option key={l.id} value={l.id}>{l.name}</option>
           ))}
         </select>
       </label>

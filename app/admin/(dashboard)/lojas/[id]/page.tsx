@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import StoreForm from '@/components/admin/StoreForm'
+import { normalizePhotos } from '@/lib/data/stores'
 
 export default async function EditarLoja({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -19,7 +20,8 @@ export default async function EditarLoja({ params }: { params: Promise<{ id: str
           bairroCity: store.bairroCity,
           region: store.region,
           image: store.image,
-          photos: (store.photos as string[] | null) ?? [],
+          imageAlt: store.imageAlt,
+          photos: normalizePhotos(store.photos),
           mapsUrl: store.mapsUrl,
           deliveryUrl: store.deliveryUrl ?? '',
           menuUrl: store.menuUrl ?? '',
@@ -27,6 +29,7 @@ export default async function EditarLoja({ params }: { params: Promise<{ id: str
           phones: (store.phones as string[]) ?? [''],
           whatsapp: store.whatsapp ?? '',
           email: store.email,
+          extraRecipients: (store.extraRecipients as string[]) ?? [],
           highlight: store.highlight,
           active: store.active,
         }}

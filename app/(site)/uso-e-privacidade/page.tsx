@@ -1,15 +1,15 @@
 import type { Metadata } from 'next'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPageContent('uso-e-privacidade')
-  return {
-    title: content['meta.title'] ?? 'Uso e Privacidade',
-    description: content['meta.description'] ??
-      'Política de privacidade e termos de uso do Delírio Tropical. Saiba como coletamos, usamos e protegemos suas informações pessoais.',
-  }
+  const title = content['meta.title'] ?? 'Uso e Privacidade'
+  const description = content['meta.description'] ??
+    'Política de privacidade e termos de uso do Delírio Tropical. Saiba como coletamos, usamos e protegemos suas informações pessoais.'
+  return buildPageMetadata({ content, path: '/uso-e-privacidade', title, description })
 }
 
 export default async function UsoEPrivacidade() {

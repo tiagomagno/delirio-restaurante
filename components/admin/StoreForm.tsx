@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { IconTrash } from './icons'
+import type { StorePhoto } from '@/lib/data/stores'
 
 export interface StoreFormData {
   id?: string
@@ -12,7 +13,8 @@ export interface StoreFormData {
   bairroCity: string
   region: string
   image: string
-  photos: string[]
+  imageAlt: string
+  photos: StorePhoto[]
   mapsUrl: string
   deliveryUrl: string
   menuUrl: string
@@ -20,13 +22,15 @@ export interface StoreFormData {
   phones: string[]
   whatsapp: string
   email: string
+  extraRecipients: string[]
   highlight: boolean
   active: boolean
 }
 
 const EMPTY: StoreFormData = {
-  slug: '', name: '', address: [''], bairroCity: '', region: 'rio', image: '', photos: [],
+  slug: '', name: '', address: [''], bairroCity: '', region: 'rio', image: '', imageAlt: '', photos: [],
   mapsUrl: '', deliveryUrl: '', menuUrl: '', hours: [''], phones: [''], whatsapp: '', email: '',
+  extraRecipients: [],
   highlight: false, active: true,
 }
 
@@ -56,6 +60,10 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     set(key, text.split('\n'))
   }
 
+  function setExtraRecipients(text: string) {
+    set('extraRecipients', text.split('\n'))
+  }
+
   async function handleImageUpload() {
     const file = imageRef.current?.files?.[0]
     if (!file) return
@@ -74,15 +82,19 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     setError('')
     try {
       const urls = await Promise.all(Array.from(files).map(f => uploadImage(f, 'lojas')))
-      set('photos', [...data.photos, ...urls])
+      set('photos', [...data.photos, ...urls.map(url => ({ url, alt: '' }))])
       if (photosRef.current) photosRef.current.value = ''
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro no upload')
     }
   }
 
+  function setPhotoAlt(url: string, alt: string) {
+    set('photos', data.photos.map(p => (p.url === url ? { ...p, alt } : p)))
+  }
+
   function removePhoto(url: string) {
-    set('photos', data.photos.filter(p => p !== url))
+    set('photos', data.photos.filter(p => p.url !== url))
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -94,6 +106,7 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
       address: data.address.map(l => l.trim()).filter(Boolean),
       hours: data.hours.map(l => l.trim()).filter(Boolean),
       phones: data.phones.map(l => l.trim()).filter(Boolean),
+      extraRecipients: data.extraRecipients.map(l => l.trim()).filter(Boolean),
     }
     try {
       const url = data.id ? `/api/admin/stores/${data.id}` : '/api/admin/stores'
@@ -123,115 +136,171 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
 
   return (
     <div className="admin-panel">
-    <form className="admin-form" onSubmit={handleSubmit} style={{ maxWidth: 'none' }}>
-      <label>
-        Nome
-        <input type="text" value={data.name} onChange={e => set('name', e.target.value)} required />
-      </label>
+    <form className="admin-form" onSubmit={handleSubmit} style={{ maxWidth: 'none', gap: 0 }}>
 
-      <label>
-        Slug (identificador único, sem espaços)
-        <input type="text" value={data.slug} onChange={e => set('slug', e.target.value)} required />
-      </label>
+      <div className="admin-form-section">
+        <div className="admin-form-section__title">Dados gerais</div>
+        <div className="admin-form-grid">
+          <label className="col-6">
+            Nome
+            <input type="text" value={data.name} onChange={e => set('name', e.target.value)} required />
+          </label>
 
-      <label>
-        Região
-        <select value={data.region} onChange={e => set('region', e.target.value)}>
-          <option value="rio">Rio de Janeiro</option>
-          <option value="niteroi">Niterói</option>
-        </select>
-      </label>
+          <label className="col-6">
+            Slug (identificador único, sem espaços)
+            <input type="text" value={data.slug} onChange={e => set('slug', e.target.value)} required />
+          </label>
 
-      <label>
-        Endereço (uma linha por item)
-        <textarea value={data.address.join('\n')} onChange={e => setLines('address', e.target.value)} rows={2} />
-      </label>
+          <label className="col-4">
+            Região
+            <select value={data.region} onChange={e => set('region', e.target.value)}>
+              <option value="rio">Rio de Janeiro</option>
+              <option value="niteroi">Niterói</option>
+            </select>
+          </label>
 
-      <label>
-        Bairro/Cidade (ex: "Centro, Rio de Janeiro | RJ")
-        <input type="text" value={data.bairroCity} onChange={e => set('bairroCity', e.target.value)} required />
-      </label>
+          <label className="col-8">
+            Bairro/Cidade (ex: "Centro, Rio de Janeiro | RJ")
+            <input type="text" value={data.bairroCity} onChange={e => set('bairroCity', e.target.value)} required />
+          </label>
 
-      <label>
-        Horário de funcionamento (uma linha por item)
-        <textarea value={data.hours.join('\n')} onChange={e => setLines('hours', e.target.value)} rows={2} />
-      </label>
+          <label className="col-12">
+            Endereço (uma linha por item)
+            <textarea value={data.address.join('\n')} onChange={e => setLines('address', e.target.value)} rows={2} />
+          </label>
 
-      <label>
-        Telefone(s) fixo (uma linha por item)
-        <textarea value={data.phones.join('\n')} onChange={e => setLines('phones', e.target.value)} rows={2} />
-      </label>
+          <label className="col-6">
+            Horário de funcionamento (uma linha por item)
+            <textarea value={data.hours.join('\n')} onChange={e => setLines('hours', e.target.value)} rows={2} />
+          </label>
 
-      <label>
-        WhatsApp (apenas dígitos, com DDI+DDD, ex: 5521999999999)
-        <input type="text" value={data.whatsapp} onChange={e => set('whatsapp', e.target.value)} />
-      </label>
+          <label className="col-6">
+            Telefone(s) fixo (uma linha por item)
+            <textarea value={data.phones.join('\n')} onChange={e => setLines('phones', e.target.value)} rows={2} />
+          </label>
 
-      <label>
-        E-mail
-        <input type="email" value={data.email} onChange={e => set('email', e.target.value)} required />
-      </label>
+          <label className="col-6">
+            WhatsApp (apenas dígitos, com DDI+DDD, ex: 5521999999999)
+            <input type="text" value={data.whatsapp} onChange={e => set('whatsapp', e.target.value)} />
+          </label>
 
-      <label>
-        Link do Google Maps
-        <input type="text" value={data.mapsUrl} onChange={e => set('mapsUrl', e.target.value)} required />
-      </label>
+          <label className="col-6">
+            Link do Google Maps
+            <input type="text" value={data.mapsUrl} onChange={e => set('mapsUrl', e.target.value)} required />
+          </label>
 
-      <label>
-        Link de delivery (iFood etc.)
-        <input type="text" value={data.deliveryUrl} onChange={e => set('deliveryUrl', e.target.value)} />
-      </label>
+          <label className="col-6">
+            Link de delivery (iFood etc.)
+            <input type="text" value={data.deliveryUrl} onChange={e => set('deliveryUrl', e.target.value)} />
+          </label>
 
-      <label>
-        Link do cardápio digital
-        <input type="text" value={data.menuUrl} onChange={e => set('menuUrl', e.target.value)} />
-      </label>
-
-      <label>
-        Foto principal (carrossel da home)
-        <input ref={imageRef} type="file" accept="image/*" onChange={handleImageUpload} />
-      </label>
-      {data.image && <img className="admin-thumb" src={data.image} alt="" style={{ width: 160, height: 100 }} />}
-
-      <label>
-        Galeria de fotos (página de lojas)
-        <input ref={photosRef} type="file" accept="image/*" multiple onChange={handlePhotosUpload} />
-      </label>
-      {data.photos.length > 0 && (
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {data.photos.map(url => (
-            <div key={url} style={{ position: 'relative' }}>
-              <img className="admin-thumb" src={url} alt="" />
-              <button type="button" className="admin-icon-btn" onClick={() => removePhoto(url)} style={{ marginTop: 4 }}>
-                Remover
-              </button>
-            </div>
-          ))}
+          <label className="col-6">
+            Link do cardápio digital
+            <input type="text" value={data.menuUrl} onChange={e => set('menuUrl', e.target.value)} />
+          </label>
         </div>
-      )}
+      </div>
 
-      <label style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        <input type="checkbox" checked={data.highlight} onChange={e => set('highlight', e.target.checked)} />
-        Destacar no modal "veja o cardápio do dia"
-      </label>
+      <div className="admin-form-section">
+        <div className="admin-form-section__title">Formulário de contato</div>
+        <p className="admin-form-section__desc">
+          Define para qual e-mail vão os avisos de Fale Conosco, Eventos Corporativos e Trabalhe Conosco quando esta loja é selecionada.
+        </p>
+        <div className="admin-form-grid">
+          <label className="col-6">
+            E-mail
+            <input type="email" value={data.email} onChange={e => set('email', e.target.value)} required />
+          </label>
 
-      <label style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        <input type="checkbox" checked={data.active} onChange={e => set('active', e.target.checked)} />
-        Loja ativa (visível no site)
-      </label>
+          <label className="col-12">
+            Destinatários extras (uma linha por e-mail)
+            <textarea
+              value={data.extraRecipients.join('\n')}
+              onChange={e => setExtraRecipients(e.target.value)}
+              rows={2}
+              placeholder="fulano@delirio.com.br"
+            />
+            <span className="trabalhe-form__file-hint">
+              Além do e-mail principal, essas pessoas também recebem os avisos.
+            </span>
+          </label>
+        </div>
+      </div>
 
-      {error && <p className="admin-error">{error}</p>}
+      <div className="admin-form-section">
+        <div className="admin-form-section__title">Galeria de fotos</div>
+        <div className="admin-form-grid">
+          <div className="col-6" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <label>
+              Foto principal (carrossel da home)
+              <input ref={imageRef} type="file" accept="image/*" onChange={handleImageUpload} />
+            </label>
+            {data.image && <img className="admin-thumb" src={data.image} alt="" style={{ width: 160, height: 100 }} />}
+          </div>
 
-      <div style={{ display: 'flex', gap: 10 }}>
-        <button className="admin-btn" type="submit" disabled={saving}>
-          {saving ? 'Salvando...' : 'Salvar loja'}
-        </button>
-        {data.id && (
-          <button className="admin-btn admin-btn--danger" type="button" onClick={handleDelete}>
-            <IconTrash size={15} />
-            Excluir loja
+          <label className="col-6">
+            Texto alternativo da foto principal (acessibilidade e SEO de imagem)
+            <input
+              type="text"
+              value={data.imageAlt}
+              onChange={e => set('imageAlt', e.target.value)}
+              placeholder={`Loja ${data.name || ''}`}
+            />
+          </label>
+
+          <label className="col-12">
+            Galeria de fotos (página de lojas)
+            <input ref={photosRef} type="file" accept="image/*" multiple onChange={handlePhotosUpload} />
+          </label>
+
+          {data.photos.length > 0 && (
+            <div className="col-12" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              {data.photos.map(photo => (
+                <div key={photo.url} style={{ display: 'flex', flexDirection: 'column', gap: 4, width: 160 }}>
+                  <img className="admin-thumb" src={photo.url} alt="" />
+                  <input
+                    type="text"
+                    value={photo.alt}
+                    onChange={e => setPhotoAlt(photo.url, e.target.value)}
+                    placeholder="Texto alternativo da foto"
+                  />
+                  <button type="button" className="admin-icon-btn" onClick={() => removePhoto(photo.url)}>
+                    Remover
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="admin-form-section">
+        <div className="admin-form-section__title">Visibilidade</div>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <label style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <input type="checkbox" checked={data.highlight} onChange={e => set('highlight', e.target.checked)} />
+            Destacar no modal "veja o cardápio do dia"
+          </label>
+
+          <label style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <input type="checkbox" checked={data.active} onChange={e => set('active', e.target.checked)} />
+            Loja ativa (visível no site)
+          </label>
+        </div>
+
+        {error && <p className="admin-error">{error}</p>}
+
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button className="admin-btn" type="submit" disabled={saving}>
+            {saving ? 'Salvando...' : 'Salvar loja'}
           </button>
-        )}
+          {data.id && (
+            <button className="admin-btn admin-btn--danger" type="button" onClick={handleDelete}>
+              <IconTrash size={15} />
+              Excluir loja
+            </button>
+          )}
+        </div>
       </div>
     </form>
     </div>

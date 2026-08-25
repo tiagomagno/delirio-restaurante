@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Multiline from '@/components/Multiline'
 
 interface Props {
-  stores: { name: string; email: string }[]
+  stores: { id: string; name: string }[]
   title: string
   description: string
 }
@@ -25,9 +25,8 @@ export default function EventosClient({ stores, title, description }: Props) {
     setError('')
     const form = e.currentTarget
     const data = new FormData(form)
-    const lojaEmail = String(data.get('loja-pedido') || '')
-    const loja = stores.find(s => s.email === lojaEmail)
-    if (!loja) {
+    const storeId = String(data.get('loja-pedido') || '')
+    if (!storeId) {
       setError('Selecione uma loja')
       return
     }
@@ -38,8 +37,7 @@ export default function EventosClient({ stores, title, description }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          lojaEmail: loja.email,
-          lojaNome: loja.name,
+          storeId,
           nome: data.get('nome-pedido'),
           pessoas: data.get('qtd-pessoas'),
           data: data.get('data-pedido') || null,
@@ -83,7 +81,7 @@ export default function EventosClient({ stores, title, description }: Props) {
             <select name="loja-pedido" required>
               <option value="">Selecione uma loja</option>
               {stores.map(l => (
-                <option key={l.email} value={l.email}>{l.name}</option>
+                <option key={l.id} value={l.id}>{l.name}</option>
               ))}
             </select>
           </label>

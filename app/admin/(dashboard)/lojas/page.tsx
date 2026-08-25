@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { IconPlus, IconEdit } from '@/components/admin/icons'
+import StoreActiveSwitch from '@/components/admin/StoreActiveSwitch'
 
 export default async function AdminLojas() {
   const stores = await prisma.store.findMany({ orderBy: { order: 'asc' } })
@@ -43,9 +44,7 @@ export default async function AdminLojas() {
                 <td>{store.name}</td>
                 <td>{store.region === 'rio' ? 'Rio de Janeiro' : 'Niterói'}</td>
                 <td>
-                  <span className={`admin-badge admin-badge--${store.active ? 'green' : 'gray'}`}>
-                    {store.active ? 'Ativa' : 'Inativa'}
-                  </span>
+                  <StoreActiveSwitch id={store.id} active={store.active} />
                 </td>
                 <td>
                   <Link className="admin-icon-btn" href={`/admin/lojas/${store.id}`}>

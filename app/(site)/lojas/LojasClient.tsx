@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { StoreData } from '@/lib/data/stores'
+import type { StoreData, StorePhoto } from '@/lib/data/stores'
 
 /* ─── Ícones ─── */
 function IconPin() {
@@ -48,7 +48,7 @@ function IconEmail() {
 }
 
 /* ─── Carrossel de fotos ─── */
-function FotoCarousel({ fotos, nome }: { fotos: string[]; nome: string }) {
+function FotoCarousel({ fotos, nome }: { fotos: StorePhoto[]; nome: string }) {
   const [idx, setIdx] = useState(0)
   const total = fotos.length
   const prev = () => setIdx(i => (i - 1 + total) % total)
@@ -61,9 +61,9 @@ function FotoCarousel({ fotos, nome }: { fotos: string[]; nome: string }) {
       <div className="loja-carousel__frame">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          key={fotos[idx]}
-          src={fotos[idx]}
-          alt={`${nome} — foto ${idx + 1} de ${total}`}
+          key={fotos[idx].url}
+          src={fotos[idx].url}
+          alt={fotos[idx].alt || `${nome} — foto ${idx + 1} de ${total}`}
           loading="lazy"
         />
         {total > 1 && (

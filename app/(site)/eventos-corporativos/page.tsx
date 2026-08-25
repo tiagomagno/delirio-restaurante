@@ -2,16 +2,16 @@ import type { Metadata } from 'next'
 import EventosClient from './EventosClient'
 import { getStores } from '@/lib/data/stores'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPageContent('eventos-corporativos')
-  return {
-    title: content['meta.title'] ?? 'Eventos Corporativos',
-    description: content['meta.description'] ??
-      'Planeje seu evento corporativo ou familiar com o Delírio Tropical. Cardápio personalizado, atendimento exclusivo e sugestões feitas pelo gerente da loja escolhida.',
-  }
+  const title = content['meta.title'] ?? 'Eventos Corporativos'
+  const description = content['meta.description'] ??
+    'Planeje seu evento corporativo ou familiar com o Delírio Tropical. Cardápio personalizado, atendimento exclusivo e sugestões feitas pelo gerente da loja escolhida.'
+  return buildPageMetadata({ content, path: '/eventos-corporativos', title, description })
 }
 
 export default async function EventosCorporativos() {
@@ -27,7 +27,7 @@ export default async function EventosCorporativos() {
       </div>
 
       <EventosClient
-        stores={stores.map(s => ({ name: s.name, email: s.email }))}
+        stores={stores.map(s => ({ id: s.id, name: s.name }))}
         title={content['form.title'] ?? 'Faça o seu evento com o Delírio!'}
         description={content['form.description'] ??
           'Preparamos um cardápio personalizado para o evento da sua empresa.\nO gerente da loja escolhida vai entrar em contato com um cardápio e\nsugestões personalizadas para o seu evento!'}

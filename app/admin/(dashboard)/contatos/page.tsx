@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import DeleteRowButton from '@/components/admin/DeleteRowButton'
+import FormPreviewPanel from '@/components/admin/FormPreviewPanel'
 
 function formatDate(d: Date) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(d)
@@ -13,6 +14,7 @@ export default async function AdminContatos() {
       <h1>Contatos</h1>
       <p className="admin-lede">Mensagens recebidas pelo formulário Fale Conosco.</p>
 
+      <FormPreviewPanel previewUrl="/preview/fale-conosco" previewLabel="Pré-visualização do formulário">
       <div className="admin-panel">
         {messages.length === 0 && <p className="admin-empty">Nenhum contato recebido ainda.</p>}
         <div className="admin-entry-list">
@@ -40,6 +42,7 @@ export default async function AdminContatos() {
           ))}
         </div>
       </div>
+      </FormPreviewPanel>
     </div>
   )
 }

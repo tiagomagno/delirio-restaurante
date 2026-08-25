@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 import { getStores } from '@/lib/data/stores'
 import { getPageContent } from '@/lib/data/content'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import FaleConoscoClient from './FaleConoscoClient'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPageContent('fale-conosco')
-  return {
-    title: content['meta.title'] ?? 'Fale Conosco',
-    description: content['meta.description'] ??
-      'Entre em contato com a loja Delírio Tropical de sua preferência. Envie sua mensagem e nossa equipe retornará em breve.',
-  }
+  const title = content['meta.title'] ?? 'Fale Conosco'
+  const description = content['meta.description'] ??
+    'Entre em contato com a loja Delírio Tropical de sua preferência. Envie sua mensagem e nossa equipe retornará em breve.'
+  return buildPageMetadata({ content, path: '/fale-conosco', title, description })
 }
 
 export default async function FaleConosco() {
@@ -32,7 +32,7 @@ export default async function FaleConosco() {
           {content['form.description'] ?? 'Preencha o formulário abaixo e nossa equipe entrará em contato em breve.'}
         </p>
 
-        <FaleConoscoClient stores={stores.map(s => ({ name: s.name, email: s.email }))} />
+        <FaleConoscoClient stores={stores.map(s => ({ id: s.id, name: s.name }))} />
       </div>
     </main>
   )

@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getStoreWithRecipients } from '@/lib/email/notify'
+import { sendEmail } from '@/lib/email/send'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { lojaEmail, lojaNome, nome, pessoas, data, telefone, celular, email, descricao } = body
+  const { storeId, nome, pessoas, data, telefone, celular, email, descricao } = body
 
-  if (typeof lojaEmail !== 'string' || !lojaEmail || typeof lojaNome !== 'string' || !lojaNome) {
+  if (typeof storeId !== 'string' || !storeId) {
     return NextResponse.json({ error: 'Selecione uma loja' }, { status: 400 })
   }
   if (typeof nome !== 'string' || !nome.trim()) {
@@ -16,10 +18,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Quantidade de pessoas inválida' }, { status: 400 })
   }
 
+  const found = await getStoreWithRecipients(storeId)
+  if (!found) {
+    return NextResponse.json({ error: 'Loja inválida' }, { status: 400 })
+  }
+  const { store, recipients } = found
+
   await prisma.eventRequest.create({
     data: {
-      lojaEmail,
-      lojaNome,
+      lojaEmail: store.email,
+      lojaNome: store.name,
       nome: nome.trim(),
       pessoas: pessoasNum,
       data: data ? new Date(data) : null,
@@ -28,6 +36,22 @@ export async function POST(request: NextRequest) {
       email: email || null,
       descricao: descricao || null,
     },
+  })
+
+  await sendEmail({
+    to: recipients,
+    subject: `Eventos Corporativos — ${store.name}`,
+    text: [
+      `Novo pedido de cotação recebido para a loja ${store.name}.`,
+      '',
+      `Nome: ${nome.trim()}`,
+      `Pessoas: ${pessoasNum}`,
+      data ? `Data desejada: ${data}` : null,
+      email ? `E-mail: ${email}` : null,
+      telefone ? `Telefone: ${telefone}` : null,
+      celular ? `Celular: ${celular}` : null,
+      descricao ? `\nDescrição:\n${descricao}` : null,
+    ].filter(Boolean).join('\n'),
   })
 
   return NextResponse.json({ ok: true }, { status: 201 })
