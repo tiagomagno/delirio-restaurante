@@ -30,6 +30,8 @@ export default async function Home() {
 
   return (
     <main>
+      <h1 className="sr-only">{content['meta.title'] ?? 'Delírio Tropical — Restaurante Saudável desde 1983'}</h1>
+
       {/* ── Hero ── */}
       <HeroSlider
         slides={slides.map(s => ({

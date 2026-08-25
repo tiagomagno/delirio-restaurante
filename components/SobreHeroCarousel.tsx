@@ -4,38 +4,38 @@ import { useState } from 'react'
 
 const BASE = '/wp-content/uploads/2023/05'
 
-const SLIDES = [
-  {
-    title: 'Nossa\nHistória',
-    text: 'Em 1983 nasce uma história de amor em pleno centro do Rio de Janeiro. A primeira loja da Rua da Assembleia surpreende com uma comida leve, saudável e em harmonia com o clima tropical.Desde então, o Delírio Tropical tornou-se querido dos cariocas e ícone para os visitantes da cidade maravilhosa. O "Delírio" não parou de crescer e inovar, sendo sempre fiel aos seus valores, crenças e princípios.',
-    img: `${BASE}/delirio-back-nossahistoria.jpg`,
-  },
-  {
-    title: 'Nossos\nValores',
-    text: 'Somos verdadeiros em tudo que fazemos. Acreditamos no potencial das gerações futuras.O resto é fruto de muito amor, trabalho e dedicação. Graças a uma equipe feliz e uma seleção rigorosa dos melhores ingredientes. Servimos aos nossos clientes uma comida fresca e saudável. Com a informalidade e rapidez que nosso mundo exige, alimentamos as pessoas com sorrisos e muita saúde.',
-    img: `${BASE}/delirio-back-valores.jpg`,
-  },
-  {
-    title: 'Um Estilo\nde Vida',
-    text: 'Os seres brasileiros e suas vidas nos inspiram. Somos urbanos, praianos, trabalhadores conectados com a natureza. Sempre procuramos estar à frente, não temos medo de mudanças. Servimos para todos uma comida feita com amor.',
-    img: `${BASE}/delirio-back-estilovida.jpg`,
-  },
+// Sem campo de CMS pra imagem de fundo de cada slide — só título e texto vêm
+// do Admin (via PageContent), a imagem continua fixa por posição do slide.
+const IMAGES = [
+  `${BASE}/delirio-back-nossahistoria.jpg`,
+  `${BASE}/delirio-back-valores.jpg`,
+  `${BASE}/delirio-back-estilovida.jpg`,
 ]
 
-export default function SobreHeroCarousel() {
+export interface SobreHeroSlideData {
+  title: string
+  text: string
+}
+
+interface Props {
+  slides: SobreHeroSlideData[]
+}
+
+export default function SobreHeroCarousel({ slides }: Props) {
   const [current, setCurrent] = useState(0)
 
-  const prev = () => setCurrent(i => (i - 1 + SLIDES.length) % SLIDES.length)
-  const next = () => setCurrent(i => (i + 1) % SLIDES.length)
+  const prev = () => setCurrent(i => (i - 1 + slides.length) % slides.length)
+  const next = () => setCurrent(i => (i + 1) % slides.length)
 
-  const slide = SLIDES[current]
+  const slide = slides[current]
+  const img = IMAGES[current] ?? IMAGES[0]
 
   return (
     <section className="sobre-hero" aria-label="Nossa História">
       {/* Background image cobre a seção toda */}
       <div
         className="sobre-hero__bg"
-        style={{ backgroundImage: `url(${slide.img})` }}
+        style={{ backgroundImage: `url(${img})` }}
         aria-hidden="true"
       />
 
@@ -65,7 +65,7 @@ export default function SobreHeroCarousel() {
 
       {/* Dots */}
       <div className="sobre-hero__dots">
-        {SLIDES.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             className={`sobre-hero__dot${i === current ? ' sobre-hero__dot--active' : ''}`}

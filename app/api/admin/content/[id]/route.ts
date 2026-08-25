@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
+import { validateSeoValueForSave } from '@/lib/seo/fieldCheck'
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
@@ -10,6 +11,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const { value } = await request.json()
   if (typeof value !== 'string') {
     return NextResponse.json({ error: 'value é obrigatório' }, { status: 400 })
+  }
+
+  const existing = await prisma.pageContent.findUnique({ where: { id }, select: { key: true } })
+  if (!existing) {
+    return NextResponse.json({ error: 'Registro não encontrado' }, { status: 404 })
+  }
+
+  const validationError = validateSeoValueForSave(existing.key, value)
+  if (validationError) {
+    return NextResponse.json({ error: validationError }, { status: 400 })
   }
 
   const item = await prisma.pageContent.update({ where: { id }, data: { value } })

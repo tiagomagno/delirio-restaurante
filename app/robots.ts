@@ -1,7 +1,11 @@
 import type { MetadataRoute } from 'next'
-import { SITE_URL } from '@/lib/seo/pages'
+import { IS_PRODUCTION, SITE_URL } from '@/lib/seo/pages'
 
 export default function robots(): MetadataRoute.Robots {
+  if (!IS_PRODUCTION) {
+    return { rules: { userAgent: '*', disallow: '/' } }
+  }
+
   return {
     rules: {
       userAgent: '*',

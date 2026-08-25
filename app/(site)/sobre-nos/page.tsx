@@ -20,11 +20,29 @@ const BASE = '/wp-content/uploads/2023'
 export default async function SobreNos() {
   const c = await getPageContent('sobre-nos')
 
+  const heroSlides = [
+    {
+      title: c['hero.slide1.title'] ?? 'Nossa\nHistória',
+      text: c['hero.slide1.text'] ??
+        'Em 1983 nasce uma história de amor em pleno centro do Rio de Janeiro. A primeira loja da Rua da Assembleia surpreende com uma comida leve, saudável e em harmonia com o clima tropical.Desde então, o Delírio Tropical tornou-se querido dos cariocas e ícone para os visitantes da cidade maravilhosa. O "Delírio" não parou de crescer e inovar, sendo sempre fiel aos seus valores, crenças e princípios.',
+    },
+    {
+      title: c['hero.slide2.title'] ?? 'Nossos\nValores',
+      text: c['hero.slide2.text'] ??
+        'Somos verdadeiros em tudo que fazemos. Acreditamos no potencial das gerações futuras.O resto é fruto de muito amor, trabalho e dedicação. Graças a uma equipe feliz e uma seleção rigorosa dos melhores ingredientes. Servimos aos nossos clientes uma comida fresca e saudável. Com a informalidade e rapidez que nosso mundo exige, alimentamos as pessoas com sorrisos e muita saúde.',
+    },
+    {
+      title: c['hero.slide3.title'] ?? 'Um Estilo\nde Vida',
+      text: c['hero.slide3.text'] ??
+        'Os seres brasileiros e suas vidas nos inspiram. Somos urbanos, praianos, trabalhadores conectados com a natureza. Sempre procuramos estar à frente, não temos medo de mudanças. Servimos para todos uma comida feita com amor.',
+    },
+  ]
+
   return (
     <main>
 
       {/* ── 1. Carrossel Hero ── */}
-      <SobreHeroCarousel />
+      <SobreHeroCarousel slides={heroSlides} />
 
       {/* ── 2. Sustentabilidade ── */}
       <section id="sustentabilidade" className="sobre-sust" aria-label="Sustentabilidade">
