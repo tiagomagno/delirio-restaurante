@@ -396,9 +396,11 @@ body {
 .escolha__card-reveal { flex: 1; }
 
 .escolha__card {
+  display: block;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  text-decoration: none;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
 }
 
@@ -456,23 +458,6 @@ body {
   margin-bottom: 16px;
 }
 
-.escolha__card-btn {
-  display: inline-block;
-  background: var(--green);
-  color: var(--white);
-  text-decoration: none;
-  font-family: var(--font);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 11px 26px;
-  border-radius: 50px;
-  transition: background 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.escolha__card-btn:hover { background: #009a72; transform: translateY(-2px); }
-.escolha__card-btn:active { transform: translateY(0); }
 
 /* ─── HISTORIA ─────────────────────────────── */
 .historia {
@@ -696,8 +681,11 @@ body {
 .sobre-hero {
   position: relative;
   min-height: 680px;
+  width: 100%;
+  margin: 0 auto;
   overflow: hidden;
-  /* sem margin-top: header fixo fica sobre o hero verde */
+  /* sem margin-top: header fixo fica sobre o hero verde (senão o menu
+     branco fica sem contraste antes do usuário rolar a página) */
 }
 
 /* Background image cobre a seção toda */
@@ -724,7 +712,7 @@ body {
 }
 
 .sobre-hero__panel-inner {
-  padding: 149px 80px 80px 80px;
+  padding: 240px 80px 160px 240px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -740,8 +728,8 @@ body {
 
 .sobre-hero__text {
   color: rgba(255,255,255,0.92);
-  font-family: 'futura-pt', sans-serif;
-  font-size: 1.3rem;
+  font-family: var(--font);
+  font-size: 1rem;
   line-height: 1.75;
   max-width: 400px;
 }
@@ -799,8 +787,9 @@ body {
 .sobre-sust__inner {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 80px;
-  max-width: 1320px;
+  max-width: 1660px;
   margin: 0 auto;
   padding: 60px 80px;
 }
@@ -814,6 +803,7 @@ body {
   background: var(--gray-light);
   border-radius: 16px;
   overflow: hidden;
+  height: 660px;
 }
 
 .sobre-sust__media img {
@@ -858,8 +848,9 @@ body {
 .sobre-play-btn:hover { background: rgba(0,0,0,0.75); }
 
 .sobre-sust__content {
-  flex: 1;
-  padding: 64px 56px;
+  flex: 0 1 auto;
+  max-width: 620px;
+  padding: 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -867,10 +858,10 @@ body {
 }
 
 .sobre-sust__title {
-  font-size: 2rem;
+  font-size: 64px;
   font-weight: 700;
   color: var(--text-dark);
-  line-height: 1.25;
+  line-height: 1.15;
 }
 
 .sobre-sust__intro {
@@ -882,14 +873,20 @@ body {
 
 /* ─── SOBRE NÓS — instituto carousel ────────── */
 .sobre-instituto {
-  display: flex;
-  min-height: 500px;
-  background: var(--orange);
   position: relative;
   overflow: hidden;
+  background: var(--orange);
 }
 
-/* Painel esquerdo — metade do viewport, orange */
+/* Alinha o início do conteúdo com a margem esquerda de um content de
+   1660px centralizado — mas sem limitar a direita, a imagem vai até a borda. */
+.sobre-instituto__inner {
+  display: flex;
+  min-height: 700px;
+  padding-left: max(0px, calc((100% - 1660px) / 2));
+}
+
+/* Painel esquerdo — metade do content, orange */
 .sobre-instituto__left {
   flex: 0 0 50%;
   display: flex;
@@ -912,7 +909,7 @@ body {
 
 .sobre-instituto__content {
   flex: 1;
-  padding: 80px 60px 80px 80px;
+  padding: 80px 60px 80px 160px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -920,7 +917,7 @@ body {
 }
 
 .sobre-instituto__title {
-  font-size: 2.8rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.15;
@@ -969,13 +966,13 @@ body {
 
 .sobre-instituto__arrow:hover { background: rgba(255,255,255,0.35); }
 .sobre-instituto__arrow--prev { left: 12px; }
-.sobre-instituto__arrow--next { right: 12px; position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; }
+.sobre-instituto__arrow--next { right: 12px; }
 
 .sobre-instituto__img {
   flex: 1;
   background-color: var(--gray-light);
   background-size: cover;
-  background-position: center;
+  background-position: right;
   background-repeat: no-repeat;
   min-height: 500px;
 }
@@ -987,7 +984,7 @@ body {
 }
 
 .sobre-rancho-section__inner {
-  max-width: 1320px;
+  max-width: 1660px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -998,6 +995,8 @@ body {
 .sobre-rancho-section__videos {
   display: flex;
   flex: 1;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
 }
 
@@ -1012,7 +1011,7 @@ body {
 }
 
 .sobre-rancho-info__title {
-  font-size: 2.8rem;
+  font-size: 64px;
   font-weight: 700;
   color: var(--white);
   line-height: 1.1;
@@ -1025,7 +1024,9 @@ body {
 }
 
 .sobre-rancho-card {
-  flex: 1;
+  flex: 0 0 335px;
+  width: 335px;
+  height: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
@@ -1035,7 +1036,7 @@ body {
 
 .sobre-rancho-card__thumb {
   position: relative;
-  aspect-ratio: 4/3;
+  flex: 1;
   overflow: hidden;
 }
 
@@ -2480,14 +2481,17 @@ body {
   .sobre-sust__inner { flex-direction: column; padding: 0; gap: 0; }
   .sobre-sust__media { width: 100%; aspect-ratio: 16 / 10; border-radius: 0; }
   .sobre-sust { padding: 0; }
-  .sobre-sust__content { padding: 40px 24px; }
-  .sobre-instituto { flex-direction: column; }
+  .sobre-sust__content { padding: 40px 24px; max-width: none; }
+  .sobre-sust__title { font-size: 2.4rem; }
+  .sobre-instituto__inner { flex-direction: column; }
   .sobre-instituto__content { padding: 48px 24px; }
   .sobre-instituto__img { min-height: 260px; }
   .sobre-rancho-section { padding: 40px 24px; }
   .sobre-rancho-section__inner { flex-direction: column; padding: 0; gap: 32px; }
   .sobre-rancho-section__videos { flex-direction: column; gap: 24px; width: 100%; }
-  .sobre-rancho-card__thumb { aspect-ratio: 16 / 10; }
+  .sobre-rancho-card { width: 100%; height: auto; flex: none; }
+  .sobre-rancho-card__thumb { flex: none; aspect-ratio: 16 / 10; }
+  .sobre-rancho-info__title { font-size: 2.4rem; }
   .sobre-rancho-info { flex: none; width: 100%; padding: 0; text-align: center; }
   .sobre-livro { padding: 60px 24px; }
   .sobre-livro__inner { flex-direction: column; gap: 32px; }
@@ -2525,7 +2529,6 @@ body {
   .store-card:hover,
   .escolha__card:hover,
   .hero__btn:hover,
-  .escolha__card-btn:hover,
   .carousel-arrow:hover,
   .store-action:hover .store-action__icon {
     transform: none;

@@ -33,29 +33,31 @@ export default function InstitutoCarousel() {
 
   return (
     <section id="social" className="sobre-instituto" aria-label="Projetos Sociais">
-      {/* Painel esquerdo — ocupa 50% do viewport */}
-      <div className="sobre-instituto__left">
-        <div className="sobre-instituto__decor" aria-hidden="true" />
-        <div className="sobre-instituto__content">
-          <h2 className="sobre-instituto__title">
-            {item.title.split('\n').map((line, i) => <span key={i}>{line}<br /></span>)}
-          </h2>
-          <p className="sobre-instituto__desc">{item.text}</p>
-          <a href={item.link} target="_blank" rel="noopener" className="sobre-instituto__btn">
-            Saiba mais
-          </a>
+      <div className="sobre-instituto__inner">
+        {/* Painel esquerdo — metade do content */}
+        <div className="sobre-instituto__left">
+          <div className="sobre-instituto__decor" aria-hidden="true" />
+          <div className="sobre-instituto__content">
+            <h2 className="sobre-instituto__title">
+              {item.title.split('\n').map((line, i) => <span key={i}>{line}<br /></span>)}
+            </h2>
+            <p className="sobre-instituto__desc">{item.text}</p>
+            <a href={item.link} target="_blank" rel="noopener" className="sobre-instituto__btn">
+              Saiba mais
+            </a>
+          </div>
         </div>
+
+        {/* Foto — preenche o restante até a borda da tela */}
+        <div
+          className="sobre-instituto__img"
+          style={{ backgroundImage: `url(${item.img})` }}
+          role="img"
+          aria-label={item.title.replace('\n', ' ')}
+        />
       </div>
 
-      {/* Foto — preenche o restante do viewport */}
-      <div
-        className="sobre-instituto__img"
-        style={{ backgroundImage: `url(${item.img})` }}
-        role="img"
-        aria-label={item.title.replace('\n', ' ')}
-      />
-
-      {/* Setas nas bordas da seção */}
+      {/* Setas fora do content — só trocam texto/imagem, dão a sensação de carrossel */}
       <button className="sobre-instituto__arrow sobre-instituto__arrow--prev" onClick={prev} aria-label="Instituto anterior">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
           <polyline points="15 18 9 12 15 6" />
