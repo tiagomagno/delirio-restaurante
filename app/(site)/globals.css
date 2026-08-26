@@ -745,7 +745,7 @@ body {
   color: rgba(255,255,255,0.92);
   font-size: 1.3rem;
   line-height: 1.75;
-  max-width: 400px;
+  max-width: 320px;
 }
 
 .sobre-hero__arrow {
@@ -930,9 +930,8 @@ body {
 
 .sobre-instituto__desc {
   color: rgba(255,255,255,0.9);
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.5;
-  max-width: 380px;
 }
 
 .sobre-instituto__btn {
@@ -1028,6 +1027,7 @@ body {
 
 .sobre-rancho-card {
   flex: 0 0 auto;
+  width: 335px;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
@@ -1050,7 +1050,7 @@ body {
 }
 
 .sobre-rancho-card__text {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-dark);
   line-height: 1.6;
   padding: 20px 20px 24px;
