@@ -401,9 +401,8 @@ body {
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   text-decoration: none;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
-  text-decoration: none;
   color: inherit;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
 }
 
 .escolha__card:hover {
@@ -459,7 +458,6 @@ body {
   text-align: center;
   margin-bottom: 16px;
 }
-
 
 /* ─── HISTORIA ─────────────────────────────── */
 .historia {

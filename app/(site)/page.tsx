@@ -79,9 +79,6 @@ export default async function Home() {
               <p className="escolha__card-desc">
                 <Multiline text={content['escolha.encomendas.desc'] ?? 'Faça seu pedido por aqui, receba em casa\nou agende a retirada na loja mais próxima'} />
               </p>
-              <span className="escolha__card-btn">
-                {content['escolha.encomendas.cta'] ?? 'Faça seu pedido'}
-              </span>
             </div>
           </a>
           </Reveal>
@@ -105,9 +102,6 @@ export default async function Home() {
               <p className="escolha__card-desc">
                 <Multiline text={content['escolha.eventos.desc'] ?? 'Contate nossa equipe para\nauxiliá-lo na criação de seu evento'} />
               </p>
-              <span className="escolha__card-btn">
-                {content['escolha.eventos.cta'] ?? 'Solicite um orçamento'}
-              </span>
             </div>
           </Link>
           </Reveal>
