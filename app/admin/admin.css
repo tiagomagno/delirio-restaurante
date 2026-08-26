@@ -222,81 +222,14 @@ html, body {
   gap: 20px;
 }
 
-.admin-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.admin-topbar__greeting-label {
-  font-size: 12px;
-  color: var(--admin-text-muted);
-  margin-bottom: 2px;
-}
-
-.admin-topbar__greeting-name {
-  font-size: 19px;
-  font-weight: 700;
-}
-
-.admin-topbar__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--admin-accent-dark);
-  background: var(--admin-accent-soft);
-  padding: 2px 8px;
-  border-radius: 100px;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-
-.admin-topbar__right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.admin-topbar__user {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 6px 8px;
-  border-radius: var(--admin-radius-sm);
-}
-
-.admin-topbar__avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--admin-accent);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12.5px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.admin-topbar__user-name {
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
 .admin-content {
   background: transparent;
 }
 
 .admin-content h1 {
-  font-size: 21px;
+  font-size: 28px;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 20px;
 }
 
 .admin-content > p.admin-lede {
