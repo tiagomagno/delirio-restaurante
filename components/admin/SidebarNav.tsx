@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { IconGrid, IconImage, IconStore, IconPages, IconClipboard, IconMail, IconSearch, IconBriefcase, IconUsers } from './icons'
+import { IconGrid, IconImage, IconStore, IconPages, IconClipboard, IconMail, IconSearch, IconBriefcase, IconUsers, IconMegaphone } from './icons'
 
 const GROUPS = [
   {
@@ -21,6 +21,7 @@ const GROUPS = [
       { href: '/admin/pedidos', label: 'Pedidos', icon: IconClipboard },
       { href: '/admin/contatos', label: 'Contatos', icon: IconMail },
       { href: '/admin/candidaturas', label: 'Candidaturas', icon: IconBriefcase },
+      { href: '/admin/ouvidoria', label: 'Ouvidoria', icon: IconMegaphone },
     ],
   },
   {

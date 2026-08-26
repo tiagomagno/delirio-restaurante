@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
+import OuvidoriaClient from './OuvidoriaClient'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,24 +35,7 @@ export default async function Ouvidoria() {
           </p>
         </div>
 
-        <form
-          className="ouvidoria-form"
-          action="https://delirio.com.br/ouvidoria/"
-          method="POST"
-          target="_blank"
-        >
-          <label className="ouvidoria-form__label">
-            Escreva sua mensagem *
-            <textarea
-              name="Ouvidoria"
-              required
-              className="ouvidoria-form__textarea"
-              placeholder="Digite sua mensagem aqui..."
-              rows={8}
-            />
-          </label>
-          <button type="submit" className="ouvidoria-form__btn">Enviar</button>
-        </form>
+        <OuvidoriaClient />
       </div>
     </main>
   )

@@ -195,6 +195,16 @@ export function IconUsers({ size = 20 }: IconProps) {
   )
 }
 
+export function IconMegaphone({ size = 20 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M3 10.5v3a1.5 1.5 0 0 0 1.5 1.5H6l2.5 5.5" />
+      <path d="M6 10.5 16.5 5v14L6 13.5" />
+      <path d="M16.5 8.2c1.9.5 3.3 2 3.3 3.8s-1.4 3.3-3.3 3.8" />
+    </svg>
+  )
+}
+
 export function IconSearch({ size = 20 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base}>

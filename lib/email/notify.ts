@@ -25,6 +25,17 @@ export async function notifyStore(storeId: string, subject: string, text: string
   await sendEmail({ to: result.recipients, subject, text })
 }
 
+/**
+ * Notifica o canal de Ouvidoria — mensagem anônima, sem loja associada.
+ * Sem OUVIDORIA_EMAIL configurado, apenas fica salva no admin (sendEmail já
+ * trata a ausência de destinatário/SMTP sem lançar erro).
+ */
+export async function notifyOuvidoria(text: string) {
+  const to = process.env.OUVIDORIA_EMAIL
+  if (!to) return
+  await sendEmail({ to: [to], subject: 'Nova mensagem — Ouvidoria', text })
+}
+
 export interface SendConfirmationInput {
   to: string
   greetingName: string

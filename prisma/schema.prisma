@@ -87,6 +87,12 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+model OuvidoriaMessage {
+  id        String   @id @default(cuid())
+  mensagem  String   @db.Text
+  createdAt DateTime @default(now())
+}
+
 model JobApplication {
   id           String   @id @default(cuid())
   lojaEmail    String
