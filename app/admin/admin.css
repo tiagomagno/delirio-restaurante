@@ -490,6 +490,75 @@ a.admin-card:hover {
   }
 }
 
+/* ─── FORM TABS (nav lateral no desktop, abas no mobile) ───── */
+
+.admin-form-tabs {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.admin-form-tabs__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 24px;
+}
+
+.admin-form-tabs__btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  border: none;
+  border-radius: var(--admin-radius-sm);
+  background: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-form-tabs__btn:hover { background: #f7f8fa; color: var(--admin-text); }
+
+.admin-form-tabs__btn--active {
+  background: var(--admin-accent-soft);
+  color: var(--admin-accent-dark);
+}
+
+.admin-form-tabs__content {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-form-tabs {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-form-tabs__nav {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .admin-form-tabs__nav::-webkit-scrollbar { display: none; }
+
+  .admin-form-tabs__btn {
+    width: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
 .admin-btn {
   display: inline-flex;
   align-items: center;
