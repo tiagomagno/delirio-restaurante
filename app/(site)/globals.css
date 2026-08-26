@@ -396,10 +396,13 @@ body {
 .escolha__card-reveal { flex: 1; }
 
 .escolha__card {
+  display: block;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
+  text-decoration: none;
+  color: inherit;
 }
 
 .escolha__card:hover {
@@ -499,7 +502,7 @@ body {
 }
 
 .historia__year {
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1;
@@ -507,7 +510,7 @@ body {
 }
 
 .historia__text {
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   color: var(--white);
   line-height: 1.6;
   margin-bottom: 32px;
@@ -520,7 +523,7 @@ body {
   color: var(--white);
   text-decoration: none;
   font-family: var(--font);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -732,7 +735,7 @@ body {
 }
 
 .sobre-hero__title {
-  font-size: 6rem;
+  font-size: 4rem;
   font-weight: 600;
   color: var(--white);
   line-height: 1.1;
@@ -867,7 +870,7 @@ body {
 }
 
 .sobre-sust__title {
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.25;
@@ -920,7 +923,7 @@ body {
 }
 
 .sobre-instituto__title {
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.15;
@@ -928,8 +931,9 @@ body {
 
 .sobre-instituto__desc {
   color: rgba(255,255,255,0.9);
-  font-size: 0.9rem;
-  line-height: 1.75;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
   max-width: 380px;
 }
 
@@ -939,8 +943,8 @@ body {
   background: var(--green);
   color: var(--white);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-weight: 500;
+  font-size: 1rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   width: fit-content;
@@ -1012,7 +1016,7 @@ body {
 }
 
 .sobre-rancho-info__title {
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.1;
@@ -2030,7 +2034,7 @@ body {
 }
 
 .sobre-historia__title {
-  font-size: 2.4rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.15;
@@ -2404,7 +2408,7 @@ body {
   .historia__left { padding: 50px 30px; }
   .historia__left::after { display: none; }
   .historia__right { min-height: 280px; }
-  .historia__year { font-size: 2.5rem; }
+  .historia__year { font-size: 3rem; }
   .footer__inner { flex-wrap: wrap; gap: 40px; }
   .footer__socials { margin-left: 0; flex-direction: row; flex-wrap: wrap; }
 

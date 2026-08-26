@@ -58,7 +58,12 @@ export default async function Home() {
         <div className="escolha__cards">
 
           <Reveal className="escolha__card-reveal">
-          <div className="escolha__card">
+          <a
+            href="https://cardapioencomendas.delirio.com.br/"
+            target="_blank"
+            rel="noopener"
+            className="escolha__card"
+          >
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -74,20 +79,15 @@ export default async function Home() {
               <p className="escolha__card-desc">
                 <Multiline text={content['escolha.encomendas.desc'] ?? 'Faça seu pedido por aqui, receba em casa\nou agende a retirada na loja mais próxima'} />
               </p>
-              <a
-                href="https://cardapioencomendas.delirio.com.br/"
-                target="_blank"
-                rel="noopener"
-                className="escolha__card-btn"
-              >
+              <span className="escolha__card-btn">
                 {content['escolha.encomendas.cta'] ?? 'Faça seu pedido'}
-              </a>
+              </span>
             </div>
-          </div>
+          </a>
           </Reveal>
 
           <Reveal className="escolha__card-reveal" delay={120}>
-          <div className="escolha__card">
+          <Link href="/eventos-corporativos" className="escolha__card">
             <div className="escolha__card-img">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -105,11 +105,11 @@ export default async function Home() {
               <p className="escolha__card-desc">
                 <Multiline text={content['escolha.eventos.desc'] ?? 'Contate nossa equipe para\nauxiliá-lo na criação de seu evento'} />
               </p>
-              <Link href="/eventos-corporativos" className="escolha__card-btn">
+              <span className="escolha__card-btn">
                 {content['escolha.eventos.cta'] ?? 'Solicite um orçamento'}
-              </Link>
+              </span>
             </div>
-          </div>
+          </Link>
           </Reveal>
 
         </div>
