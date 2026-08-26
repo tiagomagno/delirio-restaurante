@@ -1,12 +1,10 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import type { StoreData } from '@/lib/data/stores'
 import Reveal from './Reveal'
 
 type Filter = 'todas' | 'rio' | 'niteroi'
-
-const VISIBLE = 5
 
 const IconPin = () => (
   <svg viewBox="0 0 24 24">
@@ -28,20 +26,48 @@ const IconMenu = () => (
 
 export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
   const [filter, setFilter] = useState<Filter>('todas')
-  const [page, setPage] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [nav, setNav] = useState({ index: 0, pages: 1 })
 
   const filtered = useMemo(
     () => (filter === 'todas' ? stores : stores.filter(s => s.region === filter)),
     [filter, stores],
   )
 
-  const pages = Math.ceil(filtered.length / VISIBLE)
-  const visible = filtered.slice(page * VISIBLE, page * VISIBLE + VISIBLE)
+  const updateNav = useCallback(() => {
+    const el = scrollRef.current
+    if (!el || el.clientWidth === 0) return
+    const hasOverflow = el.scrollWidth - el.clientWidth > 4
+    const pages = hasOverflow ? Math.ceil(el.scrollWidth / el.clientWidth) : 1
+    const index = hasOverflow ? Math.min(pages - 1, Math.round(el.scrollLeft / el.clientWidth)) : 0
+    setNav({ index, pages })
+  }, [])
 
-  const handleFilter = (f: Filter) => {
-    setFilter(f)
-    setPage(0)
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ left: 0 })
+    updateNav()
+  }, [filtered, updateNav])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    el.addEventListener('scroll', updateNav, { passive: true })
+    const observer = new ResizeObserver(updateNav)
+    observer.observe(el)
+    return () => {
+      el.removeEventListener('scroll', updateNav)
+      observer.disconnect()
+    }
+  }, [updateNav])
+
+  function goTo(index: number) {
+    const el = scrollRef.current
+    if (!el) return
+    const clamped = Math.max(0, Math.min(nav.pages - 1, index))
+    el.scrollTo({ left: clamped * el.clientWidth, behavior: 'smooth' })
   }
+
+  const handleFilter = (f: Filter) => setFilter(f)
 
   return (
     <div className="lojas">
@@ -63,8 +89,8 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
       </div>
 
       <div className="lojas__carousel-wrap">
-        <div className="lojas__carousel">
-          {visible.map((store, i) => (
+        <div className="lojas__carousel" ref={scrollRef}>
+          {filtered.map((store, i) => (
             <Reveal key={store.id} delay={Math.min(i, 4) * 70} className="store-card-reveal">
             <div className="store-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -118,28 +144,30 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
         </div>
       </div>
 
-      {pages > 1 && (
+      {nav.pages > 1 && (
         <div className="carousel-nav">
           <button
             className="carousel-arrow"
-            onClick={() => setPage(p => (p - 1 + pages) % pages)}
+            onClick={() => goTo(nav.index - 1)}
+            disabled={nav.index === 0}
             aria-label="Anterior"
           >
             ‹
           </button>
           <div className="carousel-dots">
-            {Array.from({ length: pages }, (_, i) => (
+            {Array.from({ length: nav.pages }, (_, i) => (
               <button
                 key={i}
-                className={`carousel-dot${i === page ? ' active' : ''}`}
-                onClick={() => setPage(i)}
+                className={`carousel-dot${i === nav.index ? ' active' : ''}`}
+                onClick={() => goTo(i)}
                 aria-label={`Página ${i + 1}`}
               />
             ))}
           </div>
           <button
             className="carousel-arrow"
-            onClick={() => setPage(p => (p + 1) % pages)}
+            onClick={() => goTo(nav.index + 1)}
+            disabled={nav.index === nav.pages - 1}
             aria-label="Próximo"
           >
             ›
