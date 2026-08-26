@@ -176,6 +176,25 @@ export function IconBriefcase({ size = 20 }: IconProps) {
   )
 }
 
+export function IconStar({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.8z" />
+    </svg>
+  )
+}
+
+export function IconUsers({ size = 20 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3.5 19.5c0-3.3 2.5-5.8 5.5-5.8s5.5 2.5 5.5 5.8" />
+      <path d="M15.8 4.7a3.2 3.2 0 0 1 0 6.2" />
+      <path d="M15 13.9c2.6.3 4.5 2.6 4.5 5.6" />
+    </svg>
+  )
+}
+
 export function IconSearch({ size = 20 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
