@@ -735,7 +735,7 @@ body {
 }
 
 .sobre-hero__title {
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 600;
   color: var(--white);
   line-height: 1.1;
@@ -923,7 +923,7 @@ body {
 }
 
 .sobre-instituto__title {
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.15;
@@ -932,7 +932,7 @@ body {
 .sobre-instituto__desc {
   color: rgba(255,255,255,0.9);
   font-family: 'futura-pt', sans-serif;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   max-width: 380px;
 }
@@ -1016,14 +1016,15 @@ body {
 }
 
 .sobre-rancho-info__title {
-  font-size: 3rem;
+  font-size: 6rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.1;
 }
 
 .sobre-rancho-info__desc {
-  font-size: 0.95rem;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1.3rem;
   color: rgba(255,255,255,0.88);
   line-height: 1.7;
 }
@@ -1051,7 +1052,8 @@ body {
 }
 
 .sobre-rancho-card__text {
-  font-size: 0.88rem;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1.1rem;
   color: var(--text-dark);
   line-height: 1.6;
   padding: 20px 20px 24px;
@@ -1098,7 +1100,8 @@ body {
 }
 .sobre-livro__desc {
   color: #555;
-  font-size: 1rem;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1.2rem;
   line-height: 1.75;
   margin-bottom: 32px;
 }
