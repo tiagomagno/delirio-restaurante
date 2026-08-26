@@ -5,13 +5,17 @@ import { useState, type ReactNode } from 'react'
 export default function FormPreviewPanel({
   previewUrl,
   previewLabel = 'Pré-visualização do formulário',
+  settingsLabel,
+  settings,
   children,
 }: {
   previewUrl: string
   previewLabel?: string
+  settingsLabel?: string
+  settings?: ReactNode
   children: ReactNode
 }) {
-  const [tab, setTab] = useState<'recebidos' | 'preview'>('recebidos')
+  const [tab, setTab] = useState<'recebidos' | 'preview' | 'settings'>('recebidos')
 
   return (
     <div>
@@ -30,6 +34,15 @@ export default function FormPreviewPanel({
         >
           {previewLabel}
         </button>
+        {settings && (
+          <button
+            type="button"
+            className={`admin-tab${tab === 'settings' ? ' admin-tab--active' : ''}`}
+            onClick={() => setTab('settings')}
+          >
+            {settingsLabel ?? 'Configurações'}
+          </button>
+        )}
       </div>
 
       <div style={{ display: tab === 'recebidos' ? 'block' : 'none' }}>{children}</div>
@@ -46,6 +59,8 @@ export default function FormPreviewPanel({
           />
         </div>
       )}
+
+      {tab === 'settings' && settings}
     </div>
   )
 }

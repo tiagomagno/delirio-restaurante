@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { getPageContent } from '@/lib/data/content'
 import { sendEmail } from './send'
 import { buildConfirmationEmail, type ConfirmationEmailDetail } from './templates'
 
@@ -23,6 +24,20 @@ export async function notifyStore(storeId: string, subject: string, text: string
   const result = await getStoreWithRecipients(storeId)
   if (!result) return
   await sendEmail({ to: result.recipients, subject, text })
+}
+
+/**
+ * Destinatários extras configurados em /admin/pedidos (aba "Destinatários"),
+ * recebem todo pedido de Eventos Corporativos além da loja escolhida.
+ * Guardado em PageContent (page="eventos-corporativos", key="notify.extraRecipients").
+ */
+export async function getEventosExtraRecipients(): Promise<string[]> {
+  const content = await getPageContent('eventos-corporativos')
+  const raw = content['notify.extraRecipients'] ?? ''
+  return raw
+    .split('\n')
+    .map(email => email.trim())
+    .filter(Boolean)
 }
 
 /**
