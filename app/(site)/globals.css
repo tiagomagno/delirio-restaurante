@@ -380,7 +380,7 @@ body {
 }
 
 .escolha__title {
-  font-size: 2.4rem;
+  font-size: 4rem;
   font-weight: 700;
   margin-bottom: 40px;
   color: var(--text-dark);
@@ -396,10 +396,13 @@ body {
 .escolha__card-reveal { flex: 1; }
 
 .escolha__card {
+  display: block;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
+  text-decoration: none;
+  color: inherit;
 }
 
 .escolha__card:hover {
@@ -499,7 +502,7 @@ body {
 }
 
 .historia__year {
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1;
@@ -507,7 +510,7 @@ body {
 }
 
 .historia__text {
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   color: var(--white);
   line-height: 1.6;
   margin-bottom: 32px;
@@ -520,7 +523,7 @@ body {
   color: var(--white);
   text-decoration: none;
   font-family: var(--font);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -743,7 +746,7 @@ body {
   font-family: 'futura-pt', sans-serif;
   font-size: 1.3rem;
   line-height: 1.75;
-  max-width: 400px;
+  max-width: 320px;
 }
 
 .sobre-hero__arrow {
@@ -809,8 +812,8 @@ body {
 .sobre-sust__media {
   flex: 0 0 auto;
   position: relative;
-  width: 380px;
-  aspect-ratio: 3 / 4;
+  width: 335px;
+  height: 600px;
   background: var(--gray-light);
   border-radius: 16px;
   overflow: hidden;
@@ -867,7 +870,7 @@ body {
 }
 
 .sobre-sust__title {
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.25;
@@ -875,15 +878,15 @@ body {
 
 .sobre-sust__intro {
   color: #555;
-  font-size: 0.95rem;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1.2rem;
   line-height: 1.7;
-  max-width: 460px;
 }
 
 /* ─── SOBRE NÓS — instituto carousel ────────── */
 .sobre-instituto {
   display: flex;
-  min-height: 500px;
+  min-height: 700px;
   background: var(--orange);
   position: relative;
   overflow: hidden;
@@ -912,7 +915,7 @@ body {
 
 .sobre-instituto__content {
   flex: 1;
-  padding: 80px 60px 80px 80px;
+  padding: 80px 60px 80px 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -920,7 +923,7 @@ body {
 }
 
 .sobre-instituto__title {
-  font-size: 2.8rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.15;
@@ -928,9 +931,9 @@ body {
 
 .sobre-instituto__desc {
   color: rgba(255,255,255,0.9);
-  font-size: 0.9rem;
-  line-height: 1.75;
-  max-width: 380px;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .sobre-instituto__btn {
@@ -939,8 +942,8 @@ body {
   background: var(--green);
   color: var(--white);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-weight: 500;
+  font-size: 1rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   width: fit-content;
@@ -977,7 +980,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 500px;
+  min-height: 700px;
 }
 
 /* ─── SOBRE NÓS — rancho 3 cards ────────────── */
@@ -1012,20 +1015,22 @@ body {
 }
 
 .sobre-rancho-info__title {
-  font-size: 2.8rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.1;
 }
 
 .sobre-rancho-info__desc {
-  font-size: 0.95rem;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1.1rem;
   color: rgba(255,255,255,0.88);
   line-height: 1.7;
 }
 
 .sobre-rancho-card {
-  flex: 1;
+  flex: 0 0 auto;
+  width: 335px;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
@@ -1035,7 +1040,8 @@ body {
 
 .sobre-rancho-card__thumb {
   position: relative;
-  aspect-ratio: 4/3;
+  width: 335px;
+  height: 600px;
   overflow: hidden;
 }
 
@@ -1047,7 +1053,9 @@ body {
 }
 
 .sobre-rancho-card__text {
-  font-size: 0.88rem;
+  font-family: 'futura-pt', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
   color: var(--text-dark);
   line-height: 1.6;
   padding: 20px 20px 24px;
@@ -1094,7 +1102,8 @@ body {
 }
 .sobre-livro__desc {
   color: #555;
-  font-size: 1rem;
+  font-family: 'futura-pt', sans-serif;
+  font-size: 1.2rem;
   line-height: 1.75;
   margin-bottom: 32px;
 }
@@ -2030,7 +2039,7 @@ body {
 }
 
 .sobre-historia__title {
-  font-size: 2.4rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.15;
@@ -2398,13 +2407,13 @@ body {
     justify-content: flex-start;
   }
   .escolha { padding: 50px 20px; }
-  .escolha__title { font-size: 1.7rem; }
+  .escolha__title { font-size: 2rem; }
   .escolha__cards { flex-direction: column; max-width: 400px; }
   .historia { flex-direction: column; }
   .historia__left { padding: 50px 30px; }
   .historia__left::after { display: none; }
   .historia__right { min-height: 280px; }
-  .historia__year { font-size: 2.5rem; }
+  .historia__year { font-size: 3rem; }
   .footer__inner { flex-wrap: wrap; gap: 40px; }
   .footer__socials { margin-left: 0; flex-direction: row; flex-wrap: wrap; }
 
