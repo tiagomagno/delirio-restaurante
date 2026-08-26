@@ -125,4 +125,23 @@ for (const s of stores) {
 }
 
 console.log(`\nTotal de lojas atualizadas: ${updated}/${stores.length}`)
+
+// Banner da home (HeroSlide) tem o mesmo problema: imageUrl absoluta
+// apontando para delirio.com.br em vez de caminho relativo.
+const slides = await prisma.heroSlide.findMany()
+let heroUpdated = 0
+const marker = 'delirio.com.br/wp-content/'
+for (const s of slides) {
+  const idx = s.imageUrl.indexOf(marker)
+  if (idx === -1) {
+    console.log(`[SKIP] hero slide ${s.order}: ja relativo`)
+    continue
+  }
+  const relative = '/wp-content/' + s.imageUrl.slice(idx + marker.length)
+  await prisma.heroSlide.update({ where: { id: s.id }, data: { imageUrl: relative } })
+  heroUpdated++
+  console.log(`[OK] hero slide ${s.order}: ${relative}`)
+}
+console.log(`Total de hero slides atualizados: ${heroUpdated}/${slides.length}`)
+
 await prisma.$disconnect()

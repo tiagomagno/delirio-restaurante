@@ -48,13 +48,15 @@ function IconEmail() {
 }
 
 /* ─── Carrossel de fotos ─── */
-function FotoCarousel({ fotos, nome }: { fotos: StorePhoto[]; nome: string }) {
+function FotoCarousel({ fotos, nome, priority = false }: { fotos: StorePhoto[]; nome: string; priority?: boolean }) {
   const [idx, setIdx] = useState(0)
   const total = fotos.length
   const prev = () => setIdx(i => (i - 1 + total) % total)
   const next = () => setIdx(i => (i + 1) % total)
 
   if (total === 0) return null
+
+  const eager = priority && idx === 0
 
   return (
     <div className="loja-carousel">
@@ -64,7 +66,8 @@ function FotoCarousel({ fotos, nome }: { fotos: StorePhoto[]; nome: string }) {
           key={fotos[idx].url}
           src={fotos[idx].url}
           alt={fotos[idx].alt || `${nome} — foto ${idx + 1} de ${total}`}
-          loading="lazy"
+          loading={eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : 'auto'}
         />
         {total > 1 && (
           <>
@@ -91,7 +94,7 @@ function FotoCarousel({ fotos, nome }: { fotos: StorePhoto[]; nome: string }) {
 }
 
 /* ─── Card de loja ─── */
-function LojaCard({ loja }: { loja: StoreData }) {
+function LojaCard({ loja, priority = false }: { loja: StoreData; priority?: boolean }) {
   const telefone = loja.phones[0] ?? ''
   const horario1 = loja.hours[0] ?? ''
   const horario2 = loja.hours[1]
@@ -128,7 +131,7 @@ function LojaCard({ loja }: { loja: StoreData }) {
         </div>
       </div>
 
-      <FotoCarousel fotos={loja.photos} nome={loja.name} />
+      <FotoCarousel fotos={loja.photos} nome={loja.name} priority={priority} />
 
       <div className="loja-card__details">
         <div className="loja-card__horario">
@@ -197,8 +200,8 @@ export default function LojasClient({ stores }: { stores: StoreData[] }) {
       </nav>
 
       <div className="lojas-list">
-        {lojasFiltradas.map(loja => (
-          <LojaCard key={loja.id} loja={loja} />
+        {lojasFiltradas.map((loja, i) => (
+          <LojaCard key={loja.id} loja={loja} priority={i === 0} />
         ))}
       </div>
     </div>
