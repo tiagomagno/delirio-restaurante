@@ -743,7 +743,6 @@ body {
 
 .sobre-hero__text {
   color: rgba(255,255,255,0.92);
-  font-family: 'futura-pt', sans-serif;
   font-size: 1.3rem;
   line-height: 1.75;
   max-width: 400px;
@@ -812,8 +811,8 @@ body {
 .sobre-sust__media {
   flex: 0 0 auto;
   position: relative;
-  width: 380px;
-  aspect-ratio: 3 / 4;
+  width: 335px;
+  height: 600px;
   background: var(--gray-light);
   border-radius: 16px;
   overflow: hidden;
@@ -886,7 +885,7 @@ body {
 /* ─── SOBRE NÓS — instituto carousel ────────── */
 .sobre-instituto {
   display: flex;
-  min-height: 500px;
+  min-height: 700px;
   background: var(--orange);
   position: relative;
   overflow: hidden;
@@ -915,7 +914,7 @@ body {
 
 .sobre-instituto__content {
   flex: 1;
-  padding: 80px 60px 80px 80px;
+  padding: 80px 60px 80px 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -931,7 +930,6 @@ body {
 
 .sobre-instituto__desc {
   color: rgba(255,255,255,0.9);
-  font-family: 'futura-pt', sans-serif;
   font-size: 1.2rem;
   line-height: 1.5;
   max-width: 380px;
@@ -981,7 +979,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 500px;
+  min-height: 700px;
 }
 
 /* ─── SOBRE NÓS — rancho 3 cards ────────────── */
@@ -1016,21 +1014,20 @@ body {
 }
 
 .sobre-rancho-info__title {
-  font-size: 6rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1.1;
 }
 
 .sobre-rancho-info__desc {
-  font-family: 'futura-pt', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: rgba(255,255,255,0.88);
   line-height: 1.7;
 }
 
 .sobre-rancho-card {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   border-radius: 12px;
@@ -1040,7 +1037,8 @@ body {
 
 .sobre-rancho-card__thumb {
   position: relative;
-  aspect-ratio: 4/3;
+  width: 335px;
+  height: 600px;
   overflow: hidden;
 }
 
@@ -1052,7 +1050,6 @@ body {
 }
 
 .sobre-rancho-card__text {
-  font-family: 'futura-pt', sans-serif;
   font-size: 1.1rem;
   color: var(--text-dark);
   line-height: 1.6;
@@ -1100,7 +1097,6 @@ body {
 }
 .sobre-livro__desc {
   color: #555;
-  font-family: 'futura-pt', sans-serif;
   font-size: 1.2rem;
   line-height: 1.75;
   margin-bottom: 32px;
