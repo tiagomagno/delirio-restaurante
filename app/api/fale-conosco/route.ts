@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getStoreWithRecipients } from '@/lib/email/notify'
+import { getStoreWithRecipients, sendConfirmationEmail } from '@/lib/email/notify'
 import { sendEmail } from '@/lib/email/send'
 
 export async function POST(request: NextRequest) {
@@ -50,6 +50,15 @@ export async function POST(request: NextRequest) {
       'Mensagem:',
       mensagem.trim(),
     ].filter(Boolean).join('\n'),
+  })
+
+  await sendConfirmationEmail({
+    to: email.trim(),
+    greetingName: nome.trim(),
+    formTitle: 'Fale Conosco',
+    storeName: store.name,
+    storeEmail: store.email,
+    intro: `Recebemos sua mensagem enviada para a loja ${store.name}. Nossa equipe vai te responder em breve.`,
   })
 
   return NextResponse.json({ ok: true }, { status: 201 })

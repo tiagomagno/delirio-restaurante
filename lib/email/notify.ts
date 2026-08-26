@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { sendEmail } from './send'
+import { buildConfirmationEmail, type ConfirmationEmailDetail } from './templates'
 
 export function parseExtraRecipients(raw: unknown): string[] {
   if (!Array.isArray(raw)) return []
@@ -22,4 +23,31 @@ export async function notifyStore(storeId: string, subject: string, text: string
   const result = await getStoreWithRecipients(storeId)
   if (!result) return
   await sendEmail({ to: result.recipients, subject, text })
+}
+
+export interface SendConfirmationInput {
+  to: string
+  greetingName: string
+  formTitle: string
+  storeName: string
+  storeEmail: string
+  intro: string
+  details?: ConfirmationEmailDetail[]
+}
+
+/**
+ * Confirma pro usuário que a mensagem/pedido/candidatura foi recebida.
+ * O remetente continua sendo o SMTP_FROM (autenticado) — a loja entra como
+ * Reply-To, então uma resposta do usuário vai direto pra loja sem quebrar
+ * SPF/DKIM do envio.
+ */
+export async function sendConfirmationEmail({ to, greetingName, formTitle, storeName, storeEmail, intro, details }: SendConfirmationInput) {
+  const { html, text } = buildConfirmationEmail({ greetingName, formTitle, storeName, intro, details })
+  await sendEmail({
+    to: [to],
+    subject: `Recebemos seu contato — ${formTitle}`,
+    text,
+    html,
+    replyTo: storeEmail,
+  })
 }

@@ -21,6 +21,8 @@ export interface SendEmailInput {
   to: string[]
   subject: string
   text: string
+  html?: string
+  replyTo?: string
 }
 
 /**
@@ -28,7 +30,7 @@ export interface SendEmailInput {
  * apenas registra um aviso — evita quebrar o envio do formulário em ambientes
  * sem e-mail configurado (ex: dev local sem credenciais).
  */
-export async function sendEmail({ to, subject, text }: SendEmailInput) {
+export async function sendEmail({ to, subject, text, html, replyTo }: SendEmailInput) {
   const recipients = to.filter(Boolean)
   if (recipients.length === 0) return
 
@@ -42,8 +44,10 @@ export async function sendEmail({ to, subject, text }: SendEmailInput) {
     await client.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to: recipients,
+      replyTo,
       subject,
       text,
+      html,
     })
   } catch (err) {
     console.error('[email] Falha ao enviar e-mail:', err)

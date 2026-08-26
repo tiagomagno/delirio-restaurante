@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
 import { prisma } from '@/lib/prisma'
-import { getStoreWithRecipients } from '@/lib/email/notify'
+import { getStoreWithRecipients, sendConfirmationEmail } from '@/lib/email/notify'
 import { sendEmail } from '@/lib/email/send'
 import { SITE_URL } from '@/lib/seo/pages'
 
@@ -78,6 +78,16 @@ export async function POST(request: NextRequest) {
       '',
       `Currículo: ${SITE_URL}${curriculoUrl}`,
     ].filter(Boolean).join('\n'),
+  })
+
+  await sendConfirmationEmail({
+    to: email,
+    greetingName: nome,
+    formTitle: 'Trabalhe Conosco',
+    storeName: store.name,
+    storeEmail: store.email,
+    intro: `Recebemos sua candidatura para a vaga de ${vaga} na loja ${store.name}. Nossa equipe vai analisar seu currículo.`,
+    details: [{ label: 'Vaga', value: vaga }],
   })
 
   return NextResponse.json({ ok: true }, { status: 201 })

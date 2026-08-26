@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getStoreWithRecipients } from '@/lib/email/notify'
+import { getStoreWithRecipients, sendConfirmationEmail } from '@/lib/email/notify'
 import { sendEmail } from '@/lib/email/send'
 
 export async function POST(request: NextRequest) {
@@ -53,6 +53,21 @@ export async function POST(request: NextRequest) {
       descricao ? `\nDescrição:\n${descricao}` : null,
     ].filter(Boolean).join('\n'),
   })
+
+  if (email) {
+    await sendConfirmationEmail({
+      to: email,
+      greetingName: nome.trim(),
+      formTitle: 'Eventos Corporativos',
+      storeName: store.name,
+      storeEmail: store.email,
+      intro: `Recebemos seu pedido de cotação para a loja ${store.name}. Nossa equipe vai analisar e retornar em breve.`,
+      details: [
+        { label: 'Pessoas', value: String(pessoasNum) },
+        ...(data ? [{ label: 'Data desejada', value: String(data) }] : []),
+      ],
+    })
+  }
 
   return NextResponse.json({ ok: true }, { status: 201 })
 }
