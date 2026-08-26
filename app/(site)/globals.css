@@ -2411,9 +2411,13 @@ body {
   .lojas__tabs { gap: 18px; }
   .lojas__tab { font-size: 0.75rem; white-space: nowrap; }
   .store-card-reveal {
-    flex: 0 0 calc(40% - 12px);
+    flex: 0 0 calc(50% - 10px);
     min-width: 0;
   }
+  .store-card__actions { justify-content: center; gap: 12px; }
+  .store-action { flex: 0 0 auto; }
+  .store-action__label { display: none; }
+  .carousel-arrow { display: none; }
   .store-card-reveal.reveal {
     opacity: 1;
     transform: none;
@@ -2421,11 +2425,21 @@ body {
   .escolha { padding: 50px 20px; }
   .escolha__title { font-size: 2rem; }
   .escolha__cards { flex-direction: column; max-width: 400px; }
-  .historia { flex-direction: column; }
-  .historia__left { padding: 50px 30px; }
+  .historia { flex-direction: column; background-image: none; }
+  .historia__left {
+    padding: 56px 28px 40px;
+    align-items: center;
+    text-align: center;
+  }
   .historia__left::after { display: none; }
-  .historia__right { min-height: 280px; }
-  .historia__year { font-size: 3rem; }
+  .historia__text { max-width: none; }
+  .historia__btn {
+    align-self: center;
+    background: var(--green);
+  }
+  .historia__btn:hover { background: #009a72; }
+  .historia__right { min-height: 280px; padding: 20px 30px 50px; }
+  .historia__year { font-size: 3.4rem; }
   .footer__inner { flex-wrap: wrap; gap: 40px; }
   .footer__socials { margin-left: 0; flex-direction: row; flex-wrap: wrap; }
 
