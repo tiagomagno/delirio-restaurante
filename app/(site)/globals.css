@@ -2411,7 +2411,7 @@ body {
   .lojas__tabs { gap: 18px; }
   .lojas__tab { font-size: 0.75rem; white-space: nowrap; }
   .store-card-reveal {
-    flex: 0 0 78%;
+    flex: 0 0 calc(40% - 12px);
     min-width: 0;
   }
   .store-card-reveal.reveal {
