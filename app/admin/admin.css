@@ -423,6 +423,95 @@ a.admin-card:hover {
   }
 }
 
+/* ─── FILTER BAR (listagens: pedidos, contatos, candidaturas) ───── */
+
+.admin-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 18px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  background: #fafbfc;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+}
+
+.admin-filter-bar__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4b5160;
+}
+
+.admin-filter-bar__field input[type="text"],
+.admin-filter-bar__field input[type="search"],
+.admin-filter-bar__field input[type="date"],
+.admin-filter-bar__field select {
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--admin-text);
+  padding: 9px 12px;
+  border: 1px solid var(--admin-border);
+  background: #fff;
+  border-radius: var(--admin-radius-sm);
+  font-size: 13.5px;
+  min-width: 160px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.admin-filter-bar__field input:focus,
+.admin-filter-bar__field select:focus {
+  outline: none;
+  border-color: var(--admin-accent);
+}
+
+.admin-filter-bar__dates {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-filter-bar__dates input[type="date"] {
+  min-width: 140px;
+}
+
+.admin-filter-bar__search {
+  flex: 1 1 220px;
+}
+
+.admin-filter-bar__search input {
+  width: 100%;
+  min-width: 0;
+}
+
+.admin-filter-bar__clear {
+  border: none;
+  background: none;
+  color: var(--admin-accent-dark);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 9px 2px;
+  white-space: nowrap;
+}
+
+.admin-filter-bar__clear:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .admin-filter-bar__field,
+  .admin-filter-bar__dates,
+  .admin-filter-bar__search {
+    flex: 1 1 100%;
+  }
+  .admin-filter-bar__field select,
+  .admin-filter-bar__field input {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 /* ─── FORM TABS (nav lateral no desktop, abas no mobile) ───── */
 
 .admin-form-tabs {
