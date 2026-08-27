@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-export default function Header() {
+const DEFAULT_WHATSAPP_URL = 'https://atendimento.delirio.app.br/'
+
+export default function Header({ whatsappUrl = DEFAULT_WHATSAPP_URL }: { whatsappUrl?: string }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -46,7 +48,7 @@ export default function Header() {
 
         <div className="header__whatsapp">
           <a
-            href="https://atendimento.delirio.app.br/"
+            href={whatsappUrl}
             target="_blank"
             rel="noopener"
             aria-label="WhatsApp Delírio Tropical"

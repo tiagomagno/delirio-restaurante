@@ -30,18 +30,21 @@ const PAGE_ORDER = [
   'eventos-corporativos', 'fale-conosco', 'ouvidoria', 'uso-e-privacidade', 'global',
 ]
 
-type Group = 'texto' | 'botao' | 'seo'
+type Group = 'texto' | 'botao' | 'links' | 'seo'
 
 const GROUP_LABELS: Record<Group, string> = {
   texto: 'Textos',
   botao: 'Botões',
+  links: 'Links',
   seo: 'SEO',
 }
 
-const GROUP_ORDER: Group[] = ['texto', 'botao', 'seo']
+const GROUP_ORDER: Group[] = ['texto', 'botao', 'links', 'seo']
 
 function groupOf(item: ContentItem): Group {
-  if (item.page === 'global' || item.key.startsWith('meta.') || item.key.startsWith('og.')) return 'seo'
+  if (item.key.startsWith('meta.') || item.key.startsWith('og.')) return 'seo'
+  if (item.key.startsWith('social.') || item.key.startsWith('header.') || item.key.startsWith('footer.')) return 'links'
+  if (item.page === 'global') return 'seo'
   if (item.key.endsWith('.cta')) return 'botao'
   return 'texto'
 }
@@ -79,7 +82,7 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
   const activeItems = byPage[activePage] ?? []
 
   const groupedActiveItems = useMemo(() => {
-    const groups: Record<Group, ContentItem[]> = { texto: [], botao: [], seo: [] }
+    const groups: Record<Group, ContentItem[]> = { texto: [], botao: [], links: [], seo: [] }
     for (const item of activeItems) groups[groupOf(item)].push(item)
     return groups
   }, [activeItems])

@@ -45,7 +45,9 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const c = await getPageContent('global')
+
   return (
     <html lang="pt-BR">
       <head>
@@ -59,9 +61,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <StructuredData data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
-        <Header />
+        <Header whatsappUrl={c['header.whatsapp_url']} />
         {children}
-        <Footer />
+        <Footer
+          instagramUrl={c['social.instagram_url']}
+          facebookUrl={c['social.facebook_url']}
+          whatsappUrl={c['footer.whatsapp_url']}
+          tiktokUrl={c['social.tiktok_url']}
+          encomendasUrl={c['footer.encomendas_url']}
+        />
       </body>
     </html>
   )

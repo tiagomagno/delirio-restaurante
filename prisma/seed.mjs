@@ -184,6 +184,12 @@ const CONTENT = [
   // ── Global (layout) ──
   { page: 'global', key: 'title.default', label: 'Título padrão do site', value: 'Delírio Tropical — Restaurante Saudável desde 1983' },
   { page: 'global', key: 'description', label: 'Descrição padrão (SEO)', value: 'Culinária natural, fresca e saborosa desde 1983. Lojas no Rio de Janeiro e Niterói. Encomendas online, delivery e eventos corporativos.' },
+  { page: 'global', key: 'header.whatsapp_url', label: 'Link do WhatsApp (cabeçalho)', value: 'https://atendimento.delirio.app.br/' },
+  { page: 'global', key: 'footer.whatsapp_url', label: 'Link do WhatsApp (rodapé)', value: 'https://wa.me/552140427171' },
+  { page: 'global', key: 'footer.encomendas_url', label: 'Link de Encomendas (rodapé)', value: 'https://cardapioencomendas.delirio.com.br/opcoes-entrega/event/1' },
+  { page: 'global', key: 'social.instagram_url', label: 'Link do Instagram', value: 'https://www.instagram.com/deliriotropical' },
+  { page: 'global', key: 'social.facebook_url', label: 'Link do Facebook', value: 'https://www.facebook.com/deliriotropical' },
+  { page: 'global', key: 'social.tiktok_url', label: 'Link do TikTok', value: 'https://www.tiktok.com/@deliriotropical' },
 
   // ── Home ──
   { page: 'home', key: 'meta.title', label: 'Título (SEO)', value: 'Delírio Tropical — Restaurante Saudável desde 1983' },
