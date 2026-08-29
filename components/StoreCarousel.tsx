@@ -12,9 +12,9 @@ const IconPin = () => (
   </svg>
 )
 
-const IconTruck = () => (
+const IconMoto = () => (
   <svg viewBox="0 0 24 24">
-    <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+    <path d="M19.44 9.03L15.41 5H11v2h3.59l2 2H5c-2.8 0-5 2.2-5 5s2.2 5 5 5c2.46 0 4.45-1.69 4.9-4h1.65l2.77-2.77c-.21.54-.32 1.14-.32 1.77 0 2.8 2.2 5 5 5s5-2.2 5-5c0-2.65-1.97-4.77-4.56-4.97zM7.82 15C7.4 16.15 6.3 17 5 17c-1.65 0-3-1.35-3-3s1.35-3 3-3c1.3 0 2.4.85 2.82 2H5v2h2.82zM19 17c-1.65 0-3-1.35-3-3 0-.16.02-.31.05-.46L17.76 15H19v-1.24l1.71-1.71c.18.42.29.88.29 1.36 0 1.65-1.35 3-3 3z" />
   </svg>
 )
 
@@ -123,7 +123,7 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
                     rel="noopener"
                     aria-label={`Delivery ${store.name}`}
                   >
-                    <span className="store-action__icon"><IconTruck /></span>
+                    <span className="store-action__icon"><IconMoto /></span>
                     <span className="store-action__label">Delivery</span>
                   </a>
                   <a
