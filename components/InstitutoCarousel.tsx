@@ -38,6 +38,18 @@ export default function InstitutoCarousel() {
         <div className="sobre-instituto__left">
           <div className="sobre-instituto__decor" aria-hidden="true" />
           <div className="sobre-instituto__content">
+            <div className="sobre-instituto__nav">
+              <button type="button" className="sobre-instituto__nav-btn" onClick={prev} aria-label="Instituto anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="18" height="18">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              <button type="button" className="sobre-instituto__nav-btn" onClick={next} aria-label="Próximo instituto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="18" height="18">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
             <h2 className="sobre-instituto__title">
               {item.title.split('\n').map((line, i) => <span key={i}>{line}<br /></span>)}
             </h2>
@@ -68,6 +80,18 @@ export default function InstitutoCarousel() {
           <polyline points="9 18 15 12 9 6" />
         </svg>
       </button>
+
+      {/* Dots */}
+      <div className="sobre-instituto__dots">
+        {INSTITUTOS.map((_, i) => (
+          <button
+            key={i}
+            className={`sobre-instituto__dot${i === current ? ' sobre-instituto__dot--active' : ''}`}
+            onClick={() => setCurrent(i)}
+            aria-label={`Instituto ${i + 1}`}
+          />
+        ))}
+      </div>
     </section>
   )
 }

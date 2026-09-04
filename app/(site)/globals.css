@@ -1000,6 +1000,53 @@ body {
   min-height: 500px;
 }
 
+.sobre-instituto__dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+/* Nav de setas no topo do conteúdo — só usada no mobile, no lugar dos dots */
+.sobre-instituto__nav {
+  display: none;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.sobre-instituto__nav-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sobre-instituto__nav-btn:hover { background: rgba(255,255,255,0.4); }
+
+.sobre-instituto__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.sobre-instituto__dot--active { background: var(--white); }
+
 /* ─── SOBRE NÓS — rancho 3 cards ────────────── */
 .sobre-rancho-section {
   background: var(--green);
@@ -1617,6 +1664,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
   display: block;
 }
 .loja-carousel__arrow {
@@ -2487,10 +2535,11 @@ body {
   /* lojas — lista vertical */
   .lojas-list { padding: 0 20px 60px; }
   .loja-card { padding: 36px 0; }
-  .loja-card__top { flex-direction: column; gap: 16px; }
-  .loja-card__actions { gap: 14px; }
+  .loja-card__top { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+  .loja-card__actions { gap: 14px; justify-content: center; }
   .loja-carousel__frame { height: 220px; }
-  .loja-card__details { flex-direction: column; gap: 24px; }
+  .loja-card__details { flex-direction: column; gap: 24px; align-items: center; text-align: center; }
+  .loja-card__contact-list { align-items: center; }
   .lojas-tabs__btn { padding: 16px 22px; font-size: 0.78rem; }
 
   /* eventos corporativos */
@@ -2506,30 +2555,39 @@ body {
   /* sobre nós — novas seções */
   .sobre-hero { min-height: 560px; }
   .sobre-hero__panel { width: 100%; min-height: 560px; border-radius: 0; align-items: flex-start; }
-  .sobre-hero__panel-inner { padding: 130px 24px 48px; }
-  .sobre-hero__title { font-size: 2.4rem; }
-  .sobre-hero__text { max-width: none; }
+  .sobre-hero__panel-inner { padding: 130px 24px 48px; align-items: center; text-align: center; }
+  .sobre-hero__title { font-size: 3.2rem; }
+  .sobre-hero__text { max-width: none; font-size: 0.9rem; }
+  .sobre-hero__arrow { display: none; }
   .sobre-hero__dots { left: 50%; }
-  .sobre-hero__arrow--prev { left: 8px; }
-  .sobre-hero__arrow--next { right: 8px; }
   .sobre-sust__inner { flex-direction: column; padding: 0; gap: 0; }
-  .sobre-sust__media { width: 100%; aspect-ratio: 16 / 10; border-radius: 0; }
+  .sobre-sust__media { width: auto; aspect-ratio: 16 / 10; border-radius: 16px; margin: 24px 24px 0; }
   .sobre-sust { padding: 0; }
   .sobre-sust__content { padding: 40px 24px; max-width: none; }
   .sobre-sust__title { font-size: 2.4rem; }
+  .sobre-parceiros { justify-content: center; }
+  .sobre-sust__btn { border-radius: 999px; }
   .sobre-instituto__inner { flex-direction: column; }
-  .sobre-instituto__content { padding: 48px 24px; }
-  .sobre-instituto__img { min-height: 260px; }
+  .sobre-instituto__content { padding: 48px 24px; align-items: center; text-align: center; }
+  .sobre-instituto__nav { display: flex; width: 100%; }
+  .sobre-instituto__title { font-size: 2rem; }
+  .sobre-instituto__img { min-height: 260px; margin: 0 24px 24px; border-radius: 16px; }
+  .sobre-instituto__btn { border-radius: 999px; }
+  .sobre-instituto__arrow { display: none; }
+  .sobre-instituto__dots { display: none; }
   .sobre-rancho-section { padding: 40px 24px; }
   .sobre-rancho-section__inner { flex-direction: column; padding: 0; gap: 32px; }
-  .sobre-rancho-section__videos { flex-direction: column; gap: 24px; width: 100%; }
+  .sobre-rancho-section__videos { flex-direction: column; gap: 24px; width: 100%; order: 2; }
   .sobre-rancho-card { width: 100%; height: auto; flex: none; }
   .sobre-rancho-card__thumb { flex: none; aspect-ratio: 16 / 10; }
   .sobre-rancho-info__title { font-size: 2.4rem; }
-  .sobre-rancho-info { flex: none; width: 100%; padding: 0; text-align: center; }
+  .sobre-rancho-info { flex: none; width: 100%; padding: 0; text-align: center; order: 1; }
   .sobre-livro { padding: 60px 24px; }
   .sobre-livro__inner { flex-direction: column; gap: 32px; }
   .sobre-livro__img { flex: none; width: 100%; }
+  .sobre-livro__text { text-align: center; }
+  .sobre-livro .sobre-historia__title { font-size: 2.4rem; }
+  .sobre-livro__btn { border-radius: 999px; }
 }
 
 /* ─── MOTION / REVEAL ──────────────────────── */

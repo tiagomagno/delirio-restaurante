@@ -37,6 +37,7 @@ function SlideCard({ slide, index, total, onMove, onChanged }: {
   const [buttonLabel, setButtonLabel] = useState(slide.buttonLabel)
   const [buttonUrl, setButtonUrl] = useState(slide.buttonUrl)
   const [error, setError] = useState('')
+  const [previewOpen, setPreviewOpen] = useState(false)
 
   async function saveAlt() {
     if (alt === slide.alt) return
@@ -80,9 +81,22 @@ function SlideCard({ slide, index, total, onMove, onChanged }: {
 
   return (
     <div className="admin-entry">
-      <div className="admin-entry__top">
+      <div className="admin-entry__top banner-slide__row">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="admin-thumb" src={slide.imageUrl} alt="" />
+        <img
+          className="admin-thumb admin-thumb--clickable"
+          src={slide.imageUrl}
+          alt=""
+          onClick={() => setPreviewOpen(true)}
+        />
+
+        <label className="banner-slide__alt">
+          Texto alternativo da imagem
+          <input type="text" value={alt} onChange={e => setAlt(e.target.value)} onBlur={saveAlt} />
+        </label>
+
+        <Switch checked={isSpecial} onChange={toggleSpecial} label="Banner especial" />
+
         <div className="admin-entry__actions">
           <span className={`admin-badge admin-badge--${slide.active ? 'green' : 'gray'}`}>
             {slide.active ? 'Ativo' : 'Inativo'}
@@ -105,16 +119,8 @@ function SlideCard({ slide, index, total, onMove, onChanged }: {
         </div>
       </div>
 
+      {(isSpecial || error) && (
       <div className="admin-form-grid" style={{ marginTop: 14 }}>
-        <label className="col-12">
-          Texto alternativo da imagem
-          <input type="text" value={alt} onChange={e => setAlt(e.target.value)} onBlur={saveAlt} />
-        </label>
-
-        <div className="col-12">
-          <Switch checked={isSpecial} onChange={toggleSpecial} label="Banner especial" />
-        </div>
-
         {isSpecial && (
           <>
             <label className="col-6">
@@ -142,6 +148,23 @@ function SlideCard({ slide, index, total, onMove, onChanged }: {
 
         {error && <p className="admin-error col-12">{error}</p>}
       </div>
+      )}
+
+      {previewOpen && (
+        <div className="admin-modal-overlay" onClick={() => setPreviewOpen(false)}>
+          <div className="admin-image-preview" onClick={e => e.stopPropagation()}>
+            <button
+              type="button"
+              className="admin-image-preview__close"
+              onClick={() => setPreviewOpen(false)}
+              aria-label="Fechar"
+            >
+              ×
+            </button>
+            <img src={slide.imageUrl} alt="" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -210,45 +233,44 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div className="admin-panel">
         <form className="admin-form" onSubmit={handleUpload} style={{ maxWidth: 'none' }}>
-          <div className="admin-form-grid">
-            <label className="col-12">
+          <div className="admin-form-row">
+            <label>
               Nova imagem do banner
               <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" required />
             </label>
 
-            <div className="col-12">
-              <Switch checked={isSpecial} onChange={setIsSpecial} label="Banner especial" />
-            </div>
+            <Switch checked={isSpecial} onChange={setIsSpecial} label="Banner especial" />
 
-            {isSpecial && (
-              <>
-                <label className="col-6">
-                  Texto do botão
-                  <input
-                    type="text"
-                    value={buttonLabel}
-                    onChange={e => setButtonLabel(e.target.value)}
-                    placeholder="veja o cardápio de Natal"
-                    required={isSpecial}
-                  />
-                </label>
-                <label className="col-6">
-                  Link do botão
-                  <input
-                    type="text"
-                    value={buttonUrl}
-                    onChange={e => setButtonUrl(e.target.value)}
-                    placeholder="https://cardapiodigital.delirio.com.br/..."
-                    required={isSpecial}
-                  />
-                </label>
-              </>
-            )}
+            <button className="admin-btn" type="submit" disabled={uploading}>
+              <IconUpload size={16} />
+              {uploading ? 'Enviando...' : 'Adicionar slide'}
+            </button>
           </div>
-          <button className="admin-btn" type="submit" disabled={uploading} style={{ marginTop: 16 }}>
-            <IconUpload size={16} />
-            {uploading ? 'Enviando...' : 'Adicionar slide'}
-          </button>
+
+          {isSpecial && (
+            <div className="admin-form-grid">
+              <label className="col-6">
+                Texto do botão
+                <input
+                  type="text"
+                  value={buttonLabel}
+                  onChange={e => setButtonLabel(e.target.value)}
+                  placeholder="veja o cardápio de Natal"
+                  required={isSpecial}
+                />
+              </label>
+              <label className="col-6">
+                Link do botão
+                <input
+                  type="text"
+                  value={buttonUrl}
+                  onChange={e => setButtonUrl(e.target.value)}
+                  placeholder="https://cardapiodigital.delirio.com.br/..."
+                  required={isSpecial}
+                />
+              </label>
+            </div>
+          )}
           {error && <p className="admin-error">{error}</p>}
         </form>
       </div>

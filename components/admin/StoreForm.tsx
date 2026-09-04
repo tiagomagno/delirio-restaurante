@@ -67,6 +67,7 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [section, setSection] = useState<Section>('geral')
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const photosRef = useRef<HTMLInputElement>(null)
 
   function set<K extends keyof StoreFormData>(key: K, value: StoreFormData[K]) {
@@ -298,7 +299,13 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
                 return (
                   <div key={photo.url} className="admin-entry">
                     <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                      <img className="admin-thumb" src={photo.url} alt="" style={{ width: 120, height: 80, flexShrink: 0 }} />
+                      <img
+                        className="admin-thumb admin-thumb--clickable"
+                        src={photo.url}
+                        alt=""
+                        style={{ width: 120, height: 80, flexShrink: 0 }}
+                        onClick={() => setPreviewUrl(photo.url)}
+                      />
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
                         <input
                           type="text"
@@ -384,6 +391,22 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
         )}
       </div>
     </form>
+
+    {previewUrl && (
+      <div className="admin-modal-overlay" onClick={() => setPreviewUrl(null)}>
+        <div className="admin-image-preview" onClick={e => e.stopPropagation()}>
+          <button
+            type="button"
+            className="admin-image-preview__close"
+            onClick={() => setPreviewUrl(null)}
+            aria-label="Fechar"
+          >
+            ×
+          </button>
+          <img src={previewUrl} alt="" />
+        </div>
+      </div>
+    )}
     </div>
   )
 }
