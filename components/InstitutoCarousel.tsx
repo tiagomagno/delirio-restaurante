@@ -8,18 +8,21 @@ const INSTITUTOS = [
     text: 'Motivados pelo amor ao esporte e pela certeza de seu poder transformador, o Instituto Compartilhar foi fundado em 2003 pelo técnico Bernardinho e se trata de uma instituição sem fins lucrativos que oportuniza crianças e adolescentes, prioritariamente estudantes de escolas públicas, a praticarem esporte de forma divertida ao mesmo tempo em que aprendem valores essenciais para a sua formação.',
     link: 'http://compartilhar.org.br/',
     img: '/wp-content/uploads/2023/05/delirio-back-institutocompartilhar.webp',
+    imgMobile: '/wp-content/uploads/2023/05/delirio-back-institutocompartilhar-mobile.webp',
   },
   {
     title: 'Instituto\nda Criança',
     text: 'O Instituto da Criança – IC é uma solução para promover o desenvolvimento humano. Por meio do investimento social privado e da gestão de projetos, a organização inspira a prática da solidariedade. Com 25 anos de história, o IC funciona como uma via de aproximação entre pessoas físicas e jurídicas que têm condições e vontade de contribuir, contudo não sabem como fazer este investimento chegar a quem realmente precisa. Anualmente, investe em projetos e campanhas de educação, cidadania, geração de renda e desenvolvimento comunitário. A organização está sediada no Rio de Janeiro e também atua em São Paulo, Paraná e Bahia.',
     link: '#',
     img: '/wp-content/uploads/2023/05/delirio-back-institutocrianca.webp',
+    imgMobile: '/wp-content/uploads/2023/05/delirio-back-institutocrianca-mobile.webp',
   },
   {
     title: 'F.A.V',
     text: 'A F.A.V. é uma entidade civil, sem fins lucrativos, com sede no Rio de Janeiro que desenvolve um trabalho sócio assistencial junto às famílias de moradores das comunidades carentes no entorno do bairro do Rio Comprido, procurando despertar à auto iniciativa e criando, consequentemente, uma convivência de auto–ajuda para a solução de problemas sócio comunitários.',
     link: '#',
     img: '/wp-content/uploads/2023/05/delirio-back-fav.webp',
+    imgMobile: '/wp-content/uploads/2023/05/delirio-back-fav-mobile.webp',
   },
 ]
 
@@ -60,10 +63,15 @@ export default function InstitutoCarousel() {
           </div>
         </div>
 
-        {/* Foto — preenche o restante até a borda da tela */}
+        {/* Foto — preenche o restante até a borda da tela. No mobile usa um
+            recorte só com a foto (sem a faixa laranja/decor do fundo
+            desktop), já que o box mobile é mais panorâmico que a foto sozinha. */}
         <div
           className="sobre-instituto__img"
-          style={{ backgroundImage: `url(${item.img})` }}
+          style={{
+            '--img-desktop': `url(${item.img})`,
+            '--img-mobile': `url(${item.imgMobile})`,
+          } as React.CSSProperties}
           role="img"
           aria-label={item.title.replace('\n', ' ')}
         />

@@ -996,6 +996,7 @@ body {
 .sobre-instituto__img {
   flex: 1;
   background-color: var(--gray-light);
+  background-image: var(--img-desktop);
   background-size: cover;
   background-position: right;
   background-repeat: no-repeat;
@@ -2569,11 +2570,18 @@ body {
   .sobre-sust__content { padding: 40px 24px; max-width: none; }
   .sobre-sust__title { font-size: 2.4rem; }
   .sobre-parceiros { justify-content: center; }
+  .sobre-sust__btn { align-self: center; }
   .sobre-instituto__inner { flex-direction: column; }
   .sobre-instituto__content { padding: 48px 24px; align-items: center; text-align: center; }
   .sobre-instituto__nav { display: flex; width: 100%; }
   .sobre-instituto__title { font-size: 2rem; }
-  .sobre-instituto__img { min-height: 260px; margin: 0 24px 24px; border-radius: 16px; }
+  .sobre-instituto__img {
+    min-height: 260px;
+    margin: 0 24px 24px;
+    border-radius: 16px;
+    background-image: var(--img-mobile);
+    background-position: center;
+  }
   .sobre-instituto__arrow { display: none; }
   .sobre-instituto__dots { display: none; }
   .sobre-rancho-section { padding: 40px 24px; }
@@ -2588,6 +2596,19 @@ body {
   .sobre-livro__img { flex: none; width: 100%; }
   .sobre-livro__text { text-align: center; }
   .sobre-livro .sobre-historia__title { font-size: 2.4rem; }
+}
+
+/* Telas mobile medianas (ex: 430/480px) já têm espaço pra mostrar de
+   novo a legenda dos ícones de ação do card de loja; abaixo disso
+   (ex: 375px) o texto continua oculto para não estourar o card. */
+@media (min-width: 400px) and (max-width: 768px) {
+  .store-action { flex: 1; }
+  .store-action__label {
+    display: block;
+    white-space: normal;
+    font-size: 0.52rem;
+    line-height: 1.2;
+  }
 }
 
 /* ─── MOTION / REVEAL ──────────────────────── */
