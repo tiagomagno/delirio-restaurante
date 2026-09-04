@@ -164,7 +164,7 @@ export default async function SobreNos() {
               {c['livro.desc'] ??
                 'Há 4 décadas, nascia o Delírio Tropical com um sonho simples: levar comida leve, saudável e cheia de sabor para os cariocas. Esse sonho cresceu, atravessou gerações e se tornou parte da história da Cidade Maravilhosa. Essa jornada esta registrada em nosso livro especial de 40 anos, uma coleção receitas e sabores que contam histórias.'}
             </p>
-            <a href="https://delirio.com.br" target="_blank" rel="noopener" className="sobre-livro__btn">
+            <a href="https://cardapioencomendas.delirio.com.br/varieties" target="_blank" rel="noopener" className="sobre-livro__btn">
               {c['livro.cta'] ?? 'Acesse e leve o Delírio para sua casa'}
             </a>
           </div>
