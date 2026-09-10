@@ -10,7 +10,7 @@ export default async function EditarLoja({ params }: { params: Promise<{ id: str
 
   return (
     <div>
-      <h1>Editar loja</h1>
+      <h1>Editar loja <span style={{ opacity: 0.6, fontWeight: 400 }}>· {store.name}</span></h1>
       <StoreForm
         initial={{
           id: store.id,
