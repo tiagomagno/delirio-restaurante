@@ -887,6 +887,19 @@ body {
 
 .sobre-play-btn:hover { background: rgba(0,0,0,0.75); }
 
+.sobre-video-trigger {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: inherit;
+}
+
 .sobre-sust__content {
   flex: 0 1 auto;
   max-width: 620px;

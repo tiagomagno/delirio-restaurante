@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import SobreHeroCarousel from '@/components/SobreHeroCarousel'
 import InstitutoCarousel from '@/components/InstitutoCarousel'
 import Multiline from '@/components/Multiline'
+import VideoThumb from '@/components/VideoThumb'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 
@@ -48,17 +49,11 @@ export default async function SobreNos() {
       <section id="sustentabilidade" className="sobre-sust" aria-label="Sustentabilidade">
         <div className="sobre-sust__inner">
           <div className="sobre-sust__media">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`${BASE}/05/back-video-sustentabilidade.webp`}
+            <VideoThumb
+              poster={`${BASE}/05/back-video-sustentabilidade.webp`}
+              videoSrc={`${BASE}/05/WORKSHOP-SUSTENTABILIDADE-DELIRIO-TROPICAL-1.mp4`}
               alt="Vídeo sustentabilidade Delírio Tropical"
-              loading="lazy"
             />
-            <div className="sobre-play-btn" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
           </div>
           <div className="sobre-sust__content">
             <h2 className="sobre-sust__title">
@@ -99,11 +94,12 @@ export default async function SobreNos() {
           <div className="sobre-rancho-section__videos">
             <div className="sobre-rancho-card">
               <div className="sobre-rancho-card__thumb">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${BASE}/05/video1.webp`} alt="Plantação no rancho" loading="lazy" />
-                <div className="sobre-play-btn" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M8 5v14l11-7z" /></svg>
-                </div>
+                <VideoThumb
+                  poster={`${BASE}/05/video1.webp`}
+                  videoSrc={`${BASE}/05/Cuidados.mp4`}
+                  alt="Plantação no rancho"
+                  playBtnSize={24}
+                />
               </div>
               <p className="sobre-rancho-card__text">
                 {c['rancho.card1.text'] ??
@@ -112,11 +108,12 @@ export default async function SobreNos() {
             </div>
             <div className="sobre-rancho-card">
               <div className="sobre-rancho-card__thumb">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${BASE}/05/video2.webp`} alt="Compostagem no rancho" loading="lazy" />
-                <div className="sobre-play-btn" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M8 5v14l11-7z" /></svg>
-                </div>
+                <VideoThumb
+                  poster={`${BASE}/05/video2.webp`}
+                  videoSrc={`${BASE}/05/Compostagem-que-utilizamos-em-nossos-produtos.mp4`}
+                  alt="Compostagem no rancho"
+                  playBtnSize={24}
+                />
               </div>
               <p className="sobre-rancho-card__text">
                 {c['rancho.card2.text'] ??
@@ -125,11 +122,12 @@ export default async function SobreNos() {
             </div>
             <div className="sobre-rancho-card">
               <div className="sobre-rancho-card__thumb">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${BASE}/05/video3.webp`} alt="Alimentos do rancho" loading="lazy" />
-                <div className="sobre-play-btn" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M8 5v14l11-7z" /></svg>
-                </div>
+                <VideoThumb
+                  poster={`${BASE}/05/video3.webp`}
+                  videoSrc={`${BASE}/05/Produtos-Organicos.mp4`}
+                  alt="Alimentos do rancho"
+                  playBtnSize={24}
+                />
               </div>
               <p className="sobre-rancho-card__text">
                 {c['rancho.card3.text'] ??
