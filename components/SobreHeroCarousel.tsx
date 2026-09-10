@@ -27,7 +27,6 @@ export default function SobreHeroCarousel({ slides }: Props) {
   const prev = () => setCurrent(i => (i - 1 + slides.length) % slides.length)
   const next = () => setCurrent(i => (i + 1) % slides.length)
 
-  const slide = slides[current]
   const img = IMAGES[current] ?? IMAGES[0]
 
   return (
@@ -41,13 +40,24 @@ export default function SobreHeroCarousel({ slides }: Props) {
 
       {/* Painel verde esquerdo com borda curva */}
       <div className="sobre-hero__panel">
-        <div className="sobre-hero__panel-inner">
-          <h1 className="sobre-hero__title">
-            {slide.title.split('\n').map((line, i) => (
-              <span key={i}>{line}<br /></span>
-            ))}
-          </h1>
-          <p className="sobre-hero__text">{slide.text}</p>
+        <div className="sobre-hero__panel-stack">
+          {/* Os 3 slides ficam empilhados (mesma célula de grid) pra altura
+              do painel ser sempre a do slide mais alto — sem "pular" de
+              tamanho ao trocar de slide. Só o ativo fica visível. */}
+          {slides.map((s, i) => (
+            <div
+              key={i}
+              className={`sobre-hero__panel-inner${i === current ? ' is-active' : ''}`}
+              aria-hidden={i !== current}
+            >
+              <h1 className="sobre-hero__title">
+                {s.title.split('\n').map((line, j) => (
+                  <span key={j}>{line}<br /></span>
+                ))}
+              </h1>
+              <p className="sobre-hero__text">{s.text}</p>
+            </div>
+          ))}
         </div>
       </div>
 
