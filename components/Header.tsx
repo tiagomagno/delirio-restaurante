@@ -26,6 +26,7 @@ export default function Header({ whatsappUrl = DEFAULT_WHATSAPP_URL }: { whatsap
           <img
             src="/wp-content/uploads/2023/05/logo-delirio.webp"
             alt="Logo Delírio Tropical"
+            fetchPriority="high"
           />
         </Link>
 

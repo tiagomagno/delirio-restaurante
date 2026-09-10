@@ -6,7 +6,7 @@
   --white: #ffffff;
   --gray-light: #f7f7f7;
   --text-dark: #1a1a1a;
-  --font: 'Aleo', serif;
+  --font: var(--font-aleo), 'Aleo', serif;
 }
 
 html { scroll-behavior: smooth; }

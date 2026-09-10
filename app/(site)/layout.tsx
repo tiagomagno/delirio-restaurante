@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Aleo } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -6,6 +7,15 @@ import StructuredData from '@/components/StructuredData'
 import { getPageContent } from '@/lib/data/content'
 import { buildOrganizationSchema, buildWebsiteSchema } from '@/lib/seo/structuredData'
 import { SITE_FAVICON } from '@/lib/seo/pages'
+import AsyncTypekitFont from '@/components/AsyncTypekitFont'
+
+const aleo = Aleo({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-aleo',
+  display: 'swap',
+})
 
 export async function generateMetadata(): Promise<Metadata> {
   const c = await getPageContent('global')
@@ -49,17 +59,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const c = await getPageContent('global')
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={aleo.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,400;0,700;1,400&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="stylesheet" href="https://use.typekit.net/wef2css.css" />
+        <noscript>
+          <link rel="stylesheet" href="https://use.typekit.net/wef2css.css" />
+        </noscript>
       </head>
       <body>
+        <AsyncTypekitFont />
         <StructuredData data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
         <Header whatsappUrl={c['header.whatsapp_url']} />
         {children}
