@@ -295,7 +295,9 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
         <p className="admin-form-section__desc">
           Marque uma foto como capa da Home — ela aparece no carrossel de lojas da página inicial. Marque
           (a mesma ou outra) como capa da página de loja — ela é a primeira exibida no carrossel da loja em
-          "Lojas". A ordem das fotos abaixo define a ordem de exibição das demais.
+          "Lojas". A ordem das fotos abaixo define a ordem de exibição das demais. A foto marcada só como
+          capa da Home não aparece na página de Lojas — ela é recortada em formato retangular pro card
+          quadrado da Home e destoa do carrossel da loja.
         </p>
         <div className="admin-form-grid">
           <label className="col-12">
