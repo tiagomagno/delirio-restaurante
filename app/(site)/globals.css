@@ -2608,7 +2608,7 @@ body {
   .sobre-hero__arrow { display: none; }
   .sobre-hero__dots { left: 50%; }
   .sobre-sust__inner { flex-direction: column; padding: 0; gap: 0; }
-  .sobre-sust__media { width: auto; height: auto; aspect-ratio: 16 / 10; border-radius: 16px; margin: 24px 24px 0; }
+  .sobre-sust__media { width: auto; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; margin: 24px 24px 0; }
   .sobre-sust { padding: 0; }
   .sobre-sust__content { padding: 40px 24px; max-width: none; }
   .sobre-sust__title { font-size: 2.4rem; }
@@ -2631,7 +2631,7 @@ body {
   .sobre-rancho-section__inner { flex-direction: column; padding: 0; gap: 32px; }
   .sobre-rancho-section__videos { flex-direction: column; gap: 24px; width: 100%; order: 2; }
   .sobre-rancho-card { width: 100%; height: auto; flex: none; }
-  .sobre-rancho-card__thumb { flex: none; aspect-ratio: 16 / 10; }
+  .sobre-rancho-card__thumb { flex: none; aspect-ratio: 9 / 16; }
   .sobre-rancho-info__title { font-size: 2.4rem; }
   .sobre-rancho-info { flex: none; width: 100%; padding: 0; text-align: center; order: 1; }
   .sobre-livro { padding: 60px 24px; }
