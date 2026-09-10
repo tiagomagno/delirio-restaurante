@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 
 const EDITABLE_FIELDS = [
-  'slug', 'name', 'address', 'bairroCity', 'region', 'image', 'imageAlt', 'photos',
+  'slug', 'name', 'address', 'bairroCity', 'region', 'image', 'imageAlt',
+  'storeImage', 'storeImageAlt', 'photos',
   'mapsUrl', 'deliveryUrl', 'menuUrl', 'hours', 'phones', 'whatsapp',
   'email', 'extraRecipients', 'highlight', 'order', 'active',
 ] as const

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { IconTrash, IconArrowUp, IconArrowDown, IconStar } from './icons'
+import { IconTrash, IconArrowUp, IconArrowDown, IconHome, IconStore } from './icons'
 import type { StorePhoto } from '@/lib/data/stores'
 
 export interface StoreFormData {
@@ -14,6 +14,8 @@ export interface StoreFormData {
   region: string
   image: string
   imageAlt: string
+  storeImage: string
+  storeImageAlt: string
   photos: StorePhoto[]
   mapsUrl: string
   deliveryUrl: string
@@ -28,7 +30,8 @@ export interface StoreFormData {
 }
 
 const EMPTY: StoreFormData = {
-  slug: '', name: '', address: [''], bairroCity: '', region: 'rio', image: '', imageAlt: '', photos: [],
+  slug: '', name: '', address: [''], bairroCity: '', region: 'rio', image: '', imageAlt: '',
+  storeImage: '', storeImageAlt: '', photos: [],
   mapsUrl: '', deliveryUrl: '', menuUrl: '', hours: [''], phones: [''], whatsapp: '', email: '',
   extraRecipients: [],
   highlight: false, active: true,
@@ -108,12 +111,17 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     setData(d => {
       const photos = d.photos.filter(p => p.url !== url)
       const image = d.image === url ? (photos[0]?.url ?? '') : d.image
-      return { ...d, photos, image }
+      const storeImage = d.storeImage === url ? '' : d.storeImage
+      return { ...d, photos, image, storeImage }
     })
   }
 
-  function setCover(url: string) {
+  function setHomeCover(url: string) {
     set('image', url)
+  }
+
+  function setStoreCover(url: string) {
+    set('storeImage', data.storeImage === url ? '' : url)
   }
 
   function movePhoto(index: number, direction: -1 | 1) {
@@ -129,14 +137,16 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     setError('')
     const cover = data.photos.find(p => p.url === data.image)
     if (!cover) {
-      setError('Envie ao menos uma foto na galeria e marque uma como capa da loja')
+      setError('Envie ao menos uma foto na galeria e marque uma como capa da Home')
       setSection('galeria')
       return
     }
+    const storeCover = data.photos.find(p => p.url === data.storeImage)
     setSaving(true)
     const payload = {
       ...data,
       imageAlt: cover.alt,
+      storeImageAlt: storeCover?.alt ?? '',
       address: data.address.map(l => l.trim()).filter(Boolean),
       hours: data.hours.map(l => l.trim()).filter(Boolean),
       phones: data.phones.map(l => l.trim()).filter(Boolean),
@@ -283,8 +293,9 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
       <div className="admin-form-section">
         <div className="admin-form-section__title">Galeria de fotos</div>
         <p className="admin-form-section__desc">
-          Marque uma foto como capa — ela aparece no carrossel de lojas da home. A ordem das fotos abaixo
-          define a ordem de exibição na página de lojas.
+          Marque uma foto como capa da Home — ela aparece no carrossel de lojas da página inicial. Marque
+          (a mesma ou outra) como capa da página de loja — ela é a primeira exibida no carrossel da loja em
+          "Lojas". A ordem das fotos abaixo define a ordem de exibição das demais.
         </p>
         <div className="admin-form-grid">
           <label className="col-12">
@@ -295,7 +306,8 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
           {data.photos.length > 0 ? (
             <div className="col-12" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {data.photos.map((photo, i) => {
-                const isCover = photo.url === data.image
+                const isHomeCover = photo.url === data.image
+                const isStoreCover = photo.url === data.storeImage
                 return (
                   <div key={photo.url} className="admin-entry">
                     <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
@@ -332,15 +344,24 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
                           >
                             <IconArrowDown size={13} />
                           </button>
-                          {isCover ? (
+                          {isHomeCover ? (
                             <span className="admin-badge admin-badge--green" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                              <IconStar size={12} /> Capa da loja
+                              <IconHome size={12} /> Capa da Home
                             </span>
                           ) : (
-                            <button type="button" className="admin-icon-btn" onClick={() => setCover(photo.url)}>
-                              <IconStar size={13} /> Definir como capa
+                            <button type="button" className="admin-icon-btn" onClick={() => setHomeCover(photo.url)}>
+                              <IconHome size={13} /> Definir como capa da Home
                             </button>
                           )}
+                          <button
+                            type="button"
+                            className={isStoreCover ? 'admin-badge admin-badge--green' : 'admin-icon-btn'}
+                            style={isStoreCover ? { display: 'inline-flex', alignItems: 'center', gap: 4 } : undefined}
+                            onClick={() => setStoreCover(photo.url)}
+                          >
+                            <IconStore size={isStoreCover ? 12 : 13} />
+                            {isStoreCover ? 'Capa da página de loja' : 'Definir como capa da página de loja'}
+                          </button>
                           <button type="button" className="admin-icon-btn" onClick={() => removePhoto(photo.url)}>
                             <IconTrash size={13} /> Remover
                           </button>

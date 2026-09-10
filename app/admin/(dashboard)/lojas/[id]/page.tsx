@@ -21,6 +21,8 @@ export default async function EditarLoja({ params }: { params: Promise<{ id: str
           region: store.region,
           image: store.image,
           imageAlt: store.imageAlt,
+          storeImage: store.storeImage ?? '',
+          storeImageAlt: store.storeImageAlt,
           photos: normalizePhotos(store.photos),
           mapsUrl: store.mapsUrl,
           deliveryUrl: store.deliveryUrl ?? '',

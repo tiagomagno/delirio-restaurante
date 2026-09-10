@@ -14,6 +14,8 @@ export interface StoreData {
   region: string
   image: string
   imageAlt: string
+  storeImage: string
+  storeImageAlt: string
   photos: StorePhoto[]
   mapsUrl: string
   deliveryUrl: string
@@ -48,23 +50,40 @@ export async function getStores(): Promise<StoreData[]> {
     orderBy: { order: 'asc' },
   })
 
-  return stores.map(s => ({
-    id: s.id,
-    slug: s.slug,
-    name: s.name,
-    address: (s.address as string[]) ?? [],
-    bairroCity: s.bairroCity,
-    region: s.region,
-    image: s.image,
-    imageAlt: s.imageAlt,
-    photos: normalizePhotos(s.photos),
-    mapsUrl: s.mapsUrl,
-    deliveryUrl: s.deliveryUrl ?? '',
-    menuUrl: s.menuUrl ?? '',
-    hours: (s.hours as string[]) ?? [],
-    phones: (s.phones as string[]) ?? [],
-    whatsapp: s.whatsapp ?? '',
-    email: s.email,
-    highlight: s.highlight,
-  }))
+  return stores.map(s => {
+    const photos = normalizePhotos(s.photos)
+    return {
+      id: s.id,
+      slug: s.slug,
+      name: s.name,
+      address: (s.address as string[]) ?? [],
+      bairroCity: s.bairroCity,
+      region: s.region,
+      image: s.image,
+      imageAlt: s.imageAlt,
+      storeImage: s.storeImage ?? '',
+      storeImageAlt: s.storeImageAlt,
+      // A capa da página de loja é a primeira foto exibida no carrossel da
+      // página de Lojas — reordenamos a galeria pra trazê-la pra frente, sem
+      // mexer na ordem das demais.
+      photos: reorderWithCoverFirst(photos, s.storeImage),
+      mapsUrl: s.mapsUrl,
+      deliveryUrl: s.deliveryUrl ?? '',
+      menuUrl: s.menuUrl ?? '',
+      hours: (s.hours as string[]) ?? [],
+      phones: (s.phones as string[]) ?? [],
+      whatsapp: s.whatsapp ?? '',
+      email: s.email,
+      highlight: s.highlight,
+    }
+  })
+}
+
+function reorderWithCoverFirst(photos: StorePhoto[], coverUrl: string | null): StorePhoto[] {
+  if (!coverUrl) return photos
+  const index = photos.findIndex(p => p.url === coverUrl)
+  if (index <= 0) return photos
+  const copy = [...photos]
+  const [cover] = copy.splice(index, 1)
+  return [cover, ...copy]
 }

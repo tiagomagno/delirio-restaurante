@@ -30,6 +30,8 @@ export async function POST(request: NextRequest) {
         region: body.region,
         image: body.image,
         imageAlt: body.imageAlt || '',
+        storeImage: body.storeImage || null,
+        storeImageAlt: body.storeImageAlt || '',
         photos: body.photos ?? undefined,
         mapsUrl: body.mapsUrl,
         deliveryUrl: body.deliveryUrl || null,
