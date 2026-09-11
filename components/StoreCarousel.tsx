@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import type { StoreData } from '@/lib/data/stores'
 import Reveal from './Reveal'
+import RetryImage from './RetryImage'
 
 type Filter = 'todas' | 'rio' | 'niteroi'
 
@@ -93,8 +94,7 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
           {filtered.map((store, i) => (
             <Reveal key={store.id} delay={Math.min(i, 4) * 70} className="store-card-reveal">
             <div className="store-card">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <RetryImage
                 className="store-card__img"
                 src={store.image}
                 alt={store.imageAlt || `Loja ${store.name}`}

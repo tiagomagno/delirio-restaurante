@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import RetryImage from '@/components/RetryImage'
 import type { StoreData, StorePhoto } from '@/lib/data/stores'
 
 /* ─── Ícones ─── */
@@ -61,8 +62,7 @@ function FotoCarousel({ fotos, nome, priority = false }: { fotos: StorePhoto[]; 
   return (
     <div className="loja-carousel">
       <div className="loja-carousel__frame">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <RetryImage
           key={fotos[idx].url}
           src={fotos[idx].url}
           alt={fotos[idx].alt || `${nome} — foto ${idx + 1} de ${total}`}

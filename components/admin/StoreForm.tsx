@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { IconTrash, IconArrowUp, IconArrowDown, IconHome, IconStore } from './icons'
+import RetryImage from '@/components/RetryImage'
 import type { StorePhoto } from '@/lib/data/stores'
 
 export interface StoreFormData {
@@ -313,7 +314,7 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
                 return (
                   <div key={photo.url} className="admin-entry">
                     <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                      <img
+                      <RetryImage
                         className="admin-thumb admin-thumb--clickable"
                         src={photo.url}
                         alt=""
@@ -426,7 +427,7 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
           >
             ×
           </button>
-          <img src={previewUrl} alt="" />
+          <RetryImage src={previewUrl} alt="" />
         </div>
       </div>
     )}
