@@ -294,11 +294,12 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
       <div className="admin-form-section">
         <div className="admin-form-section__title">Galeria de fotos</div>
         <p className="admin-form-section__desc">
-          Marque uma foto como capa da Home — ela aparece no carrossel de lojas da página inicial. Marque
-          (a mesma ou outra) como capa da página de loja — ela é a primeira exibida no carrossel da loja em
-          "Lojas". A ordem das fotos abaixo define a ordem de exibição das demais. A foto marcada só como
-          capa da Home não aparece na página de Lojas — ela é recortada em formato retangular pro card
-          quadrado da Home e destoa do carrossel da loja.
+          Marque uma foto como capa da Home — ela aparece (recortada em formato quadrado) no carrossel de
+          lojas da página inicial. Marque (a mesma ou outra) como capa da página de loja — ela é a primeira
+          exibida no carrossel da loja em "Lojas". A ordem das fotos abaixo define a ordem de exibição das
+          demais. Se nenhuma capa de loja for definida, a capa da Home é usada como capa da loja também. Se
+          uma capa de loja diferente for definida, a foto só de capa da Home some do carrossel da loja — ela
+          é recortada em quadrado pro card da Home e destoa do carrossel retangular da loja.
         </p>
         <div className="admin-form-grid">
           <label className="col-12">
@@ -321,6 +322,14 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
                         style={{ width: 120, height: 80, flexShrink: 0 }}
                         onClick={() => setPreviewUrl(photo.url)}
                       />
+                      {isHomeCover && (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                          <RetryImage className="admin-thumb-square" src={photo.url} alt="" />
+                          <span style={{ fontSize: 11, color: 'var(--admin-text-muted, #888)', textAlign: 'center' }}>
+                            prévia no card da Home
+                          </span>
+                        </div>
+                      )}
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
                         <input
                           type="text"

@@ -900,6 +900,15 @@ a.admin-card:hover {
 }
 .admin-thumb--clickable:hover { opacity: 0.85; }
 
+.admin-thumb-square {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  background: #f2f3f6;
+}
+
 .admin-image-preview {
   display: flex;
   flex-direction: column;

@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { IconArrowUp, IconArrowDown, IconTrash, IconUpload } from './icons'
 import Switch from './Switch'
+import RetryImage from '@/components/RetryImage'
 
 export interface Slide {
   id: string
@@ -82,8 +83,7 @@ function SlideCard({ slide, index, total, onMove, onChanged }: {
   return (
     <div className="admin-entry">
       <div className="admin-entry__top banner-slide__row">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <RetryImage
           className="admin-thumb admin-thumb--clickable"
           src={slide.imageUrl}
           alt=""
@@ -161,7 +161,7 @@ function SlideCard({ slide, index, total, onMove, onChanged }: {
             >
               ×
             </button>
-            <img src={slide.imageUrl} alt="" />
+            <RetryImage src={slide.imageUrl} alt="" />
           </div>
         </div>
       )}

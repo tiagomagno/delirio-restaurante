@@ -63,12 +63,14 @@ export async function getStores(): Promise<StoreData[]> {
       imageAlt: s.imageAlt,
       storeImage: s.storeImage ?? '',
       storeImageAlt: s.storeImageAlt,
-      // A foto marcada como capa da Home é recortada em formato retangular
-      // pro card quadrado da Home e não deve aparecer na galeria da página
-      // de Lojas — a menos que seja a mesma foto escolhida como capa da
-      // página de loja, ou a única foto que a loja tem. A capa da página de
-      // loja (quando definida) é reordenada pra frente das demais.
-      photos: reorderWithCoverFirst(excludeHomeCover(photos, s.image, s.storeImage), s.storeImage),
+      // A foto marcada como capa da Home é recortada em formato quadrado pro
+      // card da Home e destoa do carrossel retangular da página de Lojas —
+      // por isso só é excluída da galeria da loja quando existe uma capa de
+      // loja diferente definida (senão a galeria some quando é a única foto
+      // que a loja tem). Sem capa de loja definida, ela vira o fallback: cai
+      // pra capa da Home mesmo, aparecendo normalmente e sendo reordenada
+      // pra frente.
+      photos: reorderWithCoverFirst(excludeHomeCover(photos, s.image, s.storeImage), s.storeImage || s.image),
       mapsUrl: s.mapsUrl,
       deliveryUrl: s.deliveryUrl ?? '',
       menuUrl: s.menuUrl ?? '',
@@ -82,8 +84,8 @@ export async function getStores(): Promise<StoreData[]> {
 }
 
 function excludeHomeCover(photos: StorePhoto[], homeImage: string, storeImage: string | null): StorePhoto[] {
-  if (!homeImage) return photos
-  const filtered = photos.filter(p => p.url !== homeImage || p.url === storeImage)
+  if (!homeImage || !storeImage || storeImage === homeImage) return photos
+  const filtered = photos.filter(p => p.url !== homeImage)
   return filtered.length > 0 ? filtered : photos
 }
 

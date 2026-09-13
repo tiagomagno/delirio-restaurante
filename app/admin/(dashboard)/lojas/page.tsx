@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { IconPlus, IconEdit } from '@/components/admin/icons'
 import StoreActiveSwitch from '@/components/admin/StoreActiveSwitch'
+import RetryImage from '@/components/RetryImage'
 
 export default async function AdminLojas() {
   const stores = await prisma.store.findMany({ orderBy: { order: 'asc' } })
@@ -40,7 +41,7 @@ export default async function AdminLojas() {
           <tbody>
             {stores.map(store => (
               <tr key={store.id}>
-                <td><img className="admin-thumb" src={store.image} alt="" /></td>
+                <td><RetryImage className="admin-thumb" src={store.image} alt="" /></td>
                 <td>{store.name}</td>
                 <td>{store.region === 'rio' ? 'Rio de Janeiro' : 'Niterói'}</td>
                 <td>
