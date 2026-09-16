@@ -29,7 +29,7 @@ export default async function Home() {
   const modalStores = stores.map(s => ({ name: s.name, menuUrl: s.menuUrl, highlight: s.highlight }))
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <h1 className="sr-only">{content['meta.title'] ?? 'Delírio Tropical — Restaurante Saudável desde 1983'}</h1>
 
       {/* ── Hero ── */}

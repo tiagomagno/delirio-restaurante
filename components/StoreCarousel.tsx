@@ -75,14 +75,13 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
       <h2 className="lojas__title">Lojas Delírio</h2>
       <p className="lojas__subtitle">Visite a loja mais próxima ou peça por delivery</p>
 
-      <div className="lojas__tabs" role="tablist">
+      <div className="lojas__tabs">
         {(['todas', 'rio', 'niteroi'] as Filter[]).map(f => (
           <button
             key={f}
             className={`lojas__tab${filter === f ? ' active' : ''}`}
             onClick={() => handleFilter(f)}
-            role="tab"
-            aria-selected={filter === f}
+            aria-pressed={filter === f}
           >
             {f === 'todas' ? 'Todas' : f === 'rio' ? 'Rio de Janeiro' : 'Niterói'}
           </button>
@@ -131,7 +130,7 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
                     href={store.menuUrl}
                     target="_blank"
                     rel="noopener"
-                    aria-label={`Cardápio ${store.name}`}
+                    aria-label={`Ver cardápio ${store.name}`}
                   >
                     <span className="store-action__icon"><IconMenu /></span>
                     <span className="store-action__label">Ver cardápio</span>
@@ -161,6 +160,7 @@ export default function StoreCarousel({ stores }: { stores: StoreData[] }) {
                 className={`carousel-dot${i === nav.index ? ' active' : ''}`}
                 onClick={() => goTo(i)}
                 aria-label={`Página ${i + 1}`}
+                aria-current={i === nav.index ? 'true' : undefined}
               />
             ))}
           </div>

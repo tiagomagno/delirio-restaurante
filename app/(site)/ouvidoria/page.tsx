@@ -18,7 +18,7 @@ export default async function Ouvidoria() {
   const content = await getPageContent('ouvidoria')
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <div className="page-hero">
         <h1 className="page-hero__title">{content['hero.title'] ?? 'Ouvidoria'}</h1>
         <p className="page-hero__subtitle">{content['hero.subtitle'] ?? 'Sua voz é importante para nós'}</p>

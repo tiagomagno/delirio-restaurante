@@ -17,7 +17,7 @@ export default async function Encomendas() {
   const content = await getPageContent('encomendas')
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       {/* ── Page Hero ── */}
       <div className="page-hero">
         <h1 className="page-hero__title">{content['hero.title'] ?? 'Encomendas'}</h1>

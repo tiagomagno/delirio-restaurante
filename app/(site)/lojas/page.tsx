@@ -20,7 +20,7 @@ export default async function Lojas() {
   const stores = await getStores()
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <StructuredData data={stores.map(buildStoreSchema)} />
       <h1 className="sr-only">Nossas Lojas</h1>
       <div className="lojas-page__spacer" />

@@ -18,7 +18,7 @@ export default async function TrabalheConosco() {
   const [content, stores] = await Promise.all([getPageContent('trabalhe-conosco'), getStores()])
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <div className="page-hero">
         <h1 className="page-hero__title">{content['hero.title'] ?? 'Trabalhe com a Gente'}</h1>
         <p className="page-hero__subtitle">{content['hero.subtitle'] ?? 'Faça parte da nossa equipe'}</p>

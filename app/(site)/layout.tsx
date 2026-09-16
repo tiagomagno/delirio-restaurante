@@ -66,6 +66,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </noscript>
       </head>
       <body>
+        <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
         <AsyncTypekitFont />
         <StructuredData data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
         <Header whatsappUrl={c['header.whatsapp_url']} />

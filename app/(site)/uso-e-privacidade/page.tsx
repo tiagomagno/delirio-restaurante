@@ -16,7 +16,7 @@ export default async function UsoEPrivacidade() {
   const c = await getPageContent('uso-e-privacidade')
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <div className="page-hero">
         <h1 className="page-hero__title">{c['hero.title'] ?? 'Uso e Privacidade'}</h1>
         <p className="page-hero__subtitle">{c['hero.subtitle'] ?? 'Política de privacidade do Delírio Tropical'}</p>

@@ -40,7 +40,7 @@ export default async function SobreNos() {
   ]
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
 
       {/* ── 1. Carrossel Hero ── */}
       <SobreHeroCarousel slides={heroSlides} />

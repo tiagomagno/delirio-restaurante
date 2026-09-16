@@ -18,7 +18,7 @@ export default async function FaleConosco() {
   const [stores, content] = await Promise.all([getStores(), getPageContent('fale-conosco')])
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <div className="page-hero">
         <h1 className="page-hero__title">{content['hero.title'] ?? 'Fale Conosco'}</h1>
         <p className="page-hero__subtitle">
