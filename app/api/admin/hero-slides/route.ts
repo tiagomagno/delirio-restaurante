@@ -3,6 +3,9 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 
 export async function GET() {
+  const session = await getSession()
+  if (!session) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+
   const slides = await prisma.heroSlide.findMany({ orderBy: { order: 'asc' } })
   return NextResponse.json(slides)
 }

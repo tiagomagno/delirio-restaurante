@@ -38,6 +38,10 @@ export async function POST(request: NextRequest) {
 
   // GIFs animados perderiam a animação na conversão (sharp mantém só o 1º frame), então são salvos como estão.
   if (file.type === 'image/gif') {
+    const signature = originalBuffer.subarray(0, 6).toString('ascii')
+    if (signature !== 'GIF87a' && signature !== 'GIF89a') {
+      return NextResponse.json({ error: 'Arquivo não é um GIF válido' }, { status: 400 })
+    }
     const fileName = `${randomUUID()}.gif`
     await writeFile(path.join(uploadDir, fileName), originalBuffer)
     return NextResponse.json({ url: `/uploads/${folder}/${fileName}` })

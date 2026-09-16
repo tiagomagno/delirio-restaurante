@@ -14,6 +14,26 @@ const ALLOWED_TYPES: Record<string, string> = {
 }
 const MAX_SIZE = 10 * 1024 * 1024 // 10MB
 
+// O Content-Type da parte multipart é declarado pelo próprio navegador de quem
+// envia — não prova que o conteúdo é o que diz ser. Confere a assinatura real
+// dos primeiros bytes do arquivo antes de aceitar, já que é um endpoint público
+// sem autenticação.
+const DOC_SIGNATURE = Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1])
+const DOCX_SIGNATURE = Buffer.from([0x50, 0x4b, 0x03, 0x04])
+
+function matchesFileSignature(buffer: Buffer, mimeType: string): boolean {
+  if (mimeType === 'application/pdf') {
+    return buffer.subarray(0, 5).toString('ascii') === '%PDF-'
+  }
+  if (mimeType === 'application/msword') {
+    return buffer.subarray(0, 8).equals(DOC_SIGNATURE)
+  }
+  if (mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    return buffer.subarray(0, 4).equals(DOCX_SIGNATURE)
+  }
+  return false
+}
+
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
 
@@ -39,6 +59,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Currículo maior que 10MB' }, { status: 400 })
   }
 
+  const buffer = Buffer.from(await curriculo.arrayBuffer())
+  if (!matchesFileSignature(buffer, curriculo.type)) {
+    return NextResponse.json({ error: 'O conteúdo do arquivo não corresponde a um PDF, DOC ou DOCX válido' }, { status: 400 })
+  }
+
   const found = await getStoreWithRecipients(storeId)
   if (!found) return NextResponse.json({ error: 'Loja inválida' }, { status: 400 })
   const { store, recipients } = found
@@ -46,7 +71,6 @@ export async function POST(request: NextRequest) {
   const fileName = `${randomUUID()}${ext}`
   const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'curriculos')
   await mkdir(uploadDir, { recursive: true })
-  const buffer = Buffer.from(await curriculo.arrayBuffer())
   await writeFile(path.join(uploadDir, fileName), buffer)
   const curriculoUrl = `/uploads/curriculos/${fileName}`
 

@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
+import { isValidHttpUrl } from '@/lib/validateUrl'
 
 export async function GET() {
+  const session = await getSession()
+  if (!session) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+
   const stores = await prisma.store.findMany({ orderBy: { order: 'asc' } })
   return NextResponse.json(stores)
 }
@@ -16,6 +20,12 @@ export async function POST(request: NextRequest) {
   for (const field of required) {
     if (body[field] === undefined || body[field] === null || body[field] === '') {
       return NextResponse.json({ error: `Campo obrigatório ausente: ${field}` }, { status: 400 })
+    }
+  }
+
+  for (const field of ['mapsUrl', 'deliveryUrl', 'menuUrl']) {
+    if (body[field] && !isValidHttpUrl(body[field])) {
+      return NextResponse.json({ error: `${field} precisa ser uma URL http(s) válida` }, { status: 400 })
     }
   }
 

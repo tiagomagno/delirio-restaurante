@@ -352,6 +352,12 @@ const CONTENT = [
 async function main() {
   // Admin user
   const email = (process.env.ADMIN_SEED_EMAIL || 'admin@delirio.com.br').toLowerCase().trim()
+  // Em produção, exige a senha vinda do ambiente — sem isso o seed criaria um
+  // admin com a senha default abaixo, que é pública (está neste arquivo no Git).
+  if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_SEED_PASSWORD) {
+    console.error('ADMIN_SEED_PASSWORD não configurada — abortando seed em produção.')
+    process.exit(1)
+  }
   const password = process.env.ADMIN_SEED_PASSWORD || 'troque-esta-senha'
   const existing = await prisma.adminUser.findUnique({ where: { email } })
   if (!existing) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
+import { isValidHttpUrl } from '@/lib/validateUrl'
 
 const EDITABLE_FIELDS = [
   'slug', 'name', 'address', 'bairroCity', 'region', 'image', 'imageAlt',
@@ -18,6 +19,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const data: Record<string, unknown> = {}
   for (const field of EDITABLE_FIELDS) {
     if (body[field] !== undefined) data[field] = body[field]
+  }
+
+  for (const field of ['mapsUrl', 'deliveryUrl', 'menuUrl']) {
+    if (data[field] && !isValidHttpUrl(data[field] as string)) {
+      return NextResponse.json({ error: `${field} precisa ser uma URL http(s) válida` }, { status: 400 })
+    }
   }
 
   try {
