@@ -190,6 +190,7 @@ const CONTENT = [
   { page: 'global', key: 'social.instagram_url', label: 'Link do Instagram', value: 'https://www.instagram.com/deliriotropical' },
   { page: 'global', key: 'social.facebook_url', label: 'Link do Facebook', value: 'https://www.facebook.com/deliriotropical' },
   { page: 'global', key: 'social.tiktok_url', label: 'Link do TikTok', value: 'https://www.tiktok.com/@deliriotropical' },
+  { page: 'global', key: 'social.youtube_url', label: 'Link do YouTube', value: 'https://www.youtube.com/@deliriotropical9482' },
 
   // ── Home ──
   { page: 'home', key: 'meta.title', label: 'Título (SEO)', value: 'Delírio Tropical — Restaurante Saudável desde 1983' },

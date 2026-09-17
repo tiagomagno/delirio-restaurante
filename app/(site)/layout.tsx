@@ -76,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           facebookUrl={c['social.facebook_url']}
           whatsappUrl={c['footer.whatsapp_url']}
           tiktokUrl={c['social.tiktok_url']}
+          youtubeUrl={c['social.youtube_url']}
           encomendasUrl={c['footer.encomendas_url']}
         />
       </body>
