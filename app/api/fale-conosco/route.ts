@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getStoreWithRecipients, sendConfirmationEmail } from '@/lib/email/notify'
+import { getStoreWithRecipients, getFaleConoscoExtraRecipients, sendConfirmationEmail } from '@/lib/email/notify'
 import { sendEmail } from '@/lib/email/send'
 
 export async function POST(request: NextRequest) {
@@ -37,8 +37,10 @@ export async function POST(request: NextRequest) {
     },
   })
 
+  const extraRecipients = await getFaleConoscoExtraRecipients()
+
   await sendEmail({
-    to: recipients,
+    to: [...recipients, ...extraRecipients],
     subject: `Fale Conosco — ${store.name}`,
     text: [
       `Nova mensagem recebida pelo Fale Conosco para a loja ${store.name}.`,

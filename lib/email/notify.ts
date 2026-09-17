@@ -40,15 +40,51 @@ export async function getEventosExtraRecipients(): Promise<string[]> {
     .filter(Boolean)
 }
 
+async function getPageExtraRecipients(page: string): Promise<string[]> {
+  const content = await getPageContent(page)
+  const raw = content['notify.extraRecipients'] ?? ''
+  return raw
+    .split('\n')
+    .map(email => email.trim())
+    .filter(Boolean)
+}
+
+/**
+ * Destinatários extras configurados em /admin/contatos (aba "Destinatários"),
+ * recebem toda mensagem do Fale Conosco além da loja escolhida.
+ * Guardado em PageContent (page="fale-conosco", key="notify.extraRecipients").
+ */
+export async function getFaleConoscoExtraRecipients(): Promise<string[]> {
+  return getPageExtraRecipients('fale-conosco')
+}
+
+/**
+ * Destinatários extras configurados em /admin/candidaturas (aba "Destinatários"),
+ * recebem toda candidatura do Trabalhe Conosco além da loja escolhida.
+ * Guardado em PageContent (page="trabalhe-conosco", key="notify.extraRecipients").
+ */
+export async function getTrabalheConoscoExtraRecipients(): Promise<string[]> {
+  return getPageExtraRecipients('trabalhe-conosco')
+}
+
+/**
+ * Destinatários configurados em /admin/ouvidoria (aba "Destinatários").
+ * Guardado em PageContent (page="ouvidoria", key="notify.extraRecipients").
+ */
+export async function getOuvidoriaRecipients(): Promise<string[]> {
+  return getPageExtraRecipients('ouvidoria')
+}
+
 /**
  * Notifica o canal de Ouvidoria — mensagem anônima, sem loja associada.
- * Sem OUVIDORIA_EMAIL configurado, apenas fica salva no admin (sendEmail já
- * trata a ausência de destinatário/SMTP sem lançar erro).
+ * Destinatários vêm do admin (/admin/ouvidoria) somados à OUVIDORIA_EMAIL,
+ * se configurada. Sem nenhum dos dois, a mensagem só fica salva no admin.
  */
 export async function notifyOuvidoria(text: string) {
-  const to = process.env.OUVIDORIA_EMAIL
-  if (!to) return
-  await sendEmail({ to: [to], subject: 'Nova mensagem — Ouvidoria', text })
+  const envRecipient = process.env.OUVIDORIA_EMAIL
+  const to = Array.from(new Set([...(await getOuvidoriaRecipients()), ...(envRecipient ? [envRecipient] : [])]))
+  if (to.length === 0) return
+  await sendEmail({ to, subject: 'Nova mensagem — Ouvidoria', text })
 }
 
 export interface SendConfirmationInput {

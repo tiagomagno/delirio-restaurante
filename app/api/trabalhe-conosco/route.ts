@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
 import { prisma } from '@/lib/prisma'
-import { getStoreWithRecipients, sendConfirmationEmail } from '@/lib/email/notify'
+import { getStoreWithRecipients, getTrabalheConoscoExtraRecipients, sendConfirmationEmail } from '@/lib/email/notify'
 import { sendEmail } from '@/lib/email/send'
 import { SITE_URL } from '@/lib/seo/pages'
 
@@ -88,8 +88,10 @@ export async function POST(request: NextRequest) {
     },
   })
 
+  const extraRecipients = await getTrabalheConoscoExtraRecipients()
+
   await sendEmail({
-    to: recipients,
+    to: [...recipients, ...extraRecipients],
     subject: `Trabalhe Conosco — ${store.name} (${vaga})`,
     text: [
       `Nova candidatura recebida pelo Trabalhe Conosco para a loja ${store.name}.`,
