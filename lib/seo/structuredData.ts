@@ -32,6 +32,25 @@ export interface StoreSchemaInput {
 // (ex: "Segunda a Sexta de 8h às 16h"), não dados estruturados por dia/hora —
 // gerar isso exigiria adivinhar, com risco de o dado estruturado divergir do
 // texto real exibido na página.
+export interface FaqItem {
+  question: string
+  answer: string
+}
+
+export function buildFaqSchema(items: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items
+      .filter(i => i.question.trim() && i.answer.trim())
+      .map(i => ({
+        '@type': 'Question',
+        name: i.question,
+        acceptedAnswer: { '@type': 'Answer', text: i.answer },
+      })),
+  }
+}
+
 export function buildStoreSchema(store: StoreSchemaInput) {
   return {
     '@context': 'https://schema.org',

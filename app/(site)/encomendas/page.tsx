@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import Multiline from '@/components/Multiline'
+import StructuredData from '@/components/StructuredData'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
+import { buildFaqSchema, type FaqItem } from '@/lib/seo/structuredData'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,8 +18,16 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Encomendas() {
   const content = await getPageContent('encomendas')
 
+  const faqItems: FaqItem[] = [1, 2, 3, 4, 5, 6]
+    .map(n => ({
+      question: content[`faq.q${n}`] ?? '',
+      answer: content[`faq.a${n}`] ?? '',
+    }))
+    .filter(i => i.question && i.answer)
+
   return (
     <main id="main-content" tabIndex={-1}>
+      {faqItems.length > 0 && <StructuredData data={buildFaqSchema(faqItems)} />}
       {/* ── Page Hero ── */}
       <div className="page-hero">
         <h1 className="page-hero__title">{content['hero.title'] ?? 'Encomendas'}</h1>
@@ -112,6 +122,21 @@ export default async function Encomendas() {
           </div>
         </div>
       </section>
+
+      {/* ── FAQ ── */}
+      {faqItems.length > 0 && (
+        <section className="enc-faq" aria-label="Perguntas frequentes">
+          <h2 className="enc-faq__title">{content['faq.title'] ?? 'Perguntas frequentes'}</h2>
+          <div className="enc-faq__list">
+            {faqItems.map((item, i) => (
+              <details className="enc-faq__item" key={i}>
+                <summary className="enc-faq__question">{item.question}</summary>
+                <p className="enc-faq__answer">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   )
 }

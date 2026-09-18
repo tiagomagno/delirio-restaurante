@@ -2430,6 +2430,61 @@ body {
   line-height: 1.5;
 }
 
+/* ─── FAQ (Encomendas) ───────────────────────── */
+.enc-faq {
+  padding: 70px 48px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.enc-faq__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.enc-faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.enc-faq__item {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 18px 24px;
+}
+
+.enc-faq__question {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text-dark);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.enc-faq__question::-webkit-details-marker { display: none; }
+.enc-faq__question::after {
+  content: '+';
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--green);
+  transition: transform 0.2s;
+}
+.enc-faq__item[open] .enc-faq__question::after { transform: rotate(45deg); }
+
+.enc-faq__answer {
+  margin-top: 14px;
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
 /* ─── LOJAS PAGE ─────────────────────────────── */
 .lojas-page .lojas {
   padding-top: 60px;
@@ -2615,6 +2670,7 @@ body {
   .enc-opcoes { padding: 60px 20px; }
   .enc-cards { flex-direction: column; }
   .enc-info { padding: 60px 20px; }
+  .enc-faq { padding: 50px 20px; }
   .enc-info__grid { grid-template-columns: 1fr; }
 
   /* lojas page */

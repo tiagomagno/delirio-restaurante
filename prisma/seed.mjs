@@ -271,6 +271,20 @@ const CONTENT = [
   { page: 'encomendas', key: 'info.stat2.label', label: 'Estatística 2 — legenda', value: 'Lojas para\nretirada rápida' },
   { page: 'encomendas', key: 'info.stat3.num', label: 'Estatística 3 — número', value: '100%' },
   { page: 'encomendas', key: 'info.stat3.label', label: 'Estatística 3 — legenda', value: 'Ingredientes frescos\npreparados no dia' },
+  // FAQ — texto fictício, pendente de aprovação do cliente (ver lib/seo/pages.ts e docs/seo/faq-rascunho.md)
+  { page: 'encomendas', key: 'faq.title', label: 'FAQ — Título da seção', value: 'Perguntas frequentes' },
+  { page: 'encomendas', key: 'faq.q1', label: 'FAQ — Pergunta 1', value: 'Qual é a área de entrega do delivery?' },
+  { page: 'encomendas', key: 'faq.a1', label: 'FAQ — Resposta 1', value: 'Entregamos na região da loja mais próxima de você. Informe seu endereço no fechamento do pedido para confirmar se sua região está coberta.' },
+  { page: 'encomendas', key: 'faq.q2', label: 'FAQ — Pergunta 2', value: 'Qual o prazo médio de entrega?' },
+  { page: 'encomendas', key: 'faq.a2', label: 'FAQ — Resposta 2', value: 'O prazo varia por loja e horário de pico, mas costuma ficar entre 40 e 60 minutos após a confirmação do pedido.' },
+  { page: 'encomendas', key: 'faq.q3', label: 'FAQ — Pergunta 3', value: 'Quais formas de pagamento são aceitas?' },
+  { page: 'encomendas', key: 'faq.a3', label: 'FAQ — Resposta 3', value: 'Aceitamos cartão de crédito, débito, Pix e vale-refeição, de acordo com a loja escolhida.' },
+  { page: 'encomendas', key: 'faq.q4', label: 'FAQ — Pergunta 4', value: 'Existe valor mínimo para pedido com entrega?' },
+  { page: 'encomendas', key: 'faq.a4', label: 'FAQ — Resposta 4', value: 'Sim, o valor mínimo varia por loja e é informado no momento do pedido, antes da confirmação.' },
+  { page: 'encomendas', key: 'faq.q5', label: 'FAQ — Pergunta 5', value: 'Vocês têm opções vegetarianas, veganas ou sem glúten?' },
+  { page: 'encomendas', key: 'faq.a5', label: 'FAQ — Resposta 5', value: 'Sim, temos opções vegetarianas e veganas em todas as lojas. Consulte o cardápio digital da loja mais próxima para ver a disponibilidade sem glúten.' },
+  { page: 'encomendas', key: 'faq.q6', label: 'FAQ — Pergunta 6', value: 'Como faço uma encomenda para um evento maior?' },
+  { page: 'encomendas', key: 'faq.a6', label: 'FAQ — Resposta 6', value: 'Fale com a gente pelo formulário de Eventos Corporativos ou pelo WhatsApp da loja mais próxima — nossa equipe monta um cardápio personalizado para a ocasião.' },
 
   // ── Trabalhe Conosco ──
   { page: 'trabalhe-conosco', key: 'meta.title', label: 'Título (SEO)', value: 'Trabalhe com a Gente' },
