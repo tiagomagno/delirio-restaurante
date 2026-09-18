@@ -25,6 +25,7 @@ function FotoCarousel({ fotos, nome, priority = false }: { fotos: StorePhoto[]; 
           alt={fotos[idx].alt || `${nome} — foto ${idx + 1} de ${total}`}
           loading={eager ? 'eager' : 'lazy'}
           fetchPriority={eager ? 'high' : 'auto'}
+          style={{ objectPosition: `${fotos[idx].position} top` }}
         />
         {total > 1 && (
           <>

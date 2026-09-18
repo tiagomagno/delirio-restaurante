@@ -12,6 +12,7 @@ export default function LojaGalleryMasonry({ fotos, nome }: { fotos: StorePhoto[
             src={foto.url}
             alt={foto.alt || `${nome} — foto ${i + 1} de ${fotos.length}`}
             loading={i === 0 ? 'eager' : 'lazy'}
+            style={{ objectPosition: foto.position }}
           />
         </div>
       ))}

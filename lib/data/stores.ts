@@ -1,8 +1,11 @@
 import { prisma } from '@/lib/prisma'
 
+export type StorePhotoPosition = 'left' | 'center' | 'right'
+
 export interface StorePhoto {
   url: string
   alt: string
+  position: StorePhotoPosition
 }
 
 export interface StoreData {
@@ -27,17 +30,28 @@ export interface StoreData {
   highlight: boolean
 }
 
+const PHOTO_POSITIONS: StorePhotoPosition[] = ['left', 'center', 'right']
+
+function normalizePosition(value: unknown): StorePhotoPosition {
+  return PHOTO_POSITIONS.includes(value as StorePhotoPosition) ? (value as StorePhotoPosition) : 'center'
+}
+
 // `photos` é uma coluna Json que guardava só string[] de URLs. Registros
-// antigos continuam nesse formato; normalizamos pra {url, alt} pra não quebrar
-// dado existente ao introduzir o campo de texto alternativo.
+// antigos continuam nesse formato; normalizamos pra {url, alt, position} pra não
+// quebrar dado existente ao introduzir o campo de texto alternativo e, depois,
+// o de posicionamento (object-position) da imagem dentro do box recortado.
 export function normalizePhotos(raw: unknown): StorePhoto[] {
   if (!Array.isArray(raw)) return []
   return raw
     .map((item): StorePhoto | null => {
-      if (typeof item === 'string') return { url: item, alt: '' }
+      if (typeof item === 'string') return { url: item, alt: '', position: 'center' }
       if (item && typeof item === 'object' && typeof (item as { url?: unknown }).url === 'string') {
-        const obj = item as { url: string; alt?: unknown }
-        return { url: obj.url, alt: typeof obj.alt === 'string' ? obj.alt : '' }
+        const obj = item as { url: string; alt?: unknown; position?: unknown }
+        return {
+          url: obj.url,
+          alt: typeof obj.alt === 'string' ? obj.alt : '',
+          position: normalizePosition(obj.position),
+        }
       }
       return null
     })
