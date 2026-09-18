@@ -2,9 +2,15 @@
 
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { IconTrash, IconArrowUp, IconArrowDown, IconHome, IconStore } from './icons'
+import { IconTrash, IconArrowUp, IconArrowDown, IconHome, IconStore, IconAlignLeft, IconAlignCenter, IconAlignRight, IconMoreVertical, IconUpload } from './icons'
 import RetryImage from '@/components/RetryImage'
-import type { StorePhoto } from '@/lib/data/stores'
+import type { StorePhoto, StorePhotoPosition } from '@/lib/data/stores'
+
+const POSITION_OPTIONS: { value: StorePhotoPosition; label: string; icon: typeof IconAlignLeft }[] = [
+  { value: 'left', label: 'Esquerda', icon: IconAlignLeft },
+  { value: 'center', label: 'Centro', icon: IconAlignCenter },
+  { value: 'right', label: 'Direita', icon: IconAlignRight },
+]
 
 export interface StoreFormData {
   id?: string
@@ -62,16 +68,17 @@ async function uploadImage(file: File, folder: string) {
 // a capa selecionável, em vez de ficar órfã fora da lista.
 function normalizeInitial(initial: StoreFormData): StoreFormData {
   if (!initial.image || initial.photos.some(p => p.url === initial.image)) return initial
-  return { ...initial, photos: [{ url: initial.image, alt: initial.imageAlt }, ...initial.photos] }
+  return { ...initial, photos: [{ url: initial.image, alt: initial.imageAlt, position: 'center' }, ...initial.photos] }
 }
 
-export default function StoreForm({ initial }: { initial?: StoreFormData }) {
+export default function StoreForm({ title, initial }: { title: React.ReactNode; initial?: StoreFormData }) {
   const router = useRouter()
   const [data, setData] = useState<StoreFormData>(() => normalizeInitial(initial ?? EMPTY))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [section, setSection] = useState<Section>('geral')
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState<string | null>(null)
   const photosRef = useRef<HTMLInputElement>(null)
 
   function set<K extends keyof StoreFormData>(key: K, value: StoreFormData[K]) {
@@ -92,7 +99,7 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     setError('')
     try {
       const urls = await Promise.all(Array.from(files).map(f => uploadImage(f, 'lojas')))
-      const newPhotos = urls.map(url => ({ url, alt: '' }))
+      const newPhotos: StorePhoto[] = urls.map(url => ({ url, alt: '', position: 'center' }))
       setData(d => ({
         ...d,
         photos: [...d.photos, ...newPhotos],
@@ -106,6 +113,10 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
 
   function setPhotoAlt(url: string, alt: string) {
     set('photos', data.photos.map(p => (p.url === url ? { ...p, alt } : p)))
+  }
+
+  function setPhotoPosition(url: string, position: StorePhotoPosition) {
+    set('photos', data.photos.map(p => (p.url === url ? { ...p, position } : p)))
   }
 
   function removePhoto(url: string) {
@@ -125,11 +136,17 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     set('storeImage', data.storeImage === url ? '' : url)
   }
 
-  function movePhoto(index: number, direction: -1 | 1) {
-    const target = index + direction
-    if (target < 0 || target >= data.photos.length) return
+  // Move dentro da sublista visível (a Galeria, que exclui as capas) em vez de
+  // por índice bruto do array — assim a seta sempre troca com o item vizinho
+  // que o usuário está vendo, mesmo que uma capa esteja intercalada no array.
+  function moveGalleryPhoto(url: string, direction: -1 | 1, visibleList: StorePhoto[]) {
+    const idx = visibleList.findIndex(p => p.url === url)
+    const targetUrl = visibleList[idx + direction]?.url
+    if (!targetUrl) return
+    const a = data.photos.findIndex(p => p.url === url)
+    const b = data.photos.findIndex(p => p.url === targetUrl)
     const photos = [...data.photos]
-    ;[photos[index], photos[target]] = [photos[target], photos[index]]
+    ;[photos[a], photos[b]] = [photos[b], photos[a]]
     set('photos', photos)
   }
 
@@ -179,23 +196,171 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
     router.refresh()
   }
 
+  function renderPhotoRow(photo: StorePhoto, moveWithin?: StorePhoto[]) {
+    const isHomeCover = photo.url === data.image
+    const isStoreCover = photo.url === data.storeImage
+    const positionLabel = POSITION_OPTIONS.find(o => o.value === photo.position)?.label
+    const menuOpenHere = menuOpen === photo.url
+    const moveIdx = moveWithin?.findIndex(p => p.url === photo.url) ?? -1
+
+    return (
+      <div key={photo.url} className="admin-entry">
+        <div className="admin-gallery-item" style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+          <RetryImage
+            className="admin-thumb admin-thumb--clickable"
+            src={photo.url}
+            alt=""
+            style={{ width: 120, height: 80, flexShrink: 0, objectPosition: photo.position }}
+            onClick={() => setPreviewUrl(photo.url)}
+          />
+          {isHomeCover && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+              <RetryImage
+                className="admin-thumb-square"
+                src={photo.url}
+                alt=""
+                style={{ objectPosition: photo.position }}
+              />
+              <span style={{ fontSize: 11, color: 'var(--admin-text-muted, #888)', textAlign: 'center' }}>
+                prévia no card da Home
+              </span>
+            </div>
+          )}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <input
+              type="text"
+              value={photo.alt}
+              onChange={e => setPhotoAlt(photo.url, e.target.value)}
+              placeholder="Texto alternativo da foto"
+            />
+            <div className="admin-row-actions">
+              {moveWithin && (
+                <>
+                  <button
+                    type="button"
+                    className="admin-icon-btn"
+                    onClick={() => moveGalleryPhoto(photo.url, -1, moveWithin)}
+                    disabled={moveIdx <= 0}
+                    aria-label="Mover para cima"
+                  >
+                    <IconArrowUp size={13} />
+                  </button>
+                  <button
+                    type="button"
+                    className="admin-icon-btn"
+                    onClick={() => moveGalleryPhoto(photo.url, 1, moveWithin)}
+                    disabled={moveIdx === -1 || moveIdx === moveWithin.length - 1}
+                    aria-label="Mover para baixo"
+                  >
+                    <IconArrowDown size={13} />
+                  </button>
+                </>
+              )}
+              {isHomeCover && (
+                <span className="admin-badge admin-badge--green" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <IconHome size={12} /> Capa da Home
+                </span>
+              )}
+              {isStoreCover && (
+                <span className="admin-badge admin-badge--green" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <IconStore size={12} /> Capa da loja
+                </span>
+              )}
+              {photo.position !== 'center' && (
+                <span className="admin-badge admin-badge--gray">Posição: {positionLabel}</span>
+              )}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="admin-kebab-btn"
+            onClick={() => setMenuOpen(menuOpenHere ? null : photo.url)}
+            aria-label="Mais ações da foto"
+            aria-expanded={menuOpenHere}
+          >
+            <IconMoreVertical size={18} />
+          </button>
+
+          {menuOpenHere && (
+            <>
+              <div className="admin-dropdown-backdrop" onClick={() => setMenuOpen(null)} />
+              <div className="admin-dropdown" role="menu">
+              <div className="admin-dropdown__label">Posição da imagem no recorte</div>
+              <div className="admin-segmented" role="group" aria-label="Posição da imagem no recorte" style={{ margin: '0 8px 4px' }}>
+                {POSITION_OPTIONS.map(opt => {
+                  const Icon = opt.icon
+                  const active = photo.position === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`admin-icon-btn${active ? ' admin-icon-btn--active' : ''}`}
+                      aria-pressed={active}
+                      onClick={() => setPhotoPosition(photo.url, opt.value)}
+                      title={`Posição da imagem: ${opt.label}`}
+                    >
+                      <Icon size={13} /> {opt.label}
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="admin-dropdown__divider" />
+
+              <button
+                type="button"
+                className={`admin-dropdown__item${isHomeCover ? ' admin-dropdown__item--active' : ''}`}
+                onClick={() => setHomeCover(photo.url)}
+              >
+                <IconHome size={15} />
+                {isHomeCover ? 'Capa da Home' : 'Definir como capa da Home'}
+              </button>
+              <button
+                type="button"
+                className={`admin-dropdown__item${isStoreCover ? ' admin-dropdown__item--active' : ''}`}
+                onClick={() => setStoreCover(photo.url)}
+              >
+                <IconStore size={15} />
+                {isStoreCover ? 'Remover capa da página de loja' : 'Definir como capa da página de loja'}
+              </button>
+
+              <div className="admin-dropdown__divider" />
+
+              <button
+                type="button"
+                className="admin-dropdown__item admin-dropdown__item--danger"
+                onClick={() => { removePhoto(photo.url); setMenuOpen(null) }}
+              >
+                <IconTrash size={15} /> Remover foto
+              </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="admin-panel">
-    <form className="admin-form" onSubmit={handleSubmit} style={{ maxWidth: 'none', gap: 20 }}>
-      <div className="admin-form-tabs">
-        <nav className="admin-form-tabs__nav">
-          {SECTIONS.map(s => (
-            <button
-              key={s.id}
-              type="button"
-              className={`admin-form-tabs__btn${section === s.id ? ' admin-form-tabs__btn--active' : ''}`}
-              onClick={() => setSection(s.id)}
-            >
-              {s.label}
-            </button>
-          ))}
-        </nav>
+    <div className="admin-page-header">
+      <h1>{title}</h1>
+      <nav className="admin-form-tabs__nav">
+        {SECTIONS.map(s => (
+          <button
+            key={s.id}
+            type="button"
+            className={`admin-form-tabs__btn${section === s.id ? ' admin-form-tabs__btn--active' : ''}`}
+            onClick={() => setSection(s.id)}
+          >
+            {s.label}
+          </button>
+        ))}
+      </nav>
+    </div>
 
+    <form className="admin-form" onSubmit={handleSubmit} style={{ maxWidth: 'none', gap: 20 }}>
         <div className="admin-form-tabs__content">
       {section === 'geral' && (
       <div className="admin-form-section">
@@ -293,96 +458,68 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
       {section === 'galeria' && (
       <div className="admin-form-section">
         <div className="admin-form-section__title">Galeria de fotos</div>
-        <p className="admin-form-section__desc">
-          Marque uma foto como capa da Home — ela aparece (recortada em formato quadrado) no carrossel de
-          lojas da página inicial. Marque (a mesma ou outra) como capa da página de loja — ela é a primeira
-          exibida no carrossel da loja em "Lojas". A ordem das fotos abaixo define a ordem de exibição das
-          demais. Se nenhuma capa de loja for definida, a capa da Home é usada como capa da loja também. Se
-          uma capa de loja diferente for definida, a foto só de capa da Home some do carrossel da loja — ela
-          é recortada em quadrado pro card da Home e destoa do carrossel retangular da loja.
-        </p>
         <div className="admin-form-grid">
-          <label className="col-12">
-            Adicionar fotos
-            <input ref={photosRef} type="file" accept="image/*" multiple onChange={handlePhotosUpload} />
+          <label className="admin-upload col-12">
+            <input
+              ref={photosRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotosUpload}
+              className="admin-upload__input"
+            />
+            <span className="admin-upload__icon"><IconUpload size={20} /></span>
+            <span className="admin-upload__body">
+              <span className="admin-upload__title">Adicionar fotos</span>
+              <span className="admin-upload__hint">Selecione uma ou mais imagens (JPG, PNG ou WEBP)</span>
+            </span>
           </label>
 
+          <div className="admin-divider col-12" />
+
           {data.photos.length > 0 ? (
-            <div className="col-12" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {data.photos.map((photo, i) => {
-                const isHomeCover = photo.url === data.image
-                const isStoreCover = photo.url === data.storeImage
+            <div className="col-12" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {(() => {
+                const homeCover = data.photos.find(p => p.url === data.image)
+                const storeCover = data.storeImage ? data.photos.find(p => p.url === data.storeImage) : undefined
+                const gallery = data.photos.filter(p => p.url !== data.image && p.url !== data.storeImage)
+
                 return (
-                  <div key={photo.url} className="admin-entry">
-                    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                      <RetryImage
-                        className="admin-thumb admin-thumb--clickable"
-                        src={photo.url}
-                        alt=""
-                        style={{ width: 120, height: 80, flexShrink: 0 }}
-                        onClick={() => setPreviewUrl(photo.url)}
-                      />
-                      {isHomeCover && (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-                          <RetryImage className="admin-thumb-square" src={photo.url} alt="" />
-                          <span style={{ fontSize: 11, color: 'var(--admin-text-muted, #888)', textAlign: 'center' }}>
-                            prévia no card da Home
-                          </span>
-                        </div>
+                  <>
+                    <div className="admin-gallery-group">
+                      <div className="admin-gallery-group__title">Capa da Home</div>
+                      {homeCover ? (
+                        renderPhotoRow(homeCover)
+                      ) : (
+                        <p className="admin-empty">Nenhuma capa da Home definida ainda.</p>
                       )}
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <input
-                          type="text"
-                          value={photo.alt}
-                          onChange={e => setPhotoAlt(photo.url, e.target.value)}
-                          placeholder="Texto alternativo da foto"
-                        />
-                        <div className="admin-row-actions">
-                          <button
-                            type="button"
-                            className="admin-icon-btn"
-                            onClick={() => movePhoto(i, -1)}
-                            disabled={i === 0}
-                            aria-label="Mover para cima"
-                          >
-                            <IconArrowUp size={13} />
-                          </button>
-                          <button
-                            type="button"
-                            className="admin-icon-btn"
-                            onClick={() => movePhoto(i, 1)}
-                            disabled={i === data.photos.length - 1}
-                            aria-label="Mover para baixo"
-                          >
-                            <IconArrowDown size={13} />
-                          </button>
-                          {isHomeCover ? (
-                            <span className="admin-badge admin-badge--green" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                              <IconHome size={12} /> Capa da Home
-                            </span>
-                          ) : (
-                            <button type="button" className="admin-icon-btn" onClick={() => setHomeCover(photo.url)}>
-                              <IconHome size={13} /> Definir como capa da Home
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            className={isStoreCover ? 'admin-badge admin-badge--green' : 'admin-icon-btn'}
-                            style={isStoreCover ? { display: 'inline-flex', alignItems: 'center', gap: 4 } : undefined}
-                            onClick={() => setStoreCover(photo.url)}
-                          >
-                            <IconStore size={isStoreCover ? 12 : 13} />
-                            {isStoreCover ? 'Capa da página de loja' : 'Definir como capa da página de loja'}
-                          </button>
-                          <button type="button" className="admin-icon-btn" onClick={() => removePhoto(photo.url)}>
-                            <IconTrash size={13} /> Remover
-                          </button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
+
+                    <div className="admin-gallery-group">
+                      <div className="admin-gallery-group__title">Capa da página de loja</div>
+                      {storeCover ? (
+                        renderPhotoRow(storeCover)
+                      ) : (
+                        <p className="admin-empty">
+                          Nenhuma capa de loja definida — a capa da Home é usada no lugar dela. Escolha uma foto na
+                          Galeria abaixo para definir uma capa própria.
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="admin-gallery-group">
+                      <div className="admin-gallery-group__title">Galeria</div>
+                      {gallery.length > 0 ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                          {gallery.map(photo => renderPhotoRow(photo, gallery))}
+                        </div>
+                      ) : (
+                        <p className="admin-empty">Nenhuma outra foto na galeria.</p>
+                      )}
+                    </div>
+                  </>
                 )
-              })}
+              })()}
             </div>
           ) : (
             <p className="admin-empty col-12">Nenhuma foto na galeria ainda. Envie ao menos uma foto e marque como capa.</p>
@@ -408,7 +545,6 @@ export default function StoreForm({ initial }: { initial?: StoreFormData }) {
       </div>
       )}
         </div>
-      </div>
 
       {error && <p className="admin-error">{error}</p>}
 

@@ -215,6 +215,40 @@ export function IconMegaphone({ size = 20 }: IconProps) {
   )
 }
 
+export function IconAlignLeft({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M4 5.5h16M4 11h10M4 16.5h13M4 22v-.01" />
+    </svg>
+  )
+}
+
+export function IconAlignCenter({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M4 5.5h16M7 11h10M5.5 16.5h13" />
+    </svg>
+  )
+}
+
+export function IconAlignRight({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M4 5.5h16M10 11h10M7 16.5h13" />
+    </svg>
+  )
+}
+
+export function IconMoreVertical({ size = 18 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <circle cx="12" cy="5.5" r="1.8" />
+      <circle cx="12" cy="12" r="1.8" />
+      <circle cx="12" cy="18.5" r="1.8" />
+    </svg>
+  )
+}
+
 export function IconSearch({ size = 20 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base}>

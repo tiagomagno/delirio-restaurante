@@ -9,33 +9,31 @@ export default async function EditarLoja({ params }: { params: Promise<{ id: str
   if (!store) notFound()
 
   return (
-    <div>
-      <h1>Editar loja <span style={{ opacity: 0.6, fontWeight: 400 }}>· {store.name}</span></h1>
-      <StoreForm
-        initial={{
-          id: store.id,
-          slug: store.slug,
-          name: store.name,
-          address: (store.address as string[]) ?? [''],
-          bairroCity: store.bairroCity,
-          region: store.region,
-          image: store.image,
-          imageAlt: store.imageAlt,
-          storeImage: store.storeImage ?? '',
-          storeImageAlt: store.storeImageAlt,
-          photos: normalizePhotos(store.photos),
-          mapsUrl: store.mapsUrl,
-          deliveryUrl: store.deliveryUrl ?? '',
-          menuUrl: store.menuUrl ?? '',
-          hours: (store.hours as string[]) ?? [''],
-          phones: (store.phones as string[]) ?? [''],
-          whatsapp: store.whatsapp ?? '',
-          email: store.email,
-          extraRecipients: (store.extraRecipients as string[]) ?? [],
-          highlight: store.highlight,
-          active: store.active,
-        }}
-      />
-    </div>
+    <StoreForm
+      title={<>Editar loja <span style={{ opacity: 0.6, fontWeight: 400 }}>· {store.name}</span></>}
+      initial={{
+        id: store.id,
+        slug: store.slug,
+        name: store.name,
+        address: (store.address as string[]) ?? [''],
+        bairroCity: store.bairroCity,
+        region: store.region,
+        image: store.image,
+        imageAlt: store.imageAlt,
+        storeImage: store.storeImage ?? '',
+        storeImageAlt: store.storeImageAlt,
+        photos: normalizePhotos(store.photos),
+        mapsUrl: store.mapsUrl,
+        deliveryUrl: store.deliveryUrl ?? '',
+        menuUrl: store.menuUrl ?? '',
+        hours: (store.hours as string[]) ?? [''],
+        phones: (store.phones as string[]) ?? [''],
+        whatsapp: store.whatsapp ?? '',
+        email: store.email,
+        extraRecipients: (store.extraRecipients as string[]) ?? [],
+        highlight: store.highlight,
+        active: store.active,
+      }}
+    />
   )
 }
