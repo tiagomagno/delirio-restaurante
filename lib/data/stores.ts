@@ -83,6 +83,11 @@ export async function getStores(): Promise<StoreData[]> {
   })
 }
 
+export async function getStoreBySlug(slug: string): Promise<StoreData | null> {
+  const stores = await getStores()
+  return stores.find(s => s.slug === slug) ?? null
+}
+
 function excludeHomeCover(photos: StorePhoto[], homeImage: string, storeImage: string | null): StorePhoto[] {
   if (!homeImage || !storeImage || storeImage === homeImage) return photos
   const filtered = photos.filter(p => p.url !== homeImage)

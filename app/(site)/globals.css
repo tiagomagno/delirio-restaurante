@@ -1836,6 +1836,34 @@ body {
 }
 .loja-card__contact-link--wa svg { fill: #25D366; }
 
+/* ─── PÁGINA INDIVIDUAL DE LOJA ──────────────── */
+.loja-page-single {
+  max-width: 1100px;
+  margin: 0 auto;
+  /* padding-top inclui os 149px do header fixo (mesma altura usada pelo
+     .lojas-page__spacer na listagem de lojas). */
+  padding: 213px 48px 80px;
+}
+
+.loja-page-single .loja-card__top { margin-bottom: 40px; }
+
+.loja-gallery {
+  columns: 3;
+  column-gap: 16px;
+  margin-bottom: 48px;
+}
+.loja-gallery__item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eee;
+}
+.loja-gallery__item img {
+  width: 100%;
+  display: block;
+}
+
 /* ─── FOOTER ───────────────────────────────── */
 .footer {
   background: var(--green);
@@ -2685,6 +2713,10 @@ body {
   .loja-card__details { flex-direction: column; gap: 24px; align-items: center; text-align: center; }
   .loja-card__contact-list { align-items: center; }
   .lojas-tabs__btn { padding: 16px 22px; font-size: 0.78rem; }
+
+  /* página individual de loja */
+  .loja-page-single { padding: 130px 20px 60px; }
+  .loja-gallery { columns: 2; }
 
   /* eventos corporativos */
   .eventos-layout { flex-direction: column; min-height: unset; }
