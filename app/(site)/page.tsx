@@ -118,7 +118,7 @@ export default async function Home() {
           <p className="historia__text">
             {content['historia.text'] ?? 'Todos os dias, preparamos uma comida fresca, leve e muito saborosa com amor e carinho.'}
           </p>
-          <Link href="/sobre-nos" className="historia__btn">{content['historia.cta'] ?? 'Saiba Mais'}</Link>
+          <Link href="/sobre-nos" className="historia__btn" aria-label="Saiba mais sobre nós">{content['historia.cta'] ?? 'Saiba Mais'}</Link>
         </div>
         <div className="historia__right">
           {/* eslint-disable-next-line @next/next/no-img-element */}

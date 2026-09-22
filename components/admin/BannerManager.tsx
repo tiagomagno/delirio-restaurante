@@ -174,6 +174,7 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
+  const [alt, setAlt] = useState('')
   const [isSpecial, setIsSpecial] = useState(false)
   const [buttonLabel, setButtonLabel] = useState('')
   const [buttonUrl, setButtonUrl] = useState('')
@@ -183,6 +184,10 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
     const file = fileRef.current?.files?.[0]
     if (!file) return
     setError('')
+    if (!alt.trim()) {
+      setError('Descreva a imagem no texto alternativo antes de adicionar o slide')
+      return
+    }
     if (isSpecial && (!buttonLabel.trim() || !buttonUrl.trim())) {
       setError('Preencha o texto e o link do botão para um slide especial')
       return
@@ -199,7 +204,7 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
       const createRes = await fetch('/api/admin/hero-slides', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrl: uploadData.url, isSpecial, buttonLabel, buttonUrl }),
+        body: JSON.stringify({ imageUrl: uploadData.url, alt, isSpecial, buttonLabel, buttonUrl }),
       })
       if (!createRes.ok) {
         const result = await createRes.json().catch(() => ({}))
@@ -207,6 +212,7 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
       }
 
       if (fileRef.current) fileRef.current.value = ''
+      setAlt('')
       setIsSpecial(false)
       setButtonLabel('')
       setButtonUrl('')
@@ -245,6 +251,19 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
               <IconUpload size={16} />
               {uploading ? 'Enviando...' : 'Adicionar slide'}
             </button>
+          </div>
+
+          <div className="admin-form-grid">
+            <label className="col-12">
+              Texto alternativo da imagem (descreva o que aparece na foto, para quem usa leitor de tela)
+              <input
+                type="text"
+                value={alt}
+                onChange={e => setAlt(e.target.value)}
+                placeholder="ex.: Prato de salada com frango grelhado e legumes frescos"
+                required
+              />
+            </label>
           </div>
 
           {isSpecial && (

@@ -14,9 +14,12 @@ export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
 
-  const { imageUrl, isSpecial, buttonLabel, buttonUrl } = await request.json()
+  const { imageUrl, alt, isSpecial, buttonLabel, buttonUrl } = await request.json()
   if (typeof imageUrl !== 'string' || !imageUrl) {
     return NextResponse.json({ error: 'imageUrl é obrigatório' }, { status: 400 })
+  }
+  if (typeof alt !== 'string' || !alt.trim()) {
+    return NextResponse.json({ error: 'Texto alternativo (alt) é obrigatório' }, { status: 400 })
   }
   if (isSpecial && (typeof buttonLabel !== 'string' || !buttonLabel.trim())) {
     return NextResponse.json({ error: 'Texto do botão é obrigatório em slide especial' }, { status: 400 })
@@ -29,6 +32,7 @@ export async function POST(request: NextRequest) {
   const slide = await prisma.heroSlide.create({
     data: {
       imageUrl,
+      alt: alt.trim(),
       order: (last?.order ?? -1) + 1,
       isSpecial: Boolean(isSpecial),
       buttonLabel: isSpecial ? buttonLabel.trim() : null,
