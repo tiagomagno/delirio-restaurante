@@ -9,6 +9,11 @@ const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/g
 const MAX_SIZE = 8 * 1024 * 1024 // 8MB
 const ALLOWED_FOLDERS = new Set(['hero', 'lojas'])
 const WEBP_QUALITY = 70
+// Fotos de celular costumam vir em 3000-4000px de largura — bem além do que
+// qualquer exibição no site precisa (até o banner em tela cheia). Limita a
+// largura pra evitar que a miniatura de 220px no admin sirva o arquivo
+// inteiro em altíssima resolução.
+const MAX_WIDTH = 2000
 
 export async function POST(request: NextRequest) {
   const session = await getSession()
@@ -47,7 +52,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: `/uploads/${folder}/${fileName}` })
   }
 
-  const webpBuffer = await sharp(originalBuffer).webp({ quality: WEBP_QUALITY }).toBuffer()
+  const webpBuffer = await sharp(originalBuffer)
+    .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+    .webp({ quality: WEBP_QUALITY })
+    .toBuffer()
   const fileName = `${randomUUID()}.webp`
   await writeFile(path.join(uploadDir, fileName), webpBuffer)
 
