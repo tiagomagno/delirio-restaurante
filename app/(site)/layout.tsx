@@ -8,6 +8,7 @@ import { getPageContent } from '@/lib/data/content'
 import { buildOrganizationSchema, buildWebsiteSchema } from '@/lib/seo/structuredData'
 import { SITE_FAVICON } from '@/lib/seo/pages'
 import AsyncTypekitFont from '@/components/AsyncTypekitFont'
+import SmoothScroll from '@/components/SmoothScroll'
 
 const aleo = Aleo({
   subsets: ['latin'],
@@ -68,6 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
         <AsyncTypekitFont />
+        <SmoothScroll />
         <StructuredData data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
         <Header whatsappUrl={c['header.whatsapp_url']} />
         {children}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const BASE = '/wp-content/uploads/2023/05'
 
@@ -29,8 +29,27 @@ export default function SobreHeroCarousel({ slides }: Props) {
 
   const img = IMAGES[current] ?? IMAGES[0]
 
+  // Arrasto/swipe: troca de slide se o gesto horizontal passar de 50px.
+  const startX = useRef<number | null>(null)
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    startX.current = e.clientX
+  }
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (startX.current === null) return
+    const dx = e.clientX - startX.current
+    startX.current = null
+    if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
+  }
+
   return (
-    <section className="sobre-hero" aria-label="Nossa História">
+    <section
+      className="sobre-hero"
+      aria-label="Nossa História"
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerCancel={() => { startX.current = null }}
+    >
       {/* Background image cobre a seção toda */}
       <div
         className="sobre-hero__bg"
