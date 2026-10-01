@@ -8,7 +8,6 @@ import { parseVideoUrl } from '@/lib/video'
 // Campos da seção "40 anos" de Sobre Nós têm formato próprio.
 function validateDocValue(key: string, value: string): string | null {
   const v = value.trim()
-  if (key === 'doc.enabled') return v === 'true' || v === 'false' ? null : 'Valor inválido'
   if (key === 'doc.image') return v === '' || v.startsWith('/uploads/') ? null : 'Imagem inválida'
   if (key === 'doc.video_url') return v === '' || parseVideoUrl(v) ? null : 'o link do vídeo precisa ser do YouTube, do Instagram ou um vídeo enviado pelo painel.'
   if (key === 'doc.full_url') return v === '' || isValidHttpUrl(v) ? null : 'o link do botão precisa começar com http:// ou https://.'

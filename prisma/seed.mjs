@@ -225,7 +225,6 @@ const CONTENT = [
   { page: 'sobre-nos', key: 'hero.slide2.text', label: 'Carrossel topo — Slide 2 — Texto', value: 'Somos verdadeiros em tudo que fazemos. Acreditamos no potencial das gerações futuras.O resto é fruto de muito amor, trabalho e dedicação. Graças a uma equipe feliz e uma seleção rigorosa dos melhores ingredientes. Servimos aos nossos clientes uma comida fresca e saudável. Com a informalidade e rapidez que nosso mundo exige, alimentamos as pessoas com sorrisos e muita saúde.' },
   { page: 'sobre-nos', key: 'hero.slide3.title', label: 'Carrossel topo — Slide 3 — Título', value: 'Um Estilo\nde Vida' },
   { page: 'sobre-nos', key: 'hero.slide3.text', label: 'Carrossel topo — Slide 3 — Texto', value: 'Os seres brasileiros e suas vidas nos inspiram. Somos urbanos, praianos, trabalhadores conectados com a natureza. Sempre procuramos estar à frente, não temos medo de mudanças. Servimos para todos uma comida feita com amor.' },
-  { page: 'sobre-nos', key: 'doc.enabled', label: '40 anos — Documentário — Exibir seção', value: 'false' },
   { page: 'sobre-nos', key: 'doc.image', label: '40 anos — Documentário — Imagem do banner', value: '' },
   { page: 'sobre-nos', key: 'doc.title', label: '40 anos — Documentário — Título (leitores de tela)', value: '40 anos de Delírio — O documentário' },
   { page: 'sobre-nos', key: 'doc.video_url', label: '40 anos — Documentário — Link do trailer (YouTube ou Instagram)', value: '' },

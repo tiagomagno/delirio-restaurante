@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Fragment, type ReactNode } from 'react'
 import SobreHeroCarousel from '@/components/SobreHeroCarousel'
 import InstitutoCarousel from '@/components/InstitutoCarousel'
 import Multiline from '@/components/Multiline'
@@ -8,6 +9,7 @@ import InstagramEmbed from '@/components/InstagramEmbed'
 import VideoFilePlayer from '@/components/VideoFilePlayer'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
+import { visibleSectionIds } from '@/lib/sections'
 import { parseVideoUrl } from '@/lib/video'
 import { isValidHttpUrl } from '@/lib/validateUrl'
 
@@ -46,59 +48,55 @@ export default async function SobreNos() {
 
   const docTitle = c['doc.title'] ?? '40 anos de Delírio — O documentário'
   const docVideo = parseVideoUrl(c['doc.video_url'])
-  const docEnabled = c['doc.enabled'] === 'true'
   const docImage = c['doc.image']?.startsWith('/uploads/') ? c['doc.image'] : `${BASE}/05/delirio-40-anos-documentario.webp`
   const docFullUrl = c['doc.full_url']?.trim() ?? ''
   const docHasFullUrl = isValidHttpUrl(docFullUrl)
 
-  return (
-    <main id="main-content" tabIndex={-1}>
-
-      {/* ── 1. Carrossel Hero ── */}
+  // Cada seção é um bloco independente; a ordem e a visibilidade vêm do admin.
+  const blocks: Record<string, ReactNode> = {
+    hero: (
       <SobreHeroCarousel slides={heroSlides} />
-
-      {/* ── 2. 40 anos — Documentário ── */}
-      {docEnabled && (
-        <section id="documentario" className="sobre-doc" aria-label={docTitle}>
-          <div className="sobre-doc__banner">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={docImage}
-              alt={docTitle}
-              width={1600}
-              height={900}
-              loading="lazy"
-            />
+    ),
+    doc: (
+      <section id="documentario" className="sobre-doc" aria-label={docTitle}>
+        <div className="sobre-doc__banner">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={docImage}
+            alt={docTitle}
+            width={1600}
+            height={900}
+            loading="lazy"
+          />
+        </div>
+        {docVideo?.type === 'youtube' && (
+          <div className="sobre-doc__player">
+            <YouTubeEmbed videoId={docVideo.id} title={docTitle} />
           </div>
-          {docVideo?.type === 'youtube' && (
-            <div className="sobre-doc__player">
-              <YouTubeEmbed videoId={docVideo.id} title={docTitle} />
-            </div>
-          )}
-          {docVideo?.type === 'file' && (
-            <div className="sobre-doc__player">
-              <VideoFilePlayer src={docVideo.src} title={docTitle} />
-            </div>
-          )}
-          {docVideo?.type === 'instagram' && (
-            <div className="sobre-doc__player sobre-doc__player--ig">
-              <InstagramEmbed kind={docVideo.kind} code={docVideo.code} title={docTitle} />
-            </div>
-          )}
-          {docHasFullUrl && (
-            <a
-              href={docFullUrl}
-              target="_blank"
-              rel="noopener"
-              className="sobre-doc__btn"
-            >
-              {c['doc.cta'] ?? 'Assistir à versão completa'}
-            </a>
-          )}
-        </section>
-      )}
-
-      {/* ── 3. Sustentabilidade ── */}
+        )}
+        {docVideo?.type === 'file' && (
+          <div className="sobre-doc__player">
+            <VideoFilePlayer src={docVideo.src} title={docTitle} />
+          </div>
+        )}
+        {docVideo?.type === 'instagram' && (
+          <div className="sobre-doc__player sobre-doc__player--ig">
+            <InstagramEmbed kind={docVideo.kind} code={docVideo.code} title={docTitle} />
+          </div>
+        )}
+        {docHasFullUrl && (
+          <a
+            href={docFullUrl}
+            target="_blank"
+            rel="noopener"
+            className="sobre-doc__btn"
+          >
+            {c['doc.cta'] ?? 'Assistir à versão completa'}
+          </a>
+        )}
+      </section>
+    ),
+    sust: (
       <section id="sustentabilidade" className="sobre-sust" aria-label="Sustentabilidade">
         <div className="sobre-sust__inner">
           <div className="sobre-sust__media">
@@ -137,11 +135,11 @@ export default async function SobreNos() {
           </div>
         </div>
       </section>
-
-      {/* ── 4. Projetos Sociais — Carrossel ── */}
+    ),
+    instituto: (
       <InstitutoCarousel />
-
-      {/* ── 5. Rancho ── */}
+    ),
+    rancho: (
       <section id="rancho" className="sobre-rancho-section" aria-label="Rancho São Francisco">
         <div className="sobre-rancho-section__inner">
           <div className="sobre-rancho-section__videos">
@@ -199,8 +197,8 @@ export default async function SobreNos() {
           </div>
         </div>
       </section>
-
-      {/* ── 6. Livro ── */}
+    ),
+    livro: (
       <section className="sobre-livro" aria-label="Livro Delírio Tropical 40 anos">
         <div className="sobre-livro__inner">
           <div className="sobre-livro__img">
@@ -221,7 +219,15 @@ export default async function SobreNos() {
           </div>
         </div>
       </section>
+    ),
+  }
+  const sectionIds = visibleSectionIds('sobre-nos', c['layout.sections'])
 
+  return (
+    <main id="main-content" tabIndex={-1}>
+      {sectionIds.map(id => (
+        <Fragment key={id}>{blocks[id]}</Fragment>
+      ))}
     </main>
   )
 }

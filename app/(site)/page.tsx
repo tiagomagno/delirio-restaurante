@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Fragment, type ReactNode } from 'react'
 import HeroSlider from '@/components/HeroSlider'
 import StoreCarousel from '@/components/StoreCarousel'
 import Multiline from '@/components/Multiline'
@@ -7,6 +8,7 @@ import Link from 'next/link'
 import { getStores } from '@/lib/data/stores'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
+import { visibleSectionIds } from '@/lib/sections'
 import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
@@ -28,11 +30,9 @@ export default async function Home() {
 
   const modalStores = stores.map(s => ({ name: s.name, menuUrl: s.menuUrl, highlight: s.highlight }))
 
-  return (
-    <main id="main-content" tabIndex={-1}>
-      <h1 className="sr-only">{content['meta.title'] ?? 'Delírio Tropical — Restaurante Saudável desde 1983'}</h1>
-
-      {/* ── Hero ── */}
+  // Cada seção é um bloco independente; a ordem e a visibilidade vêm do admin.
+  const blocks: Record<string, ReactNode> = {
+    hero: (
       <HeroSlider
         slides={slides.map(s => ({
           src: s.imageUrl,
@@ -44,13 +44,13 @@ export default async function Home() {
         ctaLabel={content['hero.cta'] ?? 'veja o cardápio do dia'}
         modalStores={modalStores}
       />
-
-      {/* ── Lojas ── */}
+    ),
+    lojas: (
       <section id="lojas" aria-label="Nossas lojas">
         <StoreCarousel stores={stores} />
       </section>
-
-      {/* ── Escolha ── */}
+    ),
+    escolha: (
       <section id="escolha" className="escolha" aria-label="Nossas opções">
         <h2 className="escolha__title">
           {content['escolha.title'] ?? 'Escolha a opção que melhor lhe atende'}
@@ -108,8 +108,8 @@ export default async function Home() {
 
         </div>
       </section>
-
-      {/* ── Desde 1983 ── */}
+    ),
+    historia: (
       <section className="historia" aria-label="Nossa história">
         <div className="historia__left">
           <h2 className="historia__year">
@@ -130,6 +130,16 @@ export default async function Home() {
           />
         </div>
       </section>
+    ),
+  }
+  const sectionIds = visibleSectionIds('home', content['layout.sections'])
+
+  return (
+    <main id="main-content" tabIndex={-1}>
+      <h1 className="sr-only">{content['meta.title'] ?? 'Delírio Tropical — Restaurante Saudável desde 1983'}</h1>
+      {sectionIds.map(id => (
+        <Fragment key={id}>{blocks[id]}</Fragment>
+      ))}
     </main>
   )
 }
