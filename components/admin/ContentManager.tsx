@@ -48,7 +48,7 @@ const DOC_ORDER = ['doc.enabled', 'doc.image', 'doc.video_url', 'doc.full_url', 
 const DOC_IMAGE_DEFAULT = '/wp-content/uploads/2023/05/delirio-40-anos-documentario.webp'
 
 const DOC_HELP: Record<string, string> = {
-  'doc.video_url': 'Link do vídeo no YouTube (trailer) que toca dentro do site. Aceita links youtube.com/watch, youtu.be, etc.',
+  'doc.video_url': 'Trailer que toca dentro do site. Melhor opção: enviar o arquivo de vídeo (MP4) pelo botão abaixo — toca limpo, em 16:9, sozinho e sem som, em loop. Também aceita link do YouTube ou de post do Instagram (o Instagram mostra a interface dele).',
   'doc.full_url': 'Link do vídeo completo (ex: a live). O botão abre em nova aba. Deixe em branco para esconder o botão.',
   'doc.cta': 'Texto do botão abaixo do vídeo.',
   'doc.title': 'Nome da seção para leitores de tela e acessibilidade (não aparece na tela).',
@@ -162,6 +162,24 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
     }
   }
 
+  async function uploadVideo(id: string, file: File) {
+    setUploadError('')
+    setUploadingId(id)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      form.append('folder', 'sobre')
+      const res = await fetch('/api/admin/upload-video', { method: 'POST', body: form })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Erro no upload')
+      setValue(id, data.url)
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'Erro no upload')
+    } finally {
+      setUploadingId(null)
+    }
+  }
+
   async function uploadImage(id: string, file: File) {
     setUploadError('')
     setUploadingId(id)
@@ -232,6 +250,45 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
                         label="Exibir esta seção no site"
                       />
                       <p className="admin-field-help">Desligada, a seção some de Sobre Nós (os dados abaixo ficam guardados).</p>
+                    </div>
+                  )
+                }
+
+                if (item.key === 'doc.video_url') {
+                  const isFile = values[item.id].startsWith('/uploads/')
+                  return (
+                    <div key={item.id} className="admin-content-field">
+                      <label>Trailer (vídeo ou link)</label>
+                      <p className="admin-field-help">{DOC_HELP[item.key]}</p>
+                      <textarea
+                        value={values[item.id]}
+                        onChange={e => setValue(item.id, e.target.value)}
+                        rows={2}
+                        placeholder="Cole um link ou envie o arquivo MP4"
+                      />
+                      {isFile && <span className="admin-badge admin-badge--green" style={{ width: 'fit-content' }}>Vídeo enviado</span>}
+                      <div className="admin-doc-actions">
+                        <label className="admin-btn admin-btn--secondary admin-doc-upload">
+                          <IconUpload size={15} /> {uploadingId === item.id ? 'Enviando...' : 'Enviar vídeo (MP4)'}
+                          <input
+                            type="file"
+                            accept="video/mp4,video/webm"
+                            hidden
+                            disabled={uploadingId === item.id}
+                            onChange={e => {
+                              const f = e.target.files?.[0]
+                              if (f) uploadVideo(item.id, f)
+                              e.target.value = ''
+                            }}
+                          />
+                        </label>
+                        {values[item.id] && (
+                          <button type="button" className="admin-btn admin-btn--secondary" onClick={() => setValue(item.id, '')}>
+                            Remover
+                          </button>
+                        )}
+                      </div>
+                      {uploadError && <p className="admin-field-help" style={{ color: 'var(--admin-red)' }}>{uploadError}</p>}
                     </div>
                   )
                 }

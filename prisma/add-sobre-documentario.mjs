@@ -10,7 +10,7 @@ const rows = [
   { key: 'doc.enabled', label: '40 anos — Documentário — Exibir seção', value: 'false' },
   { key: 'doc.image', label: '40 anos — Documentário — Imagem do banner', value: '' },
   { key: 'doc.title', label: '40 anos — Documentário — Título (leitores de tela)', value: '40 anos de Delírio — O documentário' },
-  { key: 'doc.video_url', label: '40 anos — Documentário — Link do vídeo no YouTube', value: '' },
+  { key: 'doc.video_url', label: '40 anos — Documentário — Link do trailer (YouTube ou Instagram)', value: '' },
   { key: 'doc.full_url', label: '40 anos — Documentário — Link da versão completa (botão)', value: '' },
   { key: 'doc.cta', label: '40 anos — Documentário — Texto do botão', value: 'Assistir à versão completa' },
 ]

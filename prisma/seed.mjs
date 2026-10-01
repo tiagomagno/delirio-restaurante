@@ -228,7 +228,7 @@ const CONTENT = [
   { page: 'sobre-nos', key: 'doc.enabled', label: '40 anos — Documentário — Exibir seção', value: 'false' },
   { page: 'sobre-nos', key: 'doc.image', label: '40 anos — Documentário — Imagem do banner', value: '' },
   { page: 'sobre-nos', key: 'doc.title', label: '40 anos — Documentário — Título (leitores de tela)', value: '40 anos de Delírio — O documentário' },
-  { page: 'sobre-nos', key: 'doc.video_url', label: '40 anos — Documentário — Link do vídeo no YouTube', value: '' },
+  { page: 'sobre-nos', key: 'doc.video_url', label: '40 anos — Documentário — Link do trailer (YouTube ou Instagram)', value: '' },
   { page: 'sobre-nos', key: 'doc.full_url', label: '40 anos — Documentário — Link da versão completa (botão)', value: '' },
   { page: 'sobre-nos', key: 'doc.cta', label: '40 anos — Documentário — Texto do botão', value: 'Assistir à versão completa' },
   { page: 'sobre-nos', key: 'sust.title', label: 'Título Sustentabilidade', value: 'Nosso jeitinho\nDelírio de ser...\nmais sustentável!' },

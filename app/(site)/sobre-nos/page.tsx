@@ -4,9 +4,11 @@ import InstitutoCarousel from '@/components/InstitutoCarousel'
 import Multiline from '@/components/Multiline'
 import VideoThumb from '@/components/VideoThumb'
 import YouTubeEmbed from '@/components/YouTubeEmbed'
+import InstagramEmbed from '@/components/InstagramEmbed'
+import VideoFilePlayer from '@/components/VideoFilePlayer'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
-import { parseYouTubeId } from '@/lib/youtube'
+import { parseVideoUrl } from '@/lib/video'
 import { isValidHttpUrl } from '@/lib/validateUrl'
 
 export const dynamic = 'force-dynamic'
@@ -43,7 +45,7 @@ export default async function SobreNos() {
   ]
 
   const docTitle = c['doc.title'] ?? '40 anos de Delírio — O documentário'
-  const docVideoId = parseYouTubeId(c['doc.video_url'])
+  const docVideo = parseVideoUrl(c['doc.video_url'])
   const docEnabled = c['doc.enabled'] === 'true'
   const docImage = c['doc.image']?.startsWith('/uploads/') ? c['doc.image'] : `${BASE}/05/delirio-40-anos-documentario.webp`
   const docFullUrl = c['doc.full_url']?.trim() ?? ''
@@ -68,9 +70,19 @@ export default async function SobreNos() {
               loading="lazy"
             />
           </div>
-          {docVideoId && (
+          {docVideo?.type === 'youtube' && (
             <div className="sobre-doc__player">
-              <YouTubeEmbed videoId={docVideoId} title={docTitle} />
+              <YouTubeEmbed videoId={docVideo.id} title={docTitle} />
+            </div>
+          )}
+          {docVideo?.type === 'file' && (
+            <div className="sobre-doc__player">
+              <VideoFilePlayer src={docVideo.src} title={docTitle} />
+            </div>
+          )}
+          {docVideo?.type === 'instagram' && (
+            <div className="sobre-doc__player sobre-doc__player--ig">
+              <InstagramEmbed kind={docVideo.kind} code={docVideo.code} title={docTitle} />
             </div>
           )}
           {docHasFullUrl && (
