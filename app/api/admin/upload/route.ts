@@ -7,7 +7,7 @@ import { getSession } from '@/lib/session'
 
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
 const MAX_SIZE = 8 * 1024 * 1024 // 8MB
-const ALLOWED_FOLDERS = new Set(['hero', 'lojas'])
+const ALLOWED_FOLDERS = new Set(['hero', 'lojas', 'sobre'])
 const WEBP_QUALITY = 70
 // Fotos de celular costumam vir em 3000-4000px de largura — bem além do que
 // qualquer exibição no site precisa (até o banner em tela cheia). Limita a

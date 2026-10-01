@@ -44,6 +44,8 @@ export default async function SobreNos() {
 
   const docTitle = c['doc.title'] ?? '40 anos de Delírio — O documentário'
   const docVideoId = parseYouTubeId(c['doc.video_url'])
+  const docEnabled = c['doc.enabled'] === 'true'
+  const docImage = c['doc.image']?.startsWith('/uploads/') ? c['doc.image'] : `${BASE}/05/delirio-40-anos-documentario.webp`
   const docFullUrl = c['doc.full_url']?.trim() ?? ''
   const docHasFullUrl = isValidHttpUrl(docFullUrl)
 
@@ -54,33 +56,35 @@ export default async function SobreNos() {
       <SobreHeroCarousel slides={heroSlides} />
 
       {/* ── 2. 40 anos — Documentário ── */}
-      <section id="documentario" className="sobre-doc" aria-label={docTitle}>
-        <div className="sobre-doc__banner">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`${BASE}/05/delirio-40-anos-documentario.webp`}
-            alt={docTitle}
-            width={1600}
-            height={900}
-            loading="lazy"
-          />
-        </div>
-        {docVideoId && (
-          <div className="sobre-doc__player">
-            <YouTubeEmbed videoId={docVideoId} title={docTitle} />
+      {docEnabled && (
+        <section id="documentario" className="sobre-doc" aria-label={docTitle}>
+          <div className="sobre-doc__banner">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={docImage}
+              alt={docTitle}
+              width={1600}
+              height={900}
+              loading="lazy"
+            />
           </div>
-        )}
-        {docHasFullUrl && (
-          <a
-            href={docFullUrl}
-            target="_blank"
-            rel="noopener"
-            className="sobre-doc__btn"
-          >
-            {c['doc.cta'] ?? 'Assistir à versão completa'}
-          </a>
-        )}
-      </section>
+          {docVideoId && (
+            <div className="sobre-doc__player">
+              <YouTubeEmbed videoId={docVideoId} title={docTitle} />
+            </div>
+          )}
+          {docHasFullUrl && (
+            <a
+              href={docFullUrl}
+              target="_blank"
+              rel="noopener"
+              className="sobre-doc__btn"
+            >
+              {c['doc.cta'] ?? 'Assistir à versão completa'}
+            </a>
+          )}
+        </section>
+      )}
 
       {/* ── 3. Sustentabilidade ── */}
       <section id="sustentabilidade" className="sobre-sust" aria-label="Sustentabilidade">

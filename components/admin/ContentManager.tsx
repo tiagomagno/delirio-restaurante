@@ -1,7 +1,8 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { IconCheck } from './icons'
+import { IconCheck, IconUpload } from './icons'
+import Switch from './Switch'
 import { checkSeoField, DESCRIPTION_LIMIT, TITLE_LIMIT } from '@/lib/seo/fieldCheck'
 
 export interface ContentItem {
@@ -30,18 +31,31 @@ const PAGE_ORDER = [
   'eventos-corporativos', 'fale-conosco', 'ouvidoria', 'uso-e-privacidade', 'global',
 ]
 
-type Group = 'texto' | 'botao' | 'links' | 'seo'
+type Group = 'secao' | 'texto' | 'botao' | 'links' | 'seo'
 
 const GROUP_LABELS: Record<Group, string> = {
+  secao: 'Seção 40 anos (documentário)',
   texto: 'Textos',
   botao: 'Botões',
   links: 'Links',
   seo: 'SEO',
 }
 
-const GROUP_ORDER: Group[] = ['texto', 'botao', 'links', 'seo']
+const GROUP_ORDER: Group[] = ['secao', 'texto', 'botao', 'links', 'seo']
+
+// Ordem dos campos da seção "40 anos" no painel (o resto cai no fim).
+const DOC_ORDER = ['doc.enabled', 'doc.image', 'doc.video_url', 'doc.full_url', 'doc.cta', 'doc.title']
+const DOC_IMAGE_DEFAULT = '/wp-content/uploads/2023/05/delirio-40-anos-documentario.webp'
+
+const DOC_HELP: Record<string, string> = {
+  'doc.video_url': 'Link do vídeo no YouTube (trailer) que toca dentro do site. Aceita links youtube.com/watch, youtu.be, etc.',
+  'doc.full_url': 'Link do vídeo completo (ex: a live). O botão abre em nova aba. Deixe em branco para esconder o botão.',
+  'doc.cta': 'Texto do botão abaixo do vídeo.',
+  'doc.title': 'Nome da seção para leitores de tela e acessibilidade (não aparece na tela).',
+}
 
 function groupOf(item: ContentItem): Group {
+  if (item.page === 'sobre-nos' && item.key.startsWith('doc.')) return 'secao'
   if (item.key.startsWith('meta.') || item.key.startsWith('og.')) return 'seo'
   if (item.key.startsWith('social.') || item.key.startsWith('header.') || item.key.startsWith('footer.')) return 'links'
   if (item.page === 'global') return 'seo'
@@ -83,8 +97,13 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
   const activeItems = byPage[activePage] ?? []
 
   const groupedActiveItems = useMemo(() => {
-    const groups: Record<Group, ContentItem[]> = { texto: [], botao: [], links: [], seo: [] }
+    const groups: Record<Group, ContentItem[]> = { secao: [], texto: [], botao: [], links: [], seo: [] }
     for (const item of activeItems) groups[groupOf(item)].push(item)
+    groups.secao.sort((a, b) => {
+      const ia = DOC_ORDER.indexOf(a.key)
+      const ib = DOC_ORDER.indexOf(b.key)
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib)
+    })
     return groups
   }, [activeItems])
 
@@ -103,6 +122,9 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
     Object.fromEntries(items.map(i => [i.id, i.value])),
   )
   const [saveState, setSaveState] = useState<SaveState>('idle')
+  const [saveError, setSaveError] = useState('')
+  const [uploadingId, setUploadingId] = useState<string | null>(null)
+  const [uploadError, setUploadError] = useState('')
 
   const dirtyIds = activeItems.filter(i => values[i.id] !== saved[i.id]).map(i => i.id)
   const dirtyCount = dirtyIds.length
@@ -125,12 +147,36 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
           }),
         ),
       )
-      if (results.some(r => !r.ok)) throw new Error('save failed')
+      const failed = results.find(r => !r.ok)
+      if (failed) {
+        const data = await failed.json().catch(() => null)
+        throw new Error(data?.error ?? 'save failed')
+      }
+      setSaveError('')
       setSaved(s => ({ ...s, ...Object.fromEntries(dirtyIds.map(id => [id, values[id]])) }))
       setSaveState('saved')
       setTimeout(() => setSaveState(s => (s === 'saved' ? 'idle' : s)), 2500)
-    } catch {
+    } catch (err) {
+      setSaveError(err instanceof Error && err.message !== 'save failed' ? err.message : '')
       setSaveState('error')
+    }
+  }
+
+  async function uploadImage(id: string, file: File) {
+    setUploadError('')
+    setUploadingId(id)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      form.append('folder', 'sobre')
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: form })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Erro no upload')
+      setValue(id, data.url)
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'Erro no upload')
+    } finally {
+      setUploadingId(null)
     }
   }
 
@@ -153,7 +199,7 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
         <div className="admin-paginas-toolbar">
           <p className="admin-paginas-toolbar__status">
             {saveState === 'error'
-              ? 'Erro ao salvar — tente novamente.'
+              ? `Erro ao salvar — ${saveError || 'tente novamente.'}`
               : dirtyCount > 0
                 ? `${dirtyCount} ${dirtyCount === 1 ? 'alteração não salva' : 'alterações não salvas'}`
                 : 'Tudo salvo'}
@@ -176,6 +222,55 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
                 const limit = CHAR_LIMITS[item.key]
                 const help = SEO_HELP[item.key]
                 const length = values[item.id]?.length ?? 0
+
+                if (item.key === 'doc.enabled') {
+                  return (
+                    <div key={item.id} className="admin-content-field">
+                      <Switch
+                        checked={values[item.id] === 'true'}
+                        onChange={on => setValue(item.id, on ? 'true' : 'false')}
+                        label="Exibir esta seção no site"
+                      />
+                      <p className="admin-field-help">Desligada, a seção some de Sobre Nós (os dados abaixo ficam guardados).</p>
+                    </div>
+                  )
+                }
+
+                if (item.key === 'doc.image') {
+                  const current = values[item.id]
+                  return (
+                    <div key={item.id} className="admin-content-field">
+                      <label>Banner (imagem)</label>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img className="admin-doc-preview" src={current || DOC_IMAGE_DEFAULT} alt="Pré-visualização do banner" />
+                      <p className="admin-field-help">
+                        Use a arte inteira em 16:9 (ex: 1600×900). O site mostra só a faixa central, com a logo e o título; no celular as laterais são cortadas.
+                      </p>
+                      <div className="admin-doc-actions">
+                        <label className="admin-btn admin-btn--secondary admin-doc-upload">
+                          <IconUpload size={15} /> {uploadingId === item.id ? 'Enviando...' : 'Trocar imagem'}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden
+                            disabled={uploadingId === item.id}
+                            onChange={e => {
+                              const f = e.target.files?.[0]
+                              if (f) uploadImage(item.id, f)
+                              e.target.value = ''
+                            }}
+                          />
+                        </label>
+                        {current && (
+                          <button type="button" className="admin-btn admin-btn--secondary" onClick={() => setValue(item.id, '')}>
+                            Voltar ao padrão
+                          </button>
+                        )}
+                      </div>
+                      {uploadError && <p className="admin-field-help" style={{ color: 'var(--admin-red)' }}>{uploadError}</p>}
+                    </div>
+                  )
+                }
                 const check = group === 'seo' ? checkSeoField(item.key, values[item.id] ?? '', activeValuesByKey) : null
                 return (
                   <div key={item.id} className="admin-content-field">
@@ -190,7 +285,7 @@ export default function ContentManager({ items }: { items: ContentItem[] }) {
                         {check.status === 'ok' ? '✓' : check.status === 'warn' ? '⚠' : '–'} {check.message}
                       </span>
                     )}
-                    {help && <p className="admin-field-help">{help}</p>}
+                    {(help ?? DOC_HELP[item.key]) && <p className="admin-field-help">{help ?? DOC_HELP[item.key]}</p>}
                     <textarea
                       value={values[item.id]}
                       onChange={e => setValue(item.id, e.target.value)}

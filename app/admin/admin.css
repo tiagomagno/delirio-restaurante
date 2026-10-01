@@ -1447,3 +1447,19 @@ a.admin-card:hover {
   .admin-sidebar__user { display: none; }
   .admin-main { gap: 12px; }
 }
+
+/* Seção "40 anos" em Páginas > Sobre Nós */
+.admin-doc-preview {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: #fafbfc;
+}
+.admin-doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.admin-doc-upload { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }

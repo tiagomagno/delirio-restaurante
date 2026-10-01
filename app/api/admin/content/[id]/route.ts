@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 import { validateSeoValueForSave } from '@/lib/seo/fieldCheck'
+import { isValidHttpUrl } from '@/lib/validateUrl'
+import { parseYouTubeId } from '@/lib/youtube'
+
+// Campos da seção "40 anos" de Sobre Nós têm formato próprio.
+function validateDocValue(key: string, value: string): string | null {
+  const v = value.trim()
+  if (key === 'doc.enabled') return v === 'true' || v === 'false' ? null : 'Valor inválido'
+  if (key === 'doc.image') return v === '' || v.startsWith('/uploads/') ? null : 'Imagem inválida'
+  if (key === 'doc.video_url') return v === '' || parseYouTubeId(v) ? null : 'o link do vídeo precisa ser do YouTube.'
+  if (key === 'doc.full_url') return v === '' || isValidHttpUrl(v) ? null : 'o link do botão precisa começar com http:// ou https://.'
+  return null
+}
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
@@ -21,6 +33,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const validationError = validateSeoValueForSave(existing.key, value)
   if (validationError) {
     return NextResponse.json({ error: validationError }, { status: 400 })
+  }
+
+  const docError = validateDocValue(existing.key, value)
+  if (docError) {
+    return NextResponse.json({ error: docError }, { status: 400 })
   }
 
   const item = await prisma.pageContent.update({ where: { id }, data: { value } })
