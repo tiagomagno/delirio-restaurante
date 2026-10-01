@@ -2,7 +2,8 @@
 
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { IconTrash, IconArrowUp, IconArrowDown, IconHome, IconStore, IconAlignLeft, IconAlignCenter, IconAlignRight, IconMoreVertical, IconUpload } from './icons'
+import { IconTrash, IconHome, IconStore, IconAlignLeft, IconAlignCenter, IconAlignRight, IconMoreVertical, IconUpload } from './icons'
+import { DragHandle, useDragSort } from './useDragSort'
 import RetryImage from '@/components/RetryImage'
 import type { StorePhoto, StorePhotoPosition } from '@/lib/data/stores'
 
@@ -136,19 +137,17 @@ export default function StoreForm({ title, initial }: { title: React.ReactNode; 
     set('storeImage', data.storeImage === url ? '' : url)
   }
 
-  // Move dentro da sublista visível (a Galeria, que exclui as capas) em vez de
-  // por índice bruto do array — assim a seta sempre troca com o item vizinho
-  // que o usuário está vendo, mesmo que uma capa esteja intercalada no array.
-  function moveGalleryPhoto(url: string, direction: -1 | 1, visibleList: StorePhoto[]) {
-    const idx = visibleList.findIndex(p => p.url === url)
-    const targetUrl = visibleList[idx + direction]?.url
-    if (!targetUrl) return
-    const a = data.photos.findIndex(p => p.url === url)
-    const b = data.photos.findIndex(p => p.url === targetUrl)
-    const photos = [...data.photos]
-    ;[photos[a], photos[b]] = [photos[b], photos[a]]
-    set('photos', photos)
+  // A Galeria exclui as capas, que ficam intercaladas no array de fotos. Ao
+  // reordenar, as fotos da galeria na nova ordem ocupam as mesmas posições que
+  // já ocupavam no array — as capas não saem do lugar.
+  const galleryUrls = data.photos.filter(p => p.url !== data.image && p.url !== data.storeImage).map(p => p.url)
+  function reorderGallery(orderedUrls: string[]) {
+    const inGallery = new Set(orderedUrls)
+    const byUrl = new Map(data.photos.map(p => [p.url, p]))
+    let next = 0
+    set('photos', data.photos.map(p => (inGallery.has(p.url) ? byUrl.get(orderedUrls[next++])! : p)))
   }
+  const gallerySort = useDragSort(galleryUrls, reorderGallery)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -196,16 +195,16 @@ export default function StoreForm({ title, initial }: { title: React.ReactNode; 
     router.refresh()
   }
 
-  function renderPhotoRow(photo: StorePhoto, moveWithin?: StorePhoto[]) {
+  function renderPhotoRow(photo: StorePhoto, sortable = false) {
     const isHomeCover = photo.url === data.image
     const isStoreCover = photo.url === data.storeImage
     const positionLabel = POSITION_OPTIONS.find(o => o.value === photo.position)?.label
     const menuOpenHere = menuOpen === photo.url
-    const moveIdx = moveWithin?.findIndex(p => p.url === photo.url) ?? -1
 
     return (
-      <div key={photo.url} className="admin-entry">
+      <div key={photo.url} {...(sortable ? gallerySort.itemProps(photo.url, 'admin-entry') : { className: 'admin-entry' })}>
         <div className="admin-gallery-item" style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+          {sortable && <DragHandle props={gallerySort.handleProps(photo.url)} />}
           <RetryImage
             className="admin-thumb admin-thumb--clickable"
             src={photo.url}
@@ -234,28 +233,6 @@ export default function StoreForm({ title, initial }: { title: React.ReactNode; 
               placeholder="Texto alternativo da foto"
             />
             <div className="admin-row-actions">
-              {moveWithin && (
-                <>
-                  <button
-                    type="button"
-                    className="admin-icon-btn"
-                    onClick={() => moveGalleryPhoto(photo.url, -1, moveWithin)}
-                    disabled={moveIdx <= 0}
-                    aria-label="Mover para cima"
-                  >
-                    <IconArrowUp size={13} />
-                  </button>
-                  <button
-                    type="button"
-                    className="admin-icon-btn"
-                    onClick={() => moveGalleryPhoto(photo.url, 1, moveWithin)}
-                    disabled={moveIdx === -1 || moveIdx === moveWithin.length - 1}
-                    aria-label="Mover para baixo"
-                  >
-                    <IconArrowDown size={13} />
-                  </button>
-                </>
-              )}
               {isHomeCover && (
                 <span className="admin-badge admin-badge--green" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                   <IconHome size={12} /> Capa da Home
@@ -511,7 +488,7 @@ export default function StoreForm({ title, initial }: { title: React.ReactNode; 
                       <div className="admin-gallery-group__title">Galeria</div>
                       {gallery.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                          {gallery.map(photo => renderPhotoRow(photo, gallery))}
+                          {gallery.map(photo => renderPhotoRow(photo, true))}
                         </div>
                       ) : (
                         <p className="admin-empty">Nenhuma outra foto na galeria.</p>

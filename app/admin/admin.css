@@ -1463,3 +1463,37 @@ a.admin-card:hover {
   gap: 8px;
 }
 .admin-doc-upload { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+
+/* Reordenação por arrasto (banner, fotos da loja) */
+.admin-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  min-height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--admin-text-muted);
+  cursor: grab;
+  border-radius: var(--admin-radius-sm);
+}
+.admin-drag-handle:hover { background: #eef0f4; color: var(--admin-text); }
+.admin-drag-handle:active { cursor: grabbing; }
+.admin-drag-handle:focus-visible { outline: 2px solid var(--admin-accent); outline-offset: 1px; }
+
+[data-sort-item] { position: relative; transition: opacity 0.15s; }
+[data-sort-item].is-dragging { opacity: 0.4; }
+[data-sort-item].is-drop-before::before,
+[data-sort-item].is-drop-after::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--admin-accent);
+  pointer-events: none;
+}
+[data-sort-item].is-drop-before::before { top: -7px; }
+[data-sort-item].is-drop-after::after { bottom: -7px; }

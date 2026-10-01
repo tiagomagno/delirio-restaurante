@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { IconArrowUp, IconArrowDown, IconTrash, IconUpload, IconCheck } from './icons'
+import { IconTrash, IconUpload, IconCheck } from './icons'
 import Switch from './Switch'
 import RetryImage from '@/components/RetryImage'
+import { DragHandle, type DragSort, useDragSort } from './useDragSort'
 
 export interface Slide {
   id: string
@@ -38,15 +39,13 @@ async function patchSlide(id: string, data: Record<string, unknown>) {
 }
 
 function SlideCard({
-  slide, index, total, values, error, onFieldChange, onMove, onToggleSpecial, onToggleActive, onRemove,
+  slide, values, error, sort, onFieldChange, onToggleSpecial, onToggleActive, onRemove,
 }: {
   slide: Slide
-  index: number
-  total: number
+  sort: DragSort
   values: FieldValues
   error?: string
   onFieldChange: (id: string, field: keyof FieldValues, value: string) => void
-  onMove: (slide: Slide, direction: -1 | 1) => void
   onToggleSpecial: (slide: Slide, next: boolean) => void
   onToggleActive: (slide: Slide) => void
   onRemove: (slide: Slide) => void
@@ -54,8 +53,9 @@ function SlideCard({
   const [previewOpen, setPreviewOpen] = useState(false)
 
   return (
-    <div className="admin-entry">
+    <div {...sort.itemProps(slide.id, 'admin-entry')}>
       <div className="admin-entry__top banner-slide__row">
+        <DragHandle props={sort.handleProps(slide.id)} />
         <RetryImage
           className="admin-thumb admin-thumb--clickable"
           src={slide.imageUrl}
@@ -76,12 +76,6 @@ function SlideCard({
           </span>
           {slide.isSpecial && <span className="admin-badge admin-badge--amber">Especial</span>}
           <div className="admin-row-actions">
-            <button className="admin-icon-btn" onClick={() => onMove(slide, -1)} disabled={index === 0} aria-label="Mover para cima">
-              <IconArrowUp size={14} />
-            </button>
-            <button className="admin-icon-btn" onClick={() => onMove(slide, 1)} disabled={index === total - 1} aria-label="Mover para baixo">
-              <IconArrowDown size={14} />
-            </button>
             <button className="admin-icon-btn" onClick={() => onToggleActive(slide)}>
               {slide.active ? 'Desativar' : 'Ativar'}
             </button>
@@ -140,8 +134,15 @@ function SlideCard({
   )
 }
 
-export default function BannerManager({ slides }: { slides: Slide[] }) {
+export default function BannerManager({ slides: serverSlides }: { slides: Slide[] }) {
   const router = useRouter()
+  // Ordem otimista: ao soltar o arrasto a lista já reflete a nova ordem, sem
+  // esperar o servidor; volta a vir do servidor quando os dados são recarregados.
+  const [orderIds, setOrderIds] = useState<string[] | null>(null)
+  const slides = orderIds
+    ? orderIds.map(id => serverSlides.find(s => s.id === id)).filter((s): s is Slide => !!s)
+    : serverSlides
+  useEffect(() => setOrderIds(null), [serverSlides])
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
@@ -177,7 +178,7 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
       return next
     })
     setFieldErrors(fe => Object.fromEntries(Object.entries(fe).filter(([id]) => ids.has(id))))
-  }, [slides])
+  }, [serverSlides])
 
   const dirtyIds = slides.map(s => s.id).filter(id => JSON.stringify(values[id]) !== JSON.stringify(saved[id]))
   const dirtyCount = dirtyIds.length
@@ -277,16 +278,26 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
     }
   }
 
-  async function move(slide: Slide, direction: -1 | 1) {
-    const index = slides.findIndex(s => s.id === slide.id)
-    const swapWith = slides[index + direction]
-    if (!swapWith) return
-    await Promise.all([
-      patchSlide(slide.id, { order: swapWith.order }),
-      patchSlide(swapWith.id, { order: slide.order }),
-    ])
+  // Reaproveita os valores de "order" que já existem, redistribuídos na nova
+  // sequência, e só grava os slides que de fato mudaram de posição.
+  async function reorder(orderedIds: string[]) {
+    setOrderIds(orderedIds)
+    const orders = slides.map(s => s.order).sort((a, b) => a - b)
+    const byId = new Map(slides.map(s => [s.id, s]))
+    const updates = orderedIds
+      .map((id, i) => ({ id, order: orders[i] }))
+      .filter(u => byId.get(u.id)?.order !== u.order)
+    try {
+      const results = await Promise.all(updates.map(u => patchSlide(u.id, { order: u.order })))
+      if (results.some(r => !r.ok)) throw new Error('reorder failed')
+      setError('')
+    } catch {
+      setError('Não foi possível salvar a nova ordem. Tente novamente.')
+    }
     router.refresh()
   }
+
+  const sort = useDragSort(slides.map(s => s.id), reorder)
 
   async function toggleSpecial(slide: Slide, next: boolean) {
     const v = saved[slide.id]
@@ -389,16 +400,14 @@ export default function BannerManager({ slides }: { slides: Slide[] }) {
         </div>
 
         <div className="admin-entry-list">
-          {slides.map((slide, i) => (
+          {slides.map(slide => (
             <SlideCard
               key={slide.id}
               slide={slide}
-              index={i}
-              total={slides.length}
+              sort={sort}
               values={values[slide.id] ?? fieldsOf(slide)}
               error={fieldErrors[slide.id]}
               onFieldChange={setField}
-              onMove={move}
               onToggleSpecial={toggleSpecial}
               onToggleActive={toggleActive}
               onRemove={remove}

@@ -131,6 +131,16 @@ export function IconArrowDown({ size = 18 }: IconProps) {
   )
 }
 
+export function IconGrip({ size = 18 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <circle cx="9" cy="6" r="1.6" /><circle cx="15" cy="6" r="1.6" />
+      <circle cx="9" cy="12" r="1.6" /><circle cx="15" cy="12" r="1.6" />
+      <circle cx="9" cy="18" r="1.6" /><circle cx="15" cy="18" r="1.6" />
+    </svg>
+  )
+}
+
 export function IconCheck({ size = 16 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
