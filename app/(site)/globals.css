@@ -859,6 +859,101 @@ body {
 
 .sobre-hero__dot--active { background: var(--white); }
 
+/* ─── SOBRE NÓS — 40 anos / documentário ────── */
+/* A arte original (1600x900) é enorme; mostramos só a faixa y 108..650 dela
+   (logo, "40 anos de Delírio" e "O DOCUMENTÁRIO"). A imagem é posicionada
+   pela altura do recorte (542px da arte) pra funcionar igual no desktop e no
+   mobile: no mobile o recorte fica mais alto e as laterais é que são cortadas.
+   O player entra logo abaixo do título, sobrepondo só o pé do banner.
+   margin-top em % é relativa à largura da seção, então tudo escala junto. */
+.sobre-doc {
+  background: var(--white);
+  padding-bottom: 64px;
+}
+.sobre-doc__banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1600 / 542;
+  overflow: hidden;
+}
+.sobre-doc__banner img {
+  position: absolute;
+  left: 50%;
+  top: -19.93%; /* 108 / 542 */
+  height: 166.05%; /* 900 / 542 */
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
+}
+.sobre-doc__player {
+  position: relative;
+  width: 56%;
+  max-width: 960px;
+  margin: -2.2% auto 0;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.28);
+}
+.sobre-doc__player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.sobre-doc__player img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sobre-play-btn--lg { width: 84px; height: 84px; }
+
+.sobre-doc__btn {
+  display: block;
+  width: fit-content;
+  margin: 36px auto 0;
+  padding: 16px 40px;
+  background: var(--green);
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+.sobre-doc__btn:hover {
+  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+}
+.sobre-doc__btn:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 4px;
+}
+
+@media (max-width: 767px) {
+  .sobre-doc { padding-bottom: 40px; }
+  .sobre-doc__player {
+    width: calc(100% - 32px);
+    margin-top: -5.8%;
+    border-radius: 12px;
+  }
+  .sobre-doc__banner { aspect-ratio: 1 / 0.9; }
+  .sobre-play-btn--lg { width: 60px; height: 60px; }
+  .sobre-doc__btn {
+    margin-top: 24px;
+    padding: 14px 28px;
+    font-size: 0.8rem;
+  }
+}
+
 /* ─── SOBRE NÓS — sustentabilidade 2-col ────── */
 .sobre-sust {
   background: var(--white);

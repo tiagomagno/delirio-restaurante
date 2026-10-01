@@ -45,6 +45,7 @@ function groupOf(item: ContentItem): Group {
   if (item.key.startsWith('meta.') || item.key.startsWith('og.')) return 'seo'
   if (item.key.startsWith('social.') || item.key.startsWith('header.') || item.key.startsWith('footer.')) return 'links'
   if (item.page === 'global') return 'seo'
+  if (item.key.endsWith('_url')) return 'links'
   if (item.key.endsWith('.cta')) return 'botao'
   return 'texto'
 }

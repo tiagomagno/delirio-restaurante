@@ -3,8 +3,11 @@ import SobreHeroCarousel from '@/components/SobreHeroCarousel'
 import InstitutoCarousel from '@/components/InstitutoCarousel'
 import Multiline from '@/components/Multiline'
 import VideoThumb from '@/components/VideoThumb'
+import YouTubeEmbed from '@/components/YouTubeEmbed'
 import { getPageContent } from '@/lib/data/content'
 import { buildPageMetadata } from '@/lib/seo/metadata'
+import { parseYouTubeId } from '@/lib/youtube'
+import { isValidHttpUrl } from '@/lib/validateUrl'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,13 +42,47 @@ export default async function SobreNos() {
     },
   ]
 
+  const docTitle = c['doc.title'] ?? '40 anos de Delírio — O documentário'
+  const docVideoId = parseYouTubeId(c['doc.video_url'])
+  const docFullUrl = c['doc.full_url']?.trim() ?? ''
+  const docHasFullUrl = isValidHttpUrl(docFullUrl)
+
   return (
     <main id="main-content" tabIndex={-1}>
 
       {/* ── 1. Carrossel Hero ── */}
       <SobreHeroCarousel slides={heroSlides} />
 
-      {/* ── 2. Sustentabilidade ── */}
+      {/* ── 2. 40 anos — Documentário ── */}
+      <section id="documentario" className="sobre-doc" aria-label={docTitle}>
+        <div className="sobre-doc__banner">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${BASE}/05/delirio-40-anos-documentario.webp`}
+            alt={docTitle}
+            width={1600}
+            height={900}
+            loading="lazy"
+          />
+        </div>
+        {docVideoId && (
+          <div className="sobre-doc__player">
+            <YouTubeEmbed videoId={docVideoId} title={docTitle} />
+          </div>
+        )}
+        {docHasFullUrl && (
+          <a
+            href={docFullUrl}
+            target="_blank"
+            rel="noopener"
+            className="sobre-doc__btn"
+          >
+            {c['doc.cta'] ?? 'Assistir à versão completa'}
+          </a>
+        )}
+      </section>
+
+      {/* ── 3. Sustentabilidade ── */}
       <section id="sustentabilidade" className="sobre-sust" aria-label="Sustentabilidade">
         <div className="sobre-sust__inner">
           <div className="sobre-sust__media">
@@ -85,10 +122,10 @@ export default async function SobreNos() {
         </div>
       </section>
 
-      {/* ── 3. Projetos Sociais — Carrossel ── */}
+      {/* ── 4. Projetos Sociais — Carrossel ── */}
       <InstitutoCarousel />
 
-      {/* ── 4. Rancho ── */}
+      {/* ── 5. Rancho ── */}
       <section id="rancho" className="sobre-rancho-section" aria-label="Rancho São Francisco">
         <div className="sobre-rancho-section__inner">
           <div className="sobre-rancho-section__videos">
@@ -147,7 +184,7 @@ export default async function SobreNos() {
         </div>
       </section>
 
-      {/* ── 5. Livro ── */}
+      {/* ── 6. Livro ── */}
       <section className="sobre-livro" aria-label="Livro Delírio Tropical 40 anos">
         <div className="sobre-livro__inner">
           <div className="sobre-livro__img">
